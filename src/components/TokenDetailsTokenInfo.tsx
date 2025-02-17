@@ -33,7 +33,7 @@ export const TokenDetailsTokenInfo: FC<Props> = (
                     return <FaImages className={'small-thumbnail-image'}/>
                 }
                 return <SmallThumbnail
-                    src={`${katscanStaticUrl}/thumbnails${tokenData.logo}`}
+                    src={`${katscanStaticUrl}/krc20/thumbnails${tokenData.logo}`}
                     alt={'website'}/>
         }
     }
@@ -43,7 +43,7 @@ export const TokenDetailsTokenInfo: FC<Props> = (
             <div className="token-info-grid">
                 <div className="token-info-item-image">
                     {tokenData.logo ?
-                        <Thumbnail src={`${katscanStaticUrl}/logos${tokenData.logo}`} alt={`${tokenData.tick}.jpg`}/>
+                        <Thumbnail src={`${katscanStaticUrl}/krc20/logos${tokenData.logo}`} alt={`${tokenData.tick}.jpg`}/>
                         : <FaImages className={'thumbnail-image'} style={{height:'fit-content', borderRadius: 'unset'}}/>
                     }
                 </div>
