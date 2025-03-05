@@ -1,0 +1,29 @@
+import { NextResponse } from "next/server";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const limit = searchParams.get("limit") || "10";
+  const sortBy = searchParams.get("sortBy") || "holderTotal";
+  const sortOrder = searchParams.get("sortOrder") || "desc";
+
+  console.log('API_BASE_URL', API_BASE_URL);
+
+  try {
+    const url = `${API_BASE_URL}/token/tokenlist?sortBy=${sortBy}&sortOrder=${sortOrder}&limit=5`;
+    console.log('url', url);
+    const response = await fetch(
+      url
+    );
+    const data = await response.json();
+
+
+    // const tokens = Array.isArray(data.result) ? data.result.slice(0, Number(limit)) : [];
+    return NextResponse.json(data.result);
+
+  } catch (error) {
+    console.log('error', error);
+    return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });
+  }
+}
