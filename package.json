@@ -13,6 +13,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "apexcharts": "^4.5.0",
     "next": "15.1.7",
