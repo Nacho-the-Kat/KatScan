@@ -22,7 +22,6 @@ import RecentOperationsTable from "@/app/components/RecentOperationsTable";
 import HolderDistributionTable from "@/app/components/HolderDistributionTable";
 import Image from "next/image";
 
-
 interface TokenData {
   id: number;
   tick: string;

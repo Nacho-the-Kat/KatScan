@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const runtime = 'edge';
+
 export async function GET(req: NextRequest) {
   try {
     // Get query params (tick & limit) from request URL
