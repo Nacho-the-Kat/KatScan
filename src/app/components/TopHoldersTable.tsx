@@ -21,8 +21,12 @@ export default function TopHoldersTable() {
         if (!response.ok) throw new Error("Failed to fetch top holders");
         const jsonData = await response.json();
         setData(jsonData.result);
-      } catch (error) {
-        setError(error.message);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unknown error occurred");
+        }
       } finally {
         setLoading(false);
       }

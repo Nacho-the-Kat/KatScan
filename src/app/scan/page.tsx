@@ -50,8 +50,12 @@ export default function Home() {
         if (!response.ok) throw new Error("Failed to fetch data");
         const jsonData = await response.json();
         setData(jsonData);
-      } catch (error) {
-        setError(error.message);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unknown error occurred");
+        }
       } finally {
         setLoading(false);
       }

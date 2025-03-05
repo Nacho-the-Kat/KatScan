@@ -34,8 +34,12 @@ export default function KRC20Table() {
       setData(jsonData.result || []);
       setPrevCursor(jsonData.prev || null);
       setNextCursor(jsonData.next || null);
-    } catch (error) {
-      setError(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }
