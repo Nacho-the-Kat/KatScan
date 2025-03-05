@@ -4,6 +4,9 @@
 import React, { FC } from "react";
 import { Menu } from "../../../packages/kat-library/dist/index";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Search } from "../../../packages/kat-library/dist/index";
+import Image from "next/image";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -45,17 +48,18 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen  bg-gray-100 dark:bg-slate-900">
       {/* Header full width */}
-      <header className="flex bg-white dark:bg-slate-800 dark:bg-gray-800 shadow-md">
+      <header className="flex bg-white dark:bg-gray-800 shadow-md">
       <div className="flex-grow flex justify-center items-center">
         <div className="w-8/12">
         <div className="flex-grow flex justify-between items-center">
           <div >
             <Link href={'/'}>
-            <img
+            <Image
               src="/katscan_new_logo.png"
-              alt="Nacho KatScan"
-              width={200}
-              height={50}
+              alt="KatScan Logo"
+              width={180}
+              height={35}
+              className="h-10"
             />
             </Link>
           </div>

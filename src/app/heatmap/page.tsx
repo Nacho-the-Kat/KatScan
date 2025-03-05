@@ -3,11 +3,24 @@
 import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import Layout from "@/app/components/Layout";
+import { ApexOptions } from "apexcharts";
+
+// Define interfaces for our data types
+interface MintItem {
+  tick: string;
+  mintTotal: number;
+}
+
+interface FormattedMintData {
+  x: string;
+  y: number;
+  color: string;
+}
 
 export default function MintHeatmap() {
-  const [mintData, setMintData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [mintData, setMintData] = useState<FormattedMintData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchMintData = async () => {
@@ -15,16 +28,20 @@ export default function MintHeatmap() {
         const response = await fetch("/api/mint-totals");
         if (!response.ok) throw new Error("Failed to fetch mint totals");
 
-        const jsonData = await response.json();
-        const formattedData = jsonData.map((item, index) => ({
+        const jsonData = await response.json() as MintItem[];
+        const formattedData = jsonData.map((item: MintItem, index: number) => ({
           x: item.tick,
           y: item.mintTotal,
           color: getColor(index), // Assign different colors
         }));
 
         setMintData(formattedData);
-      } catch (error) {
-        setError(error.message);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unknown error occurred");
+        }
       } finally {
         setLoading(false);
       }
@@ -34,7 +51,7 @@ export default function MintHeatmap() {
   }, []);
 
   // Function to assign different colors to each token
-  const getColor = (index) => {
+  const getColor = (index: number): string => {
     const colors = [
       "#008FFB", "#00E396", "#FEB019", "#FF4560", "#775DD0",
       "#546E7A", "#D4526E", "#F86624", "#A5978B", "#26A69A"
@@ -42,7 +59,7 @@ export default function MintHeatmap() {
     return colors[index % colors.length]; // Cycle through colors
   };
 
-  const chartOptions = {
+  const chartOptions: ApexOptions = {
     chart: {
       type: "treemap",
        // Ensures it blends with Tailwind classes
@@ -65,7 +82,7 @@ export default function MintHeatmap() {
         fontSize: "14px",
       },
       y: {
-        formatter: (value) => `Mint: ${value}`, // Add "Mint: " in tooltip
+        formatter: (value: number): string => `Mint: ${value}`, // Add "Mint: " in tooltip
       },
     },
     plotOptions: {

@@ -17,6 +17,9 @@ import {
   CalculatorIcon
 } from "@heroicons/react/24/outline";
 import MintTokens from "./components/MintTokens";
+import { useEffect, useState } from "react";
+import { Fav } from "../../packages/kat-library/dist/index";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -36,7 +39,9 @@ export default function Home() {
             />
           </div>
           <div className="py-4 text-right">
-            <img src="/nft.png" alt="Nacho KatScan" width={250} height={50} />
+            <div className="w-full h-auto mb-12 flex items-center justify-center">
+              <Image src="/nft.png" alt="Nacho KatScan" width={250} height={50} />
+            </div>
           </div>
         </div>
 

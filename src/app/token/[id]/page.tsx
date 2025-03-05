@@ -14,11 +14,13 @@ import {
   formatNumberWithWords,
   formatPreMinted,
 } from "../../utils/utils";
-import AffiliateComponent from "../../../../packages/kat-library/src/components/Affiliates";
+// AffiliateComponent is not available in the distributed package
+// import AffiliateComponent from "../../../packages/kat-library/dist/index"; 
 import { useParams } from "next/navigation";
 import TopHoldersTable from "@/app/components/TopHoldersTable";
 import RecentOperationsTable from "@/app/components/RecentOperationsTable";
 import HolderDistributionTable from "@/app/components/HolderDistributionTable";
+import Image from "next/image";
 
 
 interface TokenData {
@@ -69,8 +71,12 @@ export default function Home() {
         if (!response.ok) throw new Error("Failed to fetch token data");
         const jsonData = await response.json();
         setToken(jsonData.result);
-      } catch (error) {
-        setError(error.message);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError('An unknown error occurred');
+        }
       } finally {
         setLoading(false);
       }
@@ -185,8 +191,8 @@ export default function Home() {
         {!loading && !error && token && (
           <>
             <div className="grid grid-cols-2 gap-4">
-              <div className="w-full flex flex h-full px-4 items-center justify-center col-span-1 bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out  ">
-                <div className="w-4/12 flex items-center gap-4 w-full px-6">
+              <div className="w-full flex h-full px-4 items-center justify-center col-span-1 bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out  ">
+                <div className="w-4/12 flex items-center gap-4">
                   {/* Avatar aligned to the left */}
                   <Avatar
                     imageUrl={`https://katapi.nachowyborski.xyz/static/krc20/thumbnails/${token.logo}`}
@@ -295,7 +301,13 @@ export default function Home() {
                   </p>
                 </div>
                 <div>
-                  <img src="/nft.png" alt="Nacho KatScan" height={50} className="w-full rounded-md" />
+                  <Image 
+                    src="/nft.png" 
+                    alt="Nacho KatScan" 
+                    width={300}
+                    height={150}
+                    className="w-full rounded-md" 
+                  />
                 </div>
               </div>
 
