@@ -18,7 +18,7 @@ export async function GET(req: Request) {
     console.log('data', data)
 
     return NextResponse.json(data);
-  } catch (error) {
+  } catch (error: unknown) {
     return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });
   }
 }

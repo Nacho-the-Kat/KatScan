@@ -32,8 +32,13 @@ export default function HolderDistributionTable() {
 
       setData(groupedData);
       
-    } catch (error) {
-      setError(error.message);
+    } catch (error: unknown) {
+      // Safely handle unknown error type
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred');
+      }
     } finally {
       setLoading(false);
     }

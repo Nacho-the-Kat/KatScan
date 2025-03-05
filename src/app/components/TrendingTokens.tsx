@@ -20,7 +20,7 @@ const TrendingTokens = () => {
         } else {
           setError("Failed to load tokens.");
         }
-      } catch (err) {
+      } catch (err: unknown) {
         setError("Error fetching data.");
       } finally {
         setLoading(false);

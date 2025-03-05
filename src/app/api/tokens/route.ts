@@ -22,7 +22,7 @@ export async function GET(req: Request) {
     // const tokens = Array.isArray(data.result) ? data.result.slice(0, Number(limit)) : [];
     return NextResponse.json(data.result);
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.log('error', error);
     return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });
   }
