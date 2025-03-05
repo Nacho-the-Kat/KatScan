@@ -15,34 +15,20 @@ interface LayoutProps {
 const Layout: FC<LayoutProps> = ({ children }) => {
   const menuOptions = [
     { label: "Home", href: "/" },
-    { label: "Scan", href: "/scan" },
-    { label: "Mint Heatmap", href: "/heatmap" },
-    { label: "Announcements", href: "/announcements" },
-    // {
-    //   label: "Explore KRC-20",
-    //   children: [
-    //     { label: "Search Transactions", href: "#" },
-    //     { label: "Search Addresses", href: "#" },
-    //     { label: "Top Holders", href: "/top-holders" },
-    //   ],
-    // },
-    // {
-    //   label: "Analyze KRC-20",
-    //   children: [
-    //     { label: "All Tokens", href: "#" },
-    //     { label: "Side by side", href: "#" },
-    //     { label: "Mint Heatmap", href: "#" },
-    //     { label: "MarketCap Cal", href: "#" },
-    //   ],
-    // },
-    // {
-    //   label: "Tools",
-    //   children: [
-    //     { label: "Trade on KSPR", href: "#" },
-    //     { label: "Mint and Deploy", href: "#" },
-    //     { label: "Announcements", href: "#" },
-    //   ],
-    // },
+    {
+      label: "Tokens",
+      children: [
+        { label: "All Tokens", href: "/scan" },
+        { label: "Heatmap", href: "/heatmap" },
+      ],
+    },
+    {
+      label: "NFTs",
+      children: [
+        { label: "All Collections", href: "#" },
+      ],
+    },
+    
   ];
 
   return (
@@ -50,16 +36,15 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       {/* Header full width */}
       <header className="flex bg-white dark:bg-gray-800 shadow-md">
       <div className="flex-grow flex justify-center items-center">
-        <div className="w-8/12">
+        <div className="w-11/12">
         <div className="flex-grow flex justify-between items-center">
-          <div >
+          <div className="px-4">
             <Link href={'/'}>
             <Image
               src="/katscan_new_logo.png"
               alt="KatScan Logo"
               width={180}
-              height={35}
-              className="h-10"
+              height={45}
             />
             </Link>
           </div>
@@ -73,7 +58,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
 
       {/* Main content centrado, contenedor 8/12 */}
       <main className="flex-grow flex justify-center items-start py-8">
-        <div className="w-8/12">
+        <div className="w-11/12">
           {children}          
         </div>
       </main>

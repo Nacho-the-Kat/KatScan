@@ -20,7 +20,8 @@ import MintTokens from "./components/MintTokens";
 import { useEffect, useState } from "react";
 import { Fav } from "../../packages/kat-library/dist/index";
 import Image from "next/image";
-
+import RecentCollections from "./components/RecentCollections";
+import TrendingCollections from "./components/TrendingCollections";
 export default function Home() {
   return (
     <Layout>
@@ -33,19 +34,15 @@ export default function Home() {
           <div className="py-4">
             <MintTokens />
           </div>
-          <div className="py-4 text-center">
-            <TokenList title="Trading markets" tokens={[]} 
-              icon={<ArrowTrendingUpIcon className="size-5 text-teal-500" />}
-            />
+          <div className="py-4">
+            <RecentCollections />
           </div>
-          <div className="py-4 text-right">
-            <div className="w-full h-auto mb-12 flex items-center justify-center">
-              <Image src="/nft.png" alt="Nacho KatScan" width={250} height={50} />
-            </div>
+          <div className="py-4">        
+              <TrendingCollections />
           </div>
         </div>
 
-        <h1 className="text-2xl text-teal-500">Kasplex Statistics</h1>
+        <h1 className="text-2xl text-teal-500">Token Statistics</h1>
         <div className="grid grid-cols-3 gap-4">
           <div className="py-4 text-center">
             <Widget
@@ -67,39 +64,29 @@ export default function Home() {
           </div>
         </div>
 
-        <h1 className="text-2xl text-teal-500">Features</h1>
+        <h1 className="text-2xl text-teal-500">NFTs Statistics</h1>
         <div className="grid grid-cols-3 gap-4">
           <div className="py-4 text-center">
-            <Widget value="All Tokens"
-              icon={<GlobeAltIcon className="size-8" />}
-              />
-          </div>
-          <div className="py-4 text-center">
-            <Widget value="Address Lookup"
-              icon={<WalletIcon className="size-8" />}
+            <Widget
+              value="Total NFTs Transactions"
+              icon={<CircleStackIcon className="size-12" />}
             />
           </div>
           <div className="py-4 text-center">
-            <Widget value="Token Comparison" 
-              icon={<ArrowPathRoundedSquareIcon className="size-8" />}
+            <Widget
+              value="TotalNFTs Deployed"
+              icon={<ArrowsRightLeftIcon className="size-12" />}
             />
           </div>
           <div className="py-4 text-center">
-            <Widget value="Top Holders"
-              icon={<UsersIcon className="size-8" />}
-             />
-          </div>
-          <div className="py-4 text-center">
-            <Widget value="Mint Heatmap"
-              icon={<FireIcon className="size-8" />}
-             />
-          </div>
-          <div className="py-4 text-center">
-            <Widget value="MarketCap Calculator"
-              icon={<CalculatorIcon className="size-8" />}
-             />
+            <Widget
+              value="Total Fees Paid"
+              icon={<DocumentCurrencyDollarIcon className="size-12" />}
+            />
           </div>
         </div>
+
+       
       </div>
     </Layout>
   );

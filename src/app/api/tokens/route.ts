@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export const runtime = 'edge';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://katapi.nachowyborski.xyz/api";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);

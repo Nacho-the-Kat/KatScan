@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { TokenList } from "../../../packages/kat-library/dist/index";
 import { RocketLaunchIcon } from "@heroicons/react/24/solid";
-import { Token } from "@/app/types/token";
+import { Token, TokenApiResponse } from "@/app/types/token";
 
 const TrendingTokens = () => {
   const [tokens, setTokens] = useState<Token[]>([]);
@@ -12,15 +12,14 @@ const TrendingTokens = () => {
   useEffect(() => {
     const fetchTokens = async () => {
       try {
-        const response = await fetch("/api/kasplex/tokens");
+        const response = await fetch(`/api/tokens?limit=5&sortBy=holderTotal&sortOrder=desc`);
         const data = await response.json();
-        console.log('data trending tokens', data)
-        if (response.ok && data.result) {
-          setTokens(data.result); // Ensure we extract `result` array
+        if (response.ok) {
+          setTokens(data);
         } else {
-          setError(data.message || "Failed to load tokens.");
+          setError("Failed to load tokens.");
         }
-      } catch (err) {
+      } catch (err: unknown) {
         setError("Error fetching data.");
       } finally {
         setLoading(false);
@@ -30,15 +29,15 @@ const TrendingTokens = () => {
     fetchTokens();
   }, []);
 
-  if (loading) return <p>Loading Trending Tokens...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
+  if (loading) return <p>Loading Trending Collections...</p>;
+//   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
     <TokenList
       showPrice={false}
       maxItems={5}
-      title="Recent Tokens"
-      tokens={tokens}
+      title="Trending Collections"
+      tokens={[]}  
       icon={<RocketLaunchIcon className="size-5 text-teal-500" />}
     />
   );
