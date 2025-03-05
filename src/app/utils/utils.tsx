@@ -107,11 +107,15 @@ export const formatKRC20Amount = (amount: number, decimals: number, tick: string
 }
 
 export const openTransaction = (transactionId: string): void => {
-    window.open(`https://explorer.kaspa.org/txs/${transactionId}`, '_blank', 'noopener,noreferrer');
+    if (typeof window !== 'undefined') {
+        window.open(`https://explorer.kaspa.org/txs/${transactionId}`, '_blank', 'noopener,noreferrer');
+    }
 };
 
 export const openLink = (url: string): void => {
-    window.open(url, '_blank', 'noopener,noreferrer');
+    if (typeof window !== 'undefined') {
+        window.open(url, '_blank', 'noopener,noreferrer');
+    }
 };
 
 export const sortComparison = <T extends number | string>(a: T, b: T, sortDirection: 'asc' | 'desc'): number => {

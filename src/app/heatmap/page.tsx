@@ -1,9 +1,16 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Chart from "react-apexcharts";
-import Layout from "@/app/components/Layout";
+import dynamic from 'next/dynamic';
+// Import ApexOptions type only, not the actual Chart component
 import { ApexOptions } from "apexcharts";
+import Layout from "@/app/components/Layout";
+
+// Dynamically import Chart component with SSR disabled
+const Chart = dynamic(() => import('react-apexcharts'), {
+  ssr: false,
+  loading: () => <div className="w-full h-[400px] flex items-center justify-center">Loading Chart...</div>
+});
 
 // Define interfaces for our data types
 interface MintItem {
