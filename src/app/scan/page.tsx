@@ -166,7 +166,7 @@ export default function Home() {
 
         {!loading && !error && (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="py-4 ">
                 <TrendingTokens />
               </div>
@@ -180,12 +180,6 @@ export default function Home() {
                   icon={
                     <ArrowTrendingUpIcon className="size-5 text-teal-500" />
                   }
-                />
-              </div>
-              <div className="flex items-end py-4 text-right">
-                <Search
-                  showHint={true}
-                  placeholder="Address / Transaction ID / Block ID / Token"
                 />
               </div>
             </div>

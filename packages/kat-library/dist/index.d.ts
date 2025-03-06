@@ -104,6 +104,7 @@ interface Token {
     image?: string;
     price?: string;
     change?: number;
+    id?: string;
 }
 interface ListProps {
     title: string;
@@ -113,12 +114,14 @@ interface ListProps {
     tokens: Token[];
     maxItems?: number;
     showMoreUrl?: string;
+    showPrice?: boolean;
 }
 declare const TokenList: React.FC<ListProps>;
 
 interface WidgetProps {
     value: string;
     icon?: React.ReactNode;
+    legend?: string;
     onClick?: () => void;
 }
 declare const Widget: React.FC<WidgetProps>;

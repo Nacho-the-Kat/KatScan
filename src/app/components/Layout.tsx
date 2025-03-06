@@ -25,7 +25,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     {
       label: "NFTs",
       children: [
-        { label: "All Collections", href: "#" },
+        { label: "All Collections", href: "/nft" },
       ],
     },
     
@@ -48,7 +48,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
             />
             </Link>
           </div>
-          <div>
+          <div className="z-9">
             <Menu items={menuOptions} />
           </div>
         </div>
@@ -59,6 +59,12 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       {/* Main content centrado, contenedor 8/12 */}
       <main className="flex-grow flex justify-center items-start py-8">
         <div className="w-11/12">
+          <div className="block w-full">
+          <Search
+              showHint={true}
+              placeholder="Address / Transaction ID / Block ID / Token"
+                />
+          </div>
           {children}          
         </div>
       </main>

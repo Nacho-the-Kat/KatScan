@@ -4,6 +4,7 @@ interface Token {
     image?: string;
     price?: string;
     change?: number;
+    id?: string;
 }
 interface ListProps {
     title: string;
@@ -13,6 +14,7 @@ interface ListProps {
     tokens: Token[];
     maxItems?: number;
     showMoreUrl?: string;
+    showPrice?: boolean;
 }
 declare const TokenList: React.FC<ListProps>;
 export default TokenList;

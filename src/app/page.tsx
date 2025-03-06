@@ -22,6 +22,8 @@ import { Fav } from "../../packages/kat-library/dist/index";
 import Image from "next/image";
 import RecentCollections from "./components/RecentCollections";
 import TrendingCollections from "./components/TrendingCollections";
+import TokenStatistics from "./components/Krc20Widgets";
+import NFTStatistics from "./components/Krc721Widgets";
 export default function Home() {
   return (
     <Layout>
@@ -42,49 +44,9 @@ export default function Home() {
           </div>
         </div>
 
-        <h1 className="text-2xl text-teal-500">Token Statistics</h1>
-        <div className="grid grid-cols-3 gap-4">
-          <div className="py-4 text-center">
-            <Widget
-              value="Total KRC20 Transactions"
-              icon={<CircleStackIcon className="size-12" />}
-            />
-          </div>
-          <div className="py-4 text-center">
-            <Widget
-              value="Total KRC20 Tokens Deployed"
-              icon={<ArrowsRightLeftIcon className="size-12" />}
-            />
-          </div>
-          <div className="py-4 text-center">
-            <Widget
-              value="Total Fees Paid (KAS)"
-              icon={<DocumentCurrencyDollarIcon className="size-12" />}
-            />
-          </div>
-        </div>
+        <TokenStatistics />
 
-        <h1 className="text-2xl text-teal-500">NFTs Statistics</h1>
-        <div className="grid grid-cols-3 gap-4">
-          <div className="py-4 text-center">
-            <Widget
-              value="Total NFTs Transactions"
-              icon={<CircleStackIcon className="size-12" />}
-            />
-          </div>
-          <div className="py-4 text-center">
-            <Widget
-              value="TotalNFTs Deployed"
-              icon={<ArrowsRightLeftIcon className="size-12" />}
-            />
-          </div>
-          <div className="py-4 text-center">
-            <Widget
-              value="Total Fees Paid"
-              icon={<DocumentCurrencyDollarIcon className="size-12" />}
-            />
-          </div>
-        </div>
+        <NFTStatistics />
 
        
       </div>
