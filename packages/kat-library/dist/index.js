@@ -807,7 +807,135 @@ const Avatar = ({ imageUrl }) => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
-    return (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("div", { className: "w-12 h-12 rounded-full overflow-hidden cursor-pointer border border-gray-300 dark:border-gray-700", onClick: handleOpenModal, children: imageUrl ? (jsxRuntimeExports.jsx("img", { src: imageUrl, alt: "Avatar", className: "w-full h-full object-cover" })) : (jsxRuntimeExports.jsx(ForwardRef$5, { className: "w-full h-full text-gray-400" })) }), isModalOpen && (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50", onClick: handleCloseModal, children: jsxRuntimeExports.jsx("div", { className: "p-2 bg-white rounded-lg shadow-lg", children: imageUrl ? (jsxRuntimeExports.jsx("img", { src: imageUrl, alt: "Avatar Large", className: "w-64 h-64 object-cover rounded-lg" })) : (jsxRuntimeExports.jsx(ForwardRef$5, { className: "w-64 h-64 text-gray-400" })) }) }))] }));
+    return (jsxRuntimeExports.jsxs("span", { children: [jsxRuntimeExports.jsx("div", { className: "w-12 h-12 rounded-full overflow-hidden cursor-pointer border border-gray-300 dark:border-gray-700", onClick: handleOpenModal, children: imageUrl ? (jsxRuntimeExports.jsx("img", { src: imageUrl, alt: "Avatar", className: "w-full h-full object-cover" })) : (jsxRuntimeExports.jsx(ForwardRef$5, { className: "w-full h-full text-gray-400" })) }), isModalOpen && (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50", onClick: handleCloseModal, children: jsxRuntimeExports.jsx("div", { className: "p-2 bg-white rounded-lg shadow-lg", children: imageUrl ? (jsxRuntimeExports.jsx("img", { src: imageUrl, alt: "Avatar Large", className: "w-64 h-64 object-cover rounded-lg" })) : (jsxRuntimeExports.jsx(ForwardRef$5, { className: "w-64 h-64 text-gray-400" })) }) }))] }));
+};
+
+const AffiliateComponent = ({ affiliates, displayMode = "iconsWithNames", layout = "horizontal", }) => {
+    return (jsxRuntimeExports.jsx("div", { className: `flex ${layout === "horizontal" ? "flex-row space-x-4" : "flex-col space-y-3"} items-center`, children: affiliates.map((affiliate, index) => (jsxRuntimeExports.jsx("div", { className: "flex items-center space-x-2", children: affiliate.url ? (jsxRuntimeExports.jsxs("a", { href: affiliate.url, target: "_blank", rel: "noopener noreferrer", className: "flex items-center space-x-2 hover:opacity-80 transition", children: [jsxRuntimeExports.jsx("img", { src: affiliate.icon, alt: affiliate.name, className: "w-8 h-8 rounded-full" }), displayMode === "iconsWithNames" && (jsxRuntimeExports.jsx("span", { className: "text-gray-700 dark:text-gray-300 text-sm font-medium", children: affiliate.name }))] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("img", { src: affiliate.icon, alt: affiliate.name, className: "w-8 h-8 rounded-full" }), displayMode === "iconsWithNames" && (jsxRuntimeExports.jsx("span", { className: "text-gray-700 dark:text-gray-300 text-sm font-medium", children: affiliate.name }))] })) }, index))) }));
+};
+
+function Bars3Icon({
+  title,
+  titleId,
+  ...props
+}, svgRef) {
+  return /*#__PURE__*/React.createElement("svg", Object.assign({
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 24 24",
+    fill: "currentColor",
+    "aria-hidden": "true",
+    "data-slot": "icon",
+    ref: svgRef,
+    "aria-labelledby": titleId
+  }, props), title ? /*#__PURE__*/React.createElement("title", {
+    id: titleId
+  }, title) : null, /*#__PURE__*/React.createElement("path", {
+    fillRule: "evenodd",
+    d: "M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z",
+    clipRule: "evenodd"
+  }));
+}
+const ForwardRef$4 = /*#__PURE__*/ React.forwardRef(Bars3Icon);
+
+function ChevronDownIcon({
+  title,
+  titleId,
+  ...props
+}, svgRef) {
+  return /*#__PURE__*/React.createElement("svg", Object.assign({
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 24 24",
+    fill: "currentColor",
+    "aria-hidden": "true",
+    "data-slot": "icon",
+    ref: svgRef,
+    "aria-labelledby": titleId
+  }, props), title ? /*#__PURE__*/React.createElement("title", {
+    id: titleId
+  }, title) : null, /*#__PURE__*/React.createElement("path", {
+    fillRule: "evenodd",
+    d: "M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z",
+    clipRule: "evenodd"
+  }));
+}
+const ForwardRef$3 = /*#__PURE__*/ React.forwardRef(ChevronDownIcon);
+
+function CircleStackIcon({
+  title,
+  titleId,
+  ...props
+}, svgRef) {
+  return /*#__PURE__*/React.createElement("svg", Object.assign({
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 24 24",
+    fill: "currentColor",
+    "aria-hidden": "true",
+    "data-slot": "icon",
+    ref: svgRef,
+    "aria-labelledby": titleId
+  }, props), title ? /*#__PURE__*/React.createElement("title", {
+    id: titleId
+  }, title) : null, /*#__PURE__*/React.createElement("path", {
+    d: "M21 6.375c0 2.692-4.03 4.875-9 4.875S3 9.067 3 6.375 7.03 1.5 12 1.5s9 2.183 9 4.875Z"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M12 12.75c2.685 0 5.19-.586 7.078-1.609a8.283 8.283 0 0 0 1.897-1.384c.016.121.025.244.025.368C21 12.817 16.97 15 12 15s-9-2.183-9-4.875c0-.124.009-.247.025-.368a8.285 8.285 0 0 0 1.897 1.384C6.809 12.164 9.315 12.75 12 12.75Z"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M12 16.5c2.685 0 5.19-.586 7.078-1.609a8.282 8.282 0 0 0 1.897-1.384c.016.121.025.244.025.368 0 2.692-4.03 4.875-9 4.875s-9-2.183-9-4.875c0-.124.009-.247.025-.368a8.284 8.284 0 0 0 1.897 1.384C6.809 15.914 9.315 16.5 12 16.5Z"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M12 20.25c2.685 0 5.19-.586 7.078-1.609a8.282 8.282 0 0 0 1.897-1.384c.016.121.025.244.025.368 0 2.692-4.03 4.875-9 4.875s-9-2.183-9-4.875c0-.124.009-.247.025-.368a8.284 8.284 0 0 0 1.897 1.384C6.809 19.664 9.315 20.25 12 20.25Z"
+  }));
+}
+const ForwardRef$2 = /*#__PURE__*/ React.forwardRef(CircleStackIcon);
+
+function MagnifyingGlassIcon({
+  title,
+  titleId,
+  ...props
+}, svgRef) {
+  return /*#__PURE__*/React.createElement("svg", Object.assign({
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 24 24",
+    fill: "currentColor",
+    "aria-hidden": "true",
+    "data-slot": "icon",
+    ref: svgRef,
+    "aria-labelledby": titleId
+  }, props), title ? /*#__PURE__*/React.createElement("title", {
+    id: titleId
+  }, title) : null, /*#__PURE__*/React.createElement("path", {
+    fillRule: "evenodd",
+    d: "M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z",
+    clipRule: "evenodd"
+  }));
+}
+const ForwardRef$1 = /*#__PURE__*/ React.forwardRef(MagnifyingGlassIcon);
+
+function StarIcon({
+  title,
+  titleId,
+  ...props
+}, svgRef) {
+  return /*#__PURE__*/React.createElement("svg", Object.assign({
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 24 24",
+    fill: "currentColor",
+    "aria-hidden": "true",
+    "data-slot": "icon",
+    ref: svgRef,
+    "aria-labelledby": titleId
+  }, props), title ? /*#__PURE__*/React.createElement("title", {
+    id: titleId
+  }, title) : null, /*#__PURE__*/React.createElement("path", {
+    fillRule: "evenodd",
+    d: "M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z",
+    clipRule: "evenodd"
+  }));
+}
+const ForwardRef = /*#__PURE__*/ React.forwardRef(StarIcon);
+
+const Fav = ({ checked = false }) => {
+    const [isChecked, setIsChecked] = useState(checked);
+    return (jsxRuntimeExports.jsx("button", { onClick: () => setIsChecked(!isChecked), className: "transition-colors duration-300 text-gray-900 hover:text-teal-400", children: jsxRuntimeExports.jsx(ForwardRef, { className: `w-6 h-6 ${isChecked ? 'fill-teal-400 text-teal-400' : 'fill-gray-700'}` }) }));
 };
 
 const Card = ({ title, icon = jsxRuntimeExports.jsx(ForwardRef$7, { className: "w-6 h-6 text-gray-900 dark:text-gray-100" }), children }) => {
@@ -2516,131 +2644,12 @@ const Header = ({ logoSrc, title, subtitle }) => {
     return (jsxRuntimeExports.jsx("header", { className: "sticky top-0 z-30 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700", children: jsxRuntimeExports.jsx("div", { className: "px-4 sm:px-6 lg:px-8", children: jsxRuntimeExports.jsx("div", { className: "flex items-center justify-between h-16", children: jsxRuntimeExports.jsx("nav", { className: "flex items-center lg:grow", children: jsxRuntimeExports.jsxs("ul", { className: "flex grow justify-start flex-wrap items-center", children: [jsxRuntimeExports.jsx("li", { className: "relative group", children: jsxRuntimeExports.jsx("a", { className: "flex items-center px-3 py-2 text-sm font-medium transition-colors", href: "https://katpool.xyz", children: jsxRuntimeExports.jsx(Image, { src: logoSrc, alt: "Navigation Logo", width: 50, height: 50, className: "mr-6 opacity-100" }) }) }), jsxRuntimeExports.jsx("li", { className: "relative group", children: jsxRuntimeExports.jsx("span", { className: "flex items-center px-3 py-2 text-xl font-medium transition-colors text-gray-400 dark:text-white hover:text-primary-500 dark:hover:text-primary-400", children: title }) }), jsxRuntimeExports.jsx("li", { className: "relative group", children: jsxRuntimeExports.jsx("span", { className: "flex items-center px-3 py-2 text-sm font-medium transition-colors text-gray-500", children: subtitle }) })] }) }) }) }) }));
 };
 
-function Bars3Icon({
-  title,
-  titleId,
-  ...props
-}, svgRef) {
-  return /*#__PURE__*/React.createElement("svg", Object.assign({
-    xmlns: "http://www.w3.org/2000/svg",
-    viewBox: "0 0 24 24",
-    fill: "currentColor",
-    "aria-hidden": "true",
-    "data-slot": "icon",
-    ref: svgRef,
-    "aria-labelledby": titleId
-  }, props), title ? /*#__PURE__*/React.createElement("title", {
-    id: titleId
-  }, title) : null, /*#__PURE__*/React.createElement("path", {
-    fillRule: "evenodd",
-    d: "M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z",
-    clipRule: "evenodd"
-  }));
-}
-const ForwardRef$4 = /*#__PURE__*/ React.forwardRef(Bars3Icon);
-
-function ChevronDownIcon({
-  title,
-  titleId,
-  ...props
-}, svgRef) {
-  return /*#__PURE__*/React.createElement("svg", Object.assign({
-    xmlns: "http://www.w3.org/2000/svg",
-    viewBox: "0 0 24 24",
-    fill: "currentColor",
-    "aria-hidden": "true",
-    "data-slot": "icon",
-    ref: svgRef,
-    "aria-labelledby": titleId
-  }, props), title ? /*#__PURE__*/React.createElement("title", {
-    id: titleId
-  }, title) : null, /*#__PURE__*/React.createElement("path", {
-    fillRule: "evenodd",
-    d: "M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z",
-    clipRule: "evenodd"
-  }));
-}
-const ForwardRef$3 = /*#__PURE__*/ React.forwardRef(ChevronDownIcon);
-
-function CircleStackIcon({
-  title,
-  titleId,
-  ...props
-}, svgRef) {
-  return /*#__PURE__*/React.createElement("svg", Object.assign({
-    xmlns: "http://www.w3.org/2000/svg",
-    viewBox: "0 0 24 24",
-    fill: "currentColor",
-    "aria-hidden": "true",
-    "data-slot": "icon",
-    ref: svgRef,
-    "aria-labelledby": titleId
-  }, props), title ? /*#__PURE__*/React.createElement("title", {
-    id: titleId
-  }, title) : null, /*#__PURE__*/React.createElement("path", {
-    d: "M21 6.375c0 2.692-4.03 4.875-9 4.875S3 9.067 3 6.375 7.03 1.5 12 1.5s9 2.183 9 4.875Z"
-  }), /*#__PURE__*/React.createElement("path", {
-    d: "M12 12.75c2.685 0 5.19-.586 7.078-1.609a8.283 8.283 0 0 0 1.897-1.384c.016.121.025.244.025.368C21 12.817 16.97 15 12 15s-9-2.183-9-4.875c0-.124.009-.247.025-.368a8.285 8.285 0 0 0 1.897 1.384C6.809 12.164 9.315 12.75 12 12.75Z"
-  }), /*#__PURE__*/React.createElement("path", {
-    d: "M12 16.5c2.685 0 5.19-.586 7.078-1.609a8.282 8.282 0 0 0 1.897-1.384c.016.121.025.244.025.368 0 2.692-4.03 4.875-9 4.875s-9-2.183-9-4.875c0-.124.009-.247.025-.368a8.284 8.284 0 0 0 1.897 1.384C6.809 15.914 9.315 16.5 12 16.5Z"
-  }), /*#__PURE__*/React.createElement("path", {
-    d: "M12 20.25c2.685 0 5.19-.586 7.078-1.609a8.282 8.282 0 0 0 1.897-1.384c.016.121.025.244.025.368 0 2.692-4.03 4.875-9 4.875s-9-2.183-9-4.875c0-.124.009-.247.025-.368a8.284 8.284 0 0 0 1.897 1.384C6.809 19.664 9.315 20.25 12 20.25Z"
-  }));
-}
-const ForwardRef$2 = /*#__PURE__*/ React.forwardRef(CircleStackIcon);
-
-function MagnifyingGlassIcon({
-  title,
-  titleId,
-  ...props
-}, svgRef) {
-  return /*#__PURE__*/React.createElement("svg", Object.assign({
-    xmlns: "http://www.w3.org/2000/svg",
-    viewBox: "0 0 24 24",
-    fill: "currentColor",
-    "aria-hidden": "true",
-    "data-slot": "icon",
-    ref: svgRef,
-    "aria-labelledby": titleId
-  }, props), title ? /*#__PURE__*/React.createElement("title", {
-    id: titleId
-  }, title) : null, /*#__PURE__*/React.createElement("path", {
-    fillRule: "evenodd",
-    d: "M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z",
-    clipRule: "evenodd"
-  }));
-}
-const ForwardRef$1 = /*#__PURE__*/ React.forwardRef(MagnifyingGlassIcon);
-
-function StarIcon({
-  title,
-  titleId,
-  ...props
-}, svgRef) {
-  return /*#__PURE__*/React.createElement("svg", Object.assign({
-    xmlns: "http://www.w3.org/2000/svg",
-    viewBox: "0 0 24 24",
-    fill: "currentColor",
-    "aria-hidden": "true",
-    "data-slot": "icon",
-    ref: svgRef,
-    "aria-labelledby": titleId
-  }, props), title ? /*#__PURE__*/React.createElement("title", {
-    id: titleId
-  }, title) : null, /*#__PURE__*/React.createElement("path", {
-    fillRule: "evenodd",
-    d: "M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z",
-    clipRule: "evenodd"
-  }));
-}
-const ForwardRef = /*#__PURE__*/ React.forwardRef(StarIcon);
-
 const MenuComponent = ({ items }) => {
     const [openIndex, setOpenIndex] = useState(null);
     const toggleMenu = (index) => {
         setOpenIndex(prevIndex => (prevIndex === index ? null : index)); // Toggle submenu while ensuring only one is open at a time
     };
-    return (jsxRuntimeExports.jsx("nav", { className: " dark:bg-gray-900 p-4 border-b border-gray-200 dark:border-gray-700", children: jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto flex justify-between items-center", children: [jsxRuntimeExports.jsx(Menu, { as: "div", className: "relative inline-block text-left lg:hidden", children: ({ open }) => (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(Menu.Button, { className: "p-2 rounded-md text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700", children: jsxRuntimeExports.jsx(ForwardRef$4, { className: "w-6 h-6" }) }), open && (jsxRuntimeExports.jsx("div", { className: "absolute left-0 mt-2 w-48 origin-top-left bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 rounded-md focus:outline-none", children: items.map((item, idx) => (jsxRuntimeExports.jsxs("div", { className: "py-1", children: [jsxRuntimeExports.jsxs("button", { onClick: () => toggleMenu(idx), className: "w-full text-left px-4 py-2 text-sm text-white dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md flex justify-between items-center", children: [item.label, item.children && (jsxRuntimeExports.jsx(ForwardRef$3, { className: `w-4 h-4 text-gray-500 transition-transform ${openIndex === idx ? "rotate-180" : ""}` }))] }), item.children && openIndex === idx && (jsxRuntimeExports.jsx("div", { className: "pl-4", children: item.children.map((subItem, subIdx) => (jsxRuntimeExports.jsx("a", { href: subItem.href || "#", className: "block px-4 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md", children: subItem.label }, subIdx))) }))] }, idx))) }))] })) }), jsxRuntimeExports.jsx("ul", { className: "hidden lg:flex space-x-6", children: items.map((item, idx) => (jsxRuntimeExports.jsxs("li", { className: "relative group", children: [jsxRuntimeExports.jsxs("a", { href: item.href || "#", className: "text-gray-700 dark:text-white px-3 py-2 font-medium hover:text-primary-500", children: [item.label, item.children && jsxRuntimeExports.jsx(ForwardRef$3, { className: "w-4 h-4 inline ml-2 text-gray-500" })] }), item.children && (jsxRuntimeExports.jsx("div", { className: "absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity", children: item.children.map((subItem, subIdx) => (jsxRuntimeExports.jsx("a", { href: subItem.href || "#", className: "block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md", children: subItem.label }, subIdx))) }))] }, idx))) })] }) }));
+    return (jsxRuntimeExports.jsx("nav", { className: "p-4", children: jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto flex justify-between items-center", children: [jsxRuntimeExports.jsx(Menu, { as: "div", className: "relative inline-block text-left lg:hidden", children: ({ open }) => (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(Menu.Button, { className: "p-2 rounded-md text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700", children: jsxRuntimeExports.jsx(ForwardRef$4, { className: "w-6 h-6" }) }), open && (jsxRuntimeExports.jsx("div", { className: "absolute left-0 mt-2 w-48 origin-top-left bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 rounded-md focus:outline-none", children: items.map((item, idx) => (jsxRuntimeExports.jsxs("div", { className: "py-1", children: [jsxRuntimeExports.jsxs("button", { onClick: () => toggleMenu(idx), className: "w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md flex justify-between items-center", children: [item.label, item.children && (jsxRuntimeExports.jsx(ForwardRef$3, { className: `w-4 h-4 text-gray-500 transition-transform ${openIndex === idx ? "rotate-180" : ""}` }))] }), item.children && openIndex === idx && (jsxRuntimeExports.jsx("div", { className: "pl-4", children: item.children.map((subItem, subIdx) => (jsxRuntimeExports.jsx("a", { href: subItem.href || "#", className: "block px-4 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md", children: subItem.label }, subIdx))) }))] }, idx))) }))] })) }), jsxRuntimeExports.jsx("ul", { className: "hidden lg:flex space-x-6", children: items.map((item, idx) => (jsxRuntimeExports.jsxs("li", { className: "relative group", children: [jsxRuntimeExports.jsxs("a", { href: item.href || "#", className: "text-gray-700 dark:text-white px-3 py-2 font-medium hover:text-primary-500", children: [item.label, item.children && jsxRuntimeExports.jsx(ForwardRef$3, { className: "w-4 h-4 inline ml-2 text-gray-500" })] }), item.children && (jsxRuntimeExports.jsx("div", { className: "absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity", children: item.children.map((subItem, subIdx) => (jsxRuntimeExports.jsx("a", { href: subItem.href || "#", className: "block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md", children: subItem.label }, subIdx))) }))] }, idx))) })] }) }));
 };
 
 const colorClasses = {
@@ -2653,8 +2662,8 @@ const Pill = ({ label, color = "primary" }) => {
     return (jsxRuntimeExports.jsx("span", { className: `px-3 py-1 text-sm font-semibold rounded-full ${colorClasses[color]}`, children: label }));
 };
 
-const ProgressBar = ({ value, color = "bg-teal-400", hidePercentage = false }) => {
-    return (jsxRuntimeExports.jsxs("div", { className: "relative w-full", children: [!hidePercentage && (jsxRuntimeExports.jsxs("div", { className: "absolute left-1/2 -translate-x-1/2 -top-4 text-[10px] font-medium text-gray-900 dark:text-white", children: [value, "%"] })), jsxRuntimeExports.jsx("div", { className: "w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden", role: "progressbar", "aria-valuenow": value, "aria-valuemin": 0, "aria-valuemax": 100, children: jsxRuntimeExports.jsx("div", { className: `h-full ${color} transition-all duration-300`, style: { width: `${value}%` } }) })] }));
+const ProgressBar = ({ value, color = "bg-teal-400" }) => {
+    return (jsxRuntimeExports.jsxs("div", { className: "relative w-full", children: [jsxRuntimeExports.jsxs("div", { className: "absolute left-1/2 -translate-x-1/2 -top-4 text-[10px] font-medium text-gray-900 dark:text-white", children: [value, "%"] }), jsxRuntimeExports.jsx("div", { className: "w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden", children: jsxRuntimeExports.jsx("div", { className: `h-full ${color} transition-all duration-300`, style: { width: `${value}%` } }) })] }));
 };
 
 const SearchComponent = ({ placeholder = "Search...", onSearch, suggestions = [], showHint = false, enableAutocomplete = false, }) => {
@@ -5707,7 +5716,7 @@ const Table = ({ columns, data, summaryText, subText }) => {
         data,
         getCoreRowModel: getCoreRowModel(),
     });
-    return (jsxRuntimeExports.jsxs("div", { className: "overflow-x-auto border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm", children: [(summaryText || subText) && (jsxRuntimeExports.jsxs("div", { className: "p-4 bg-gray-900 border-b border-gray-300 dark:border-gray-700 text-sm text-gray-700 dark:text-gray-300 font-medium", children: [summaryText && jsxRuntimeExports.jsx("h1", { className: "text-xl text-teal-500 mb-2 font-bold", children: summaryText }), subText && jsxRuntimeExports.jsx("p", { children: subText })] })), jsxRuntimeExports.jsxs("table", { className: `min-w-full border-collapse ${summaryText || subText ? '' : 'border-t border-gray-200 dark:border-gray-700'}`, children: [jsxRuntimeExports.jsx("thead", { className: "bg-gray-900 text-white text-sm text-left", children: table.getHeaderGroups().map((headerGroup) => (jsxRuntimeExports.jsx("tr", { children: headerGroup.headers.map((header) => (jsxRuntimeExports.jsx("th", { className: "px-4 py-2 border-b border-gray-700 text-white", children: flexRender(header.column.columnDef.header, header.getContext()) }, header.id))) }, headerGroup.id))) }), jsxRuntimeExports.jsx("tbody", { children: table.getRowModel().rows.map((row) => (jsxRuntimeExports.jsx("tr", { className: "bg-gray-800 hover:bg-gray-900 transition", children: row.getVisibleCells().map((cell) => (jsxRuntimeExports.jsx("td", { className: "px-4 py-2 border-b border-gray-700 text-white text-xs", children: flexRender(cell.column.columnDef.cell, cell.getContext()) }, cell.id))) }, row.id))) })] })] }));
+    return (jsxRuntimeExports.jsxs("div", { className: "overflow-x-auto border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm", children: [(summaryText || subText) && (jsxRuntimeExports.jsxs("div", { className: "p-4 font-bold text-md bg-white dark:bg-gray-900 border-b border-gray-300 dark:border-gray-700 text-sm text-gray-700 dark:text-gray-300 font-medium", children: [summaryText && jsxRuntimeExports.jsx("p", { children: summaryText }), subText && jsxRuntimeExports.jsx("p", { children: subText })] })), jsxRuntimeExports.jsxs("table", { className: `min-w-full border-collapse ${summaryText || subText ? '' : 'border-t border-gray-200 dark:border-gray-700'}`, children: [jsxRuntimeExports.jsx("thead", { className: "bg-gray-500 dark:bg-gray-900 text-black dark:text-white text-sm text-left", children: table.getHeaderGroups().map((headerGroup) => (jsxRuntimeExports.jsx("tr", { children: headerGroup.headers.map((header) => (jsxRuntimeExports.jsx("th", { className: "px-4 py-2 border-b border-gray-700 text-white", children: flexRender(header.column.columnDef.header, header.getContext()) }, header.id))) }, headerGroup.id))) }), jsxRuntimeExports.jsx("tbody", { children: table.getRowModel().rows.map((row) => (jsxRuntimeExports.jsx("tr", { className: "bg-gray-50 text-black dark:text-white dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-900 transition", children: row.getVisibleCells().map((cell) => (jsxRuntimeExports.jsx("td", { className: "px-4 py-2 border-b border-gray-200 dark:border-gray-700 text-black dark:text-white text-xs", children: flexRender(cell.column.columnDef.cell, cell.getContext()) }, cell.id))) }, row.id))) })] })] }));
 };
 
 const TabsComponent = ({ tabs }) => {
@@ -5722,9 +5731,10 @@ const Title = ({ text }) => {
     return (jsxRuntimeExports.jsx("h1", { className: "text-2xl md:text-3xl text-white dark:text-gray-100 font-bold", children: text }));
 };
 
-const TokenList = ({ title, icon, legend, tokens, maxItems = 10, showMoreUrl, imageBaseUrl = "", showPrice = true, }) => {
-    const displayedTokens = tokens.slice(0, maxItems); // Directly slice tokens, no need for state
-    return (jsxRuntimeExports.jsxs("div", { className: "bg-white dark:bg-gray-900 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-700 max-w-md", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b pb-2", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center", children: [icon && jsxRuntimeExports.jsx("span", { className: "text-gray-500 dark:text-gray-300", children: icon }), jsxRuntimeExports.jsx("h3", { className: "ml-2 text-lg font-semibold text-gray-900 dark:text-white", children: title })] }), legend && (jsxRuntimeExports.jsx("span", { className: "ml-auto text-sm text-gray-600 dark:text-gray-400", children: legend }))] }), jsxRuntimeExports.jsx("div", { className: "mt-3 space-y-3", children: displayedTokens.map((token, index) => (jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-500 dark:text-gray-400 w-6", children: index + 1 }), jsxRuntimeExports.jsx("div", { className: "w-8 h-8 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center ml-4", children: token.image ? (jsxRuntimeExports.jsx("img", { src: `${imageBaseUrl}${token.image}`, alt: token.tick, className: "w-full h-full object-cover" })) : (jsxRuntimeExports.jsx(ForwardRef$6, { className: "w-6 h-6 text-gray-400" })) }), jsxRuntimeExports.jsxs("div", { className: "flex-1 ml-3", children: [jsxRuntimeExports.jsx("a", { href: `/token/krc20/${token.tick}`, className: "text-gray-900 dark:text-white font-medium hover:text-teal-500", children: token.tick }), showPrice && (jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 dark:text-gray-400", children: token.price || "$0.000000" }))] }), token.change !== undefined && (jsxRuntimeExports.jsx("span", { className: `px-2 py-1 text-xs rounded-full ${token.change >= 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`, children: token.change >= 0 ? `+${token.change}%` : `${token.change}%` }))] }, index))) }), tokens.length > maxItems && showMoreUrl && (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("hr", {}), jsxRuntimeExports.jsxs("a", { href: showMoreUrl, className: "w-full mt-3 text-sm text-teal-500 flex items-center justify-center hover:text-teal-700", children: ["Show More", jsxRuntimeExports.jsx(ForwardRef$3, { className: "w-4 h-4 ml-1" })] })] }))] }));
+const TokenList = ({ title, icon, legend, tokens, maxItems = 10, showMoreUrl, }) => {
+    const [showAll, setShowAll] = useState(false);
+    const displayedTokens = showAll ? tokens : tokens.slice(0, maxItems);
+    return (jsxRuntimeExports.jsxs("div", { className: "bg-white dark:bg-gray-900 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-700 max-w-md", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b pb-2", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center", children: [icon && jsxRuntimeExports.jsx("span", { className: "text-gray-500 dark:text-gray-300", children: icon }), jsxRuntimeExports.jsx("h3", { className: "ml-2 text-lg font-semibold text-gray-900 dark:text-white", children: title })] }), legend && (jsxRuntimeExports.jsx("span", { className: "ml-auto text-sm text-gray-600 dark:text-gray-400", children: legend }))] }), jsxRuntimeExports.jsx("div", { className: "mt-3 space-y-3", children: displayedTokens.map((token, index) => (jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-500 dark:text-gray-400 w-6", children: index + 1 }), jsxRuntimeExports.jsx("div", { className: "w-8 h-8 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center ml-4", children: token.image ? (jsxRuntimeExports.jsx("img", { src: token.image, alt: token.tick, className: "w-full h-full object-cover" })) : (jsxRuntimeExports.jsx(ForwardRef$6, { className: "w-6 h-6 text-gray-400" })) }), jsxRuntimeExports.jsxs("div", { className: "flex-1 ml-3", children: [jsxRuntimeExports.jsx("a", { href: `/token/krc20/${token.tick}`, className: "text-gray-900 dark:text-white font-medium hover:text-teal-500", children: token.tick }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 dark:text-gray-400", children: token.price || "$0.000000" })] }), token.change !== undefined && (jsxRuntimeExports.jsx("span", { className: `px-2 py-1 text-xs rounded-full ${token.change >= 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`, children: token.change >= 0 ? `+${token.change}%` : `${token.change}%` }))] }, index))) }), tokens.length > maxItems && (jsxRuntimeExports.jsxs("a", { href: showMoreUrl, className: "w-full mt-3 text-sm text-teal-500 flex items-center justify-center hover:text-teal-700", children: ["Show More", jsxRuntimeExports.jsx(ForwardRef$3, { className: "w-4 h-4 ml-1" })] }))] }));
 };
 
 const Widget = ({ value, icon, onClick }) => {
@@ -5734,13 +5744,8 @@ const Widget = ({ value, icon, onClick }) => {
             onClick();
         }
     };
-    return (jsxRuntimeExports.jsx("div", { className: `flex items-center flex-col col-span-full sm:col-span-4 xl:col-span-2 bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out ${onClick ? 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900' : ''}`, onClick: onClick ? handleClick : undefined, children: jsxRuntimeExports.jsxs("div", { className: "px-5 pt-5 pb-4", children: [jsxRuntimeExports.jsx("header", { className: "flex justify-center items-center mb-4", children: jsxRuntimeExports.jsx("div", { className: "text-teal-400", children: icon }) }), jsxRuntimeExports.jsx("div", { className: "flex justify-center items-center", children: jsxRuntimeExports.jsx("div", { className: "text-lg center text-gray-700 dark:text-gray-100", children: value }) })] }) }));
+    return (jsxRuntimeExports.jsx("div", { className: `flex items-center flex-col col-span-full sm:col-span-4 xl:col-span-2 bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out ${onClick ? 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900' : ''}`, onClick: onClick ? handleClick : undefined, children: jsxRuntimeExports.jsxs("div", { className: "px-5 pt-5 pb-4", children: [jsxRuntimeExports.jsx("header", { className: "flex justify-center items-center mb-2", children: jsxRuntimeExports.jsx("div", { className: "text-teal-400", children: icon }) }), jsxRuntimeExports.jsx("div", { className: "flex justify-center items-center", children: jsxRuntimeExports.jsx("div", { className: "text-lg center text-gray-100 dark:text-gray-100", children: value }) })] }) }));
 };
 
-const Fav = ({ checked = false }) => {
-    const [isChecked, setIsChecked] = useState(checked);
-    return (jsxRuntimeExports.jsx("button", { onClick: () => setIsChecked(!isChecked), className: "transition-colors duration-300 text-gray-900 hover:text-teal-400", children: jsxRuntimeExports.jsx(ForwardRef, { className: `w-6 h-6 ${isChecked ? 'fill-teal-400 text-teal-400' : 'fill-gray-700'}` }) }));
-};
-
-export { Avatar, Card, Fav, Grid, Header, MenuComponent as Menu, Pill, ProgressBar, SearchComponent as Search, Table, TabsComponent as Tabs, Title, TokenList, Widget };
+export { AffiliateComponent as Affiliates, Avatar, Card, Fav, Grid, Header, MenuComponent as Menu, Pill, ProgressBar, SearchComponent as Search, Table, TabsComponent as Tabs, Title, TokenList, Widget };
 //# sourceMappingURL=index.js.map

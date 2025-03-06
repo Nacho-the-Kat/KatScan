@@ -13,8 +13,6 @@ interface ListProps {
     tokens: Token[];
     maxItems?: number;
     showMoreUrl?: string;
-    imageBaseUrl?: string;
-    showPrice?: boolean;
 }
 declare const TokenList: React.FC<ListProps>;
 export default TokenList;

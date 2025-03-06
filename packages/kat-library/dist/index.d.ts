@@ -7,6 +7,23 @@ interface AvatarProps {
 }
 declare const Avatar: React.FC<AvatarProps>;
 
+interface Affiliate {
+    name: string;
+    icon: string;
+    url?: string;
+}
+interface AffiliateComponentProps {
+    affiliates: Affiliate[];
+    displayMode?: "icons" | "iconsWithNames";
+    layout?: "horizontal" | "vertical";
+}
+declare const AffiliateComponent: React.FC<AffiliateComponentProps>;
+
+interface FavProps {
+    checked?: boolean;
+}
+declare const Fav: React.FC<FavProps>;
+
 interface CardProps {
     title: string;
     icon?: React.ReactNode;
@@ -45,7 +62,6 @@ declare const Pill: React.FC<PillProps>;
 interface ProgressBarProps {
     value: number;
     color?: string;
-    hidePercentage?: boolean;
 }
 declare const ProgressBar: React.FC<ProgressBarProps>;
 
@@ -97,8 +113,6 @@ interface ListProps {
     tokens: Token[];
     maxItems?: number;
     showMoreUrl?: string;
-    imageBaseUrl?: string;
-    showPrice?: boolean;
 }
 declare const TokenList: React.FC<ListProps>;
 
@@ -109,9 +123,4 @@ interface WidgetProps {
 }
 declare const Widget: React.FC<WidgetProps>;
 
-interface FavProps {
-    checked?: boolean;
-}
-declare const Fav: React.FC<FavProps>;
-
-export { Avatar, Card, Fav, Grid, Header, MenuComponent as Menu, Pill, ProgressBar, SearchComponent as Search, Table, TabsComponent as Tabs, Title, TokenList, Widget };
+export { AffiliateComponent as Affiliates, Avatar, Card, Fav, Grid, Header, MenuComponent as Menu, Pill, ProgressBar, SearchComponent as Search, Table, TabsComponent as Tabs, Title, TokenList, Widget };
