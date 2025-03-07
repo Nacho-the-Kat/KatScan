@@ -277,9 +277,8 @@ export default function Home() {
                   <h3 className="text-md font-semibold text-gray-700 dark:text-gray-200">Total Minted:</h3>
                   <p className="text-gray-400 mt-2 pb-8 mb-4 border-b border-teal-500">
                   <ProgressBar
-                      hidePercentage={true}
                       value={
-                        Number(  Math.round(calculateValue(token.minted, token.dec) / calculateValue(token.max, token.dec) * 100))
+                        Number(Math.round(calculateValue(token.minted, token.dec) / calculateValue(token.max, token.dec) * 100))
                       }
                     />
                   </p>

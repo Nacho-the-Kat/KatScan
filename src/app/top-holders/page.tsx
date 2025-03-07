@@ -79,7 +79,7 @@ export default function Home() {
                   Total Holders:
                 </div>
                 <div className="block w-full mt-2">
-                <ProgressBar hidePercentage={true} value={100} />
+                <ProgressBar value={100} />
                 </div>
               </div>
             </div>
@@ -93,7 +93,7 @@ export default function Home() {
                   Top 10 Holders Owned:
                 </div>
                 <div className="block w-full mt-2">
-                <ProgressBar hidePercentage={true} value={10} />
+                <ProgressBar value={10} />
                 </div>
               </div>
             </div>
@@ -107,7 +107,7 @@ export default function Home() {
                 Top 100 Holders Owned:
                 </div>
                 <div className="block w-full mt-2">
-                <ProgressBar hidePercentage={true} value={75} />
+                <ProgressBar value={75} />
                 </div>
               </div>
             </div>
