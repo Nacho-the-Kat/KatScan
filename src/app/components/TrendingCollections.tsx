@@ -41,19 +41,23 @@ const TrendingTokens = () => {
   if (loading) return <p>Loading Trending Collections...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
-  // Convert API tokens to the format expected by TokenList
-  const adaptedTokens: TokenListToken[] = tokens.map(token => ({
-    tick: token.tick,
-    id: token.id.toString(), // Convert number id to string
-    // Add other properties as needed
-  }));
+  // Safely convert tokens for the TokenList component
+  const tokenList = tokens.map((token, index) => {
+    // Simple existence check before using toString()
+    const id = token.id !== undefined ? String(token.id) : `collection-${index}`;
+    
+    return {
+      tick: token.tick,
+      id
+    };
+  });
 
   return (
     <TokenList
       showPrice={false}
       maxItems={5}
       title="Trending Collections"
-      tokens={adaptedTokens}  
+      tokens={tokenList}
       icon={<RocketLaunchIcon className="size-5 text-teal-500" />}
     />
   );
