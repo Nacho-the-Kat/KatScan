@@ -4,7 +4,11 @@ export const runtime = "edge";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://katapi.nachowyborski.xyz/api";
 
-export async function GET(req: Request, { params }: { params: { id?: string } }) {
+interface RouteParams {
+  params: { id: string };
+}
+
+export async function GET(req: Request, { params }: RouteParams) {
   try {
     const { id } = params;
 
@@ -39,12 +43,10 @@ export async function GET(req: Request, { params }: { params: { id?: string } })
     const entriesData = await entriesResponse.json();
     const tickData = await tickResponse.json();
 
-    const combinedData = {
+    return NextResponse.json({
       entries: entriesData.result,
-      tickInfo: tickData.result
-    };
-
-    return NextResponse.json(combinedData);
+      tickInfo: tickData.result,
+    });
   } catch (error) {
     console.error("Error fetching NFT data:", error);
     return NextResponse.json({ error: "Failed to fetch NFT data" }, { status: 500 });
