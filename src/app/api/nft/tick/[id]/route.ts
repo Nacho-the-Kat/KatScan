@@ -8,12 +8,13 @@ interface RouteParams {
   params: { id: string };
 }
 
-export async function GET(req: Request, { params }: RouteParams) {
+export async function GET(req: NextRequest) {
   try {
-    const { id } = params;
+    const pathname = req.nextUrl.pathname;
+    const id = pathname.split("/").pop(); // Get last part of URL
 
-    if (!id) {
-      return NextResponse.json({ error: "Missing 'id' parameter in URL" }, { status: 400 });
+    if (!id || isNaN(Number(id))) {
+      return NextResponse.json({ status: 400, message: "Invalid token ID" }, { status: 400 });
     }
 
     const entriesApiUrl = `${API_BASE_URL}/nfts/entries?tick=${encodeURIComponent(id)}`;
