@@ -4,14 +4,17 @@ export const runtime = 'edge';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://katapi.nachowyborski.xyz/api";
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
-
-  if (!id) {
-    return NextResponse.json({ error: "Missing 'id' parameter" }, { status: 400 });
-  }
-
+export async function GET(req: Request) {
   try {
+    // Extract ID from the request URL
+    const url = new URL(req.url);
+    const pathname = url.pathname;
+    const id = pathname.split("/").pop(); // Get last part of URL
+
+    if (!id) {
+      return NextResponse.json({ error: "Missing 'id' parameter" }, { status: 400 });
+    }
+
     const response = await fetch(`${API_BASE_URL}/nfts/id/${encodeURIComponent(id)}`);
     
     if (!response.ok) {
