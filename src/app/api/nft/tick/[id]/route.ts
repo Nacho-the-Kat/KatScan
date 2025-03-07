@@ -4,9 +4,9 @@ export const runtime = "edge";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://katapi.nachowyborski.xyz/api";
 
-export async function GET(req: Request, context: { params: { id?: string } }) {
+export async function GET(req: Request, { params }: { params: { id?: string } }) {
   try {
-    const { id } = context.params;
+    const { id } = params;
 
     if (!id) {
       return NextResponse.json({ error: "Missing 'id' parameter in URL" }, { status: 400 });
