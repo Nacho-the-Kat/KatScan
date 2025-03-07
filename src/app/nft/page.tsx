@@ -79,7 +79,7 @@ export default function Home() {
       header: "Collection",
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
-          <Link href={`/nft/${row.original.id}`} className="text-blue-500 hover:underline">
+          <Link href={`/nft/detail/${row.original.tick}`} className="text-blue-500 hover:underline">
             {row.original.tick}
           </Link>
         </div>

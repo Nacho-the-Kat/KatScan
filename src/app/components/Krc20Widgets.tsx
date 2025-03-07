@@ -1,6 +1,7 @@
 import { JSX, useEffect, useState } from "react";
 import { CircleStackIcon, ArrowsRightLeftIcon, DocumentCurrencyDollarIcon } from "@heroicons/react/24/outline";
 import { Widget } from "../../../packages/kat-library/dist/index";
+import { formatNumberWithWords, formatInteger } from "../utils/utils";
 
 const API_URL = "/api/kasplex/info";
 
@@ -8,9 +9,9 @@ const API_URL = "/api/kasplex/info";
 
 const TokenStatistics = () => {
   const [stats, setStats] = useState({
-    opTotal: 0,
-    tokenTotal: 0,
-    feeTotal: 0,
+    opTotal: '',
+    tokenTotal: '',
+    feeTotal: '',
   });
 
   useEffect(() => {
@@ -20,9 +21,9 @@ const TokenStatistics = () => {
         const data = await response.json();
         if (data.result) {
           setStats({
-            opTotal: data.result.opTotal,
-            tokenTotal: data.result.tokenTotal,
-            feeTotal: parseFloat(data.result.feeTotal),
+            opTotal: formatInteger(data.result.opTotal),
+            tokenTotal: formatInteger(data.result.tokenTotal),
+            feeTotal: formatNumberWithWords(data.result.feeTotal, 8),
           });
         }
       } catch (error) {
@@ -55,7 +56,7 @@ const TokenStatistics = () => {
           <Widget
             value={`Total Fees Paid (KAS)`}
             icon={<DocumentCurrencyDollarIcon className="size-12" />}
-            legend={`${stats.feeTotal}`}
+            legend={`${stats.feeTotal} KAS`}
           />
         </div>
       </div>

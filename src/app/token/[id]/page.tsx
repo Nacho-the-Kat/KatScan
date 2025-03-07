@@ -189,7 +189,7 @@ export default function Home() {
 
         {!loading && !error && token && (
           <>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 mt-8">
               <div className="w-full flex h-full px-4 items-center justify-center col-span-1 bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out  ">
                 <div className="w-4/12 flex items-center gap-4">
                   {/* Avatar aligned to the left */}
@@ -205,30 +205,25 @@ export default function Home() {
                 <div className="flex justify-center items-center w-full h-full">
                   <table className="w-4/5 border-collapse text-left">
                     <tbody>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
+                      <tr className="">
                         <td className="px-4 py-3 font-semibold text-gray-600 dark:text-gray-300">
                           Price
                         </td>
                         <td className="px-4 py-3 text-gray-500">$X</td>
                       </tr>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
+                      <tr className="">
                         <td className="px-4 py-3 font-semibold text-gray-600 dark:text-gray-300">
                           Market Cap
                         </td>
                         <td className="px-4 py-3 text-gray-500">$X</td>
                       </tr>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
+                      <tr className="">
                         <td className="px-4 py-3 font-semibold text-gray-600 dark:text-gray-300">
                           Volume
                         </td>
                         <td className="px-4 py-3 text-gray-500">$X</td>
                       </tr>
-                      <tr>
-                        <td className="px-4 py-3 font-semibold text-gray-600 dark:text-gray-300">
-                          Total Minted
-                        </td>
-                        <td className="px-4 py-3 text-gray-500">$X</td>
-                      </tr>
+                     
                     </tbody>
                   </table>
                 </div>
@@ -317,7 +312,7 @@ export default function Home() {
                           <div className="absolute bottom-0 left-0 w-full"></div>
                 
                           <Tab.List className="flex relative z-10">
-                            {['Top Holders', 'Recent Operations', 'Holder Distribution'].map((tab, index) => (
+                            {['Markets', 'Top Holders', 'Recent Operations', 'Holder Distribution'].map((tab, index) => (
                               <Tab
                                 key={index}
                                 className={({ selected }) =>
@@ -345,7 +340,9 @@ export default function Home() {
                 
                         {/* Tab Panels (No Wrapper) */}
                         <Tab.Panels>
-                         
+                            <Tab.Panel className="pt-4 pl-4">
+                              Markets
+                            </Tab.Panel>
                             <Tab.Panel className="pt-4 pl-4">
                               <TopHoldersTable />
                             </Tab.Panel>

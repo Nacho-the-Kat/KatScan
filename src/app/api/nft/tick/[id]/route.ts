@@ -1,31 +1,52 @@
 import { NextResponse } from "next/server";
 
-export const runtime = 'edge';
+export const runtime = "edge";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://katapi.nachowyborski.xyz/api";
 
-export async function GET(req: Request) {
+export async function GET(req: Request, context: { params: { id?: string } }) {
   try {
-    // Extract ID from the request URL
-    const url = new URL(req.url);
-    const pathname = url.pathname;
-    const id = pathname.split("/").pop(); // Get last part of URL
+    const { id } = context.params;
 
     if (!id) {
-      return NextResponse.json({ error: "Missing 'id' parameter" }, { status: 400 });
+      return NextResponse.json({ error: "Missing 'id' parameter in URL" }, { status: 400 });
     }
 
-    const response = await fetch(`${API_BASE_URL}/nfts/id/${encodeURIComponent(id)}`);
-    
-    if (!response.ok) {
-      throw new Error(`API request failed with status ${response.status}`);
+    const entriesApiUrl = `${API_BASE_URL}/nfts/entries?tick=${encodeURIComponent(id)}`;
+    const tickApiUrl = `${API_BASE_URL}/nfts/tick?tick=${encodeURIComponent(id)}`;
+
+    console.log(`Fetching data from: ${entriesApiUrl} and ${tickApiUrl}`);
+
+    const [entriesResponse, tickResponse] = await Promise.all([
+      fetch(entriesApiUrl, { method: "GET", headers: { "Content-Type": "application/json" } }),
+      fetch(tickApiUrl, { method: "GET", headers: { "Content-Type": "application/json" } })
+    ]);
+
+    if (!entriesResponse.ok) {
+      return NextResponse.json(
+        { error: `Entries API request failed with status ${entriesResponse.status}` },
+        { status: entriesResponse.status }
+      );
     }
-    
-    const data = await response.json();
-    
-    return NextResponse.json(data);
-  } catch (error: unknown) {
-    console.error("Error fetching NFT id data:", error);
-    return NextResponse.json({ error: "Failed to fetch NFT id data" }, { status: 500 });
+
+    if (!tickResponse.ok) {
+      return NextResponse.json(
+        { error: `Tick API request failed with status ${tickResponse.status}` },
+        { status: tickResponse.status }
+      );
+    }
+
+    const entriesData = await entriesResponse.json();
+    const tickData = await tickResponse.json();
+
+    const combinedData = {
+      entries: entriesData.result,
+      tickInfo: tickData.result
+    };
+
+    return NextResponse.json(combinedData);
+  } catch (error) {
+    console.error("Error fetching NFT data:", error);
+    return NextResponse.json({ error: "Failed to fetch NFT data" }, { status: 500 });
   }
 }

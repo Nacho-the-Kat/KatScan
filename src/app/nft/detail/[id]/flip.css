@@ -1,0 +1,37 @@
+.nft-card {
+  perspective: 1000px;
+  width: 250px;
+  height: 300px;
+}
+
+.nft-card-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.nft-card:hover .nft-card-inner {
+  transform: rotateY(180deg);
+}
+
+.nft-card-front,
+.nft-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.nft-card-back {
+  transform: rotateY(180deg);
+  overflow-y: auto;
+  padding: 15px;
+}

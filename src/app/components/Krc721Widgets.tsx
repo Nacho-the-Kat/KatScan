@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import { CircleStackIcon, ArrowsRightLeftIcon, DocumentCurrencyDollarIcon } from "@heroicons/react/24/outline";
 import { Widget } from "../../../packages/kat-library/dist/index";
+import { formatNumberWithWords, formatInteger } from "../utils/utils";
 
 const API_URL = "/api/kasplex/nft/stats"; // Adjust the path as needed
 
 
 const NFTStatistics = () => {
     const [stats, setStats] = useState({
-      nftVolume: 0,
-      minorFeesPaid: 0,
-      royaltyFeesPaid: 0,
-      totalCollection: 0,
-      totalNFTMints: 0,
-      totalTransfers: 0,
+      nftVolume: '',
+      minorFeesPaid: '',
+      royaltyFeesPaid: '',
+      totalCollection: '',
+      totalNFTMints: '',
+      totalTransfers: '',
     });
   
     useEffect(() => {
@@ -21,13 +22,14 @@ const NFTStatistics = () => {
           const response = await fetch(API_URL);
           const data = await response.json();
           if (data.result) {
+            console.log('data', data.result)
             setStats({
-              nftVolume: data.result.tokenTransfersTotal,
-              minorFeesPaid: Number((parseInt(data.result.powFeesTotal) / 1e18).toFixed(6)), // Convert to readable KAS
-              royaltyFeesPaid: Number((parseInt(data.result.royaltyFeesTotal) / 1e18).toFixed(6)),
-              totalCollection: data.result.tokenDeploymentsTotal,
-              totalNFTMints: data.result.tokenMintsTotal,
-              totalTransfers: data.result.tokenTransfersTotal,
+              nftVolume: formatInteger(data.result.tokenTransfersTotal),
+              minorFeesPaid: formatInteger(data.result.powFeesTotal), 
+              royaltyFeesPaid: formatInteger(data.result.royaltyFeesTotal),
+              totalCollection: formatInteger(data.result.tokenDeploymentsTotal),
+              totalNFTMints: formatInteger(data.result.tokenMintsTotal),
+              totalTransfers: formatInteger(data.result.tokenTransfersTotal),
             });
           }
         } catch (error) {
