@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+export const runtime = 'edge';
+
 const API_KASPLEX_URL = process.env.API_KASPLEX_URL || "https://api.kasplex.org/v1";
 
 export async function GET() {
