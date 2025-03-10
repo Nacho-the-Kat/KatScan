@@ -1,0 +1,6 @@
+[build]
+command = "npm run build"
+output_directory = ".next"
+
+[build.environment]
+NODE_VERSION = "20" 
