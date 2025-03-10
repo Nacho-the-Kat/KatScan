@@ -24,6 +24,12 @@ import RecentOperationsTable from "@/app/components/RecentOperationsTable";
 import HolderDistributionTable from "@/app/components/HolderDistributionTable";
 import Image from "next/image";
 
+// Define the Affiliate type to match the component's expectations
+interface Affiliate {
+  name: string;
+  icon: string;
+  url?: string;
+}
 
 interface TokenData {
   id: number;
@@ -55,7 +61,7 @@ const formatDate = (timestamp: number): string => {
   return `${day}/${month}/${year}`;
 };
 
-const parseSocials = (socials: string) => {
+const parseSocials = (socials: string): (Affiliate | null)[] => {
   try {
     const parsedSocials = JSON.parse(socials);
 
@@ -76,7 +82,7 @@ const parseSocials = (socials: string) => {
         console.warn(`Invalid URL format for ${key}: ${url}`);
         return null;
       }
-    }).filter(Boolean);
+    });
   } catch (error) {
     console.error("Error parsing socials:", error);
     return [];
@@ -299,7 +305,7 @@ export default function Home() {
                 <p className="text-gray-500  pb-4 mb-12 border-b border-gray-500">Additional Details for {token.tick}.</p>
                 <div className="mb-8">
                   <h3 className="text-md font-semibold text-gray-700 dark:text-gray-200">Affiliates:</h3>
-                  <p className="text-gray-400 mt-2 pb-8 mb-4 border-b border-teal-500"><Affiliates displayMode="icons" affiliates={parseSocials(token.socials)?.filter(Boolean)} /></p>
+                  <p className="text-gray-400 mt-2 pb-8 mb-4 border-b border-teal-500"><Affiliates displayMode="icons" affiliates={parseSocials(token.socials)?.filter(Boolean) as Affiliate[]} /></p>
                 </div>
                 <div className="mb-8">
                   <h3 className="text-md font-semibold text-gray-700 dark:text-gray-200">Deployed On:</h3>
