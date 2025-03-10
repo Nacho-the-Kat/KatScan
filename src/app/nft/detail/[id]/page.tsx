@@ -295,10 +295,7 @@ export default function NFTCollectionPage() {
                 )}
               </div>
               
-              <div className="grid grid-flow-row auto-rows-auto gap-6 mt-6"
-                   style={{
-                      gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
-                   }}>
+              <div className="grid grid-cols-5 gap-6 mt-6">
                 {filteredNFTs.map((nft) => (
                   <div
                     key={nft.id}
