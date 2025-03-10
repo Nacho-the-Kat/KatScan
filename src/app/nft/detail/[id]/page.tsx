@@ -162,9 +162,24 @@ export default function NFTCollectionPage() {
   }, [pagination?.hasMorePages, pagination?.currentPage, loading, loadingMore]);
   
   const formatImageUrl = (imagePath: string): string => {
-    const parts = imagePath.split("/");
-    const filename = parts.pop();
-    return filename ? `https://katapi.nachowyborski.xyz/static/krc721/thumbnails/${ticker}/${filename}` : "";
+    // Extract just the filename from the path
+    const filename = imagePath.split("/").pop();
+    if (!filename) return '';
+    
+    // Try with sized directory for thumbnails
+    return `https://katapi.nachowyborski.xyz/static/krc721/sized/${ticker}/${filename}`;
+  };
+  
+  // Function to handle image loading errors
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const img = e.currentTarget;
+    // If the sized image fails, try the thumbnail version
+    if (img.src.includes('/sized/')) {
+      const filename = img.src.split('/').pop();
+      if (filename && ticker) {
+        img.src = `https://katapi.nachowyborski.xyz/static/krc721/thumbnails/${ticker}/${filename}`;
+      }
+    }
   };
   
   const getUniqueTraits = () => {
@@ -221,7 +236,7 @@ export default function NFTCollectionPage() {
   
   return (
     <Layout>
-      <div className="grid grid-cols-12 gap-4">
+      <div className="grid grid-cols-12 gap-6">
         <div className="col-span-12 md:col-span-2 mt-8">
           <NFTFilter traits={uniqueTraits} onFilterChange={handleFilterChange} />
         </div>
@@ -233,7 +248,7 @@ export default function NFTCollectionPage() {
           {!loading && !error && filteredNFTs.length > 0 && (
             <>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 mt-8 flex flex-wrap justify-between items-start">
-                <div className="w-1/2">
+                <div className="w-full md:w-1/2 mb-4 md:mb-0">
                   <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
                     {ticker} NFT Collection
                   </h1>
@@ -243,14 +258,14 @@ export default function NFTCollectionPage() {
                 </div>
                 
                 {tickInfo && (
-                  <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md shadow-md text-sm w-full md:w-auto mt-4 md:mt-0 w-1/2">
+                  <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md shadow-md text-sm w-full md:w-auto">
                     <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
                       Collection Details
                     </h2>
                     
                     <div className="mb-2">
                       <span className="font-semibold block">Deployer:</span>
-                      <span className="text-gray-700 dark:text-gray-300">{tickInfo.deployer}</span>
+                      <span className="text-gray-700 dark:text-gray-300 text-xs break-all">{tickInfo.deployer}</span>
                     </div>
                     
                     <div className="flex justify-between items-center mb-2">
@@ -280,7 +295,10 @@ export default function NFTCollectionPage() {
                 )}
               </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mt-6">
+              <div className="grid grid-flow-row auto-rows-auto gap-6 mt-6"
+                   style={{
+                      gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
+                   }}>
                 {filteredNFTs.map((nft) => (
                   <div
                     key={nft.id}
@@ -332,7 +350,7 @@ export default function NFTCollectionPage() {
                 )}
                 {!loadingMore && pagination && pagination.hasMorePages && (
                   <button 
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition-colors duration-200"
                     onClick={handleLoadMoreClick}
                     disabled={fetchingRef.current}
                   >
