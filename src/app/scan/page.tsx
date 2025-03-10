@@ -97,7 +97,7 @@ export default function Home() {
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
           {/* <Fav /> */}
-          <Link href={`/token/${row.original.id}`}>{row.original.tick}</Link>
+          <Link className="font-bold underline" href={`/token/${row.original.id}`}>{row.original.tick}</Link>
         </div>
       ),
     },
@@ -173,7 +173,7 @@ export default function Home() {
               <div className="py-4">
                 <MintTokens />
               </div>
-              <div className="py-4 text-center">
+              <div className="py-4">
                 <TokenList
                   title="Trading markets"
                   tokens={[]}

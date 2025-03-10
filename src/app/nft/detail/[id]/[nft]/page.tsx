@@ -1,5 +1,7 @@
 "use client";
 
+export const runtime = 'edge';
+
 import { useRouter } from "next/navigation";
 import Layout from "@/app/components/Layout";
 import Image from "next/image";

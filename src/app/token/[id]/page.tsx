@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Layout from "@/app/components/Layout";
 import { Tab } from "@headlessui/react";
 import {
+  Affiliates,
   Avatar,
   Pill,
   ProgressBar,
@@ -13,6 +14,7 @@ import {
   calculateValue,
   formatNumberWithWords,
   formatPreMinted,
+  formatInteger
 } from "../../utils/utils";
 // AffiliateComponent is not available in the distributed package
 // import AffiliateComponent from "../../../packages/kat-library/dist/index"; 
@@ -21,6 +23,7 @@ import TopHoldersTable from "@/app/components/TopHoldersTable";
 import RecentOperationsTable from "@/app/components/RecentOperationsTable";
 import HolderDistributionTable from "@/app/components/HolderDistributionTable";
 import Image from "next/image";
+
 
 interface TokenData {
   id: number;
@@ -52,9 +55,38 @@ const formatDate = (timestamp: number): string => {
   return `${day}/${month}/${year}`;
 };
 
+const parseSocials = (socials: string) => {
+  try {
+    const parsedSocials = JSON.parse(socials);
+
+    return Object.entries(parsedSocials).map(([key, url]) => {
+      // Type check url before using it
+      if (typeof url !== 'string') {
+        console.warn(`Invalid URL for ${key}`);
+        return null;
+      }
+      
+      try {
+        return {
+          name: key.charAt(0).toUpperCase() + key.slice(1),
+          icon: `https://www.google.com/s2/favicons?domain=${new URL(url).hostname}`,
+          url,
+        };
+      } catch (err) {
+        console.warn(`Invalid URL format for ${key}: ${url}`);
+        return null;
+      }
+    }).filter(Boolean);
+  } catch (error) {
+    console.error("Error parsing socials:", error);
+    return [];
+  }
+};
+
+
 
 export default function Home() {
-  const { id } = useParams(); // ✅ Get the ID from the URL params
+  const { id } = useParams();
 
   const [token, setToken] = useState<TokenData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -62,7 +94,7 @@ export default function Home() {
    const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
-    if (!id) return; // ✅ Prevent fetching when ID is undefined
+    if (!id) return;
 
     const fetchTokenData = async () => {
       try {
@@ -70,6 +102,7 @@ export default function Home() {
         if (!response.ok) throw new Error("Failed to fetch token data");
         const jsonData = await response.json();
         setToken(jsonData.result);
+        console.log(jsonData.result);
       } catch (error: unknown) {
         if (error instanceof Error) {
           setError(error.message);
@@ -245,15 +278,15 @@ export default function Home() {
                 </div>
                 <div className="py-4 flex items-center flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out text-right">
                   <h1 className="text-teal-400 text-xl">Total Mints</h1>
-                  <p>{token.mintTotal}</p>
+                  <p>{formatInteger(token.mintTotal)}</p>
                 </div>
                 <div className="py-4 flex items-center flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out text-right">
                   <h1 className="text-teal-400 text-xl">Total Holders</h1>
-                  <p>{token.holderTotal}</p>
+                  <p>{formatInteger(token.holderTotal)}</p>
                 </div>
                 <div className="py-4 flex items-center flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out text-right">
                   <h1 className="text-teal-400 text-xl">Total Transfers</h1>
-                  <p>{token.transferTotal}</p>
+                  <p>{formatInteger(token.transferTotal)}</p>
                 </div>
               </div>
             </div>
@@ -264,6 +297,10 @@ export default function Home() {
               <div className="col-span-12 md:col-span-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
                 <h2 className="text-lg font-bold text-teal-500 dark:text-teal-500">Token Details</h2>
                 <p className="text-gray-500  pb-4 mb-12 border-b border-gray-500">Additional Details for {token.tick}.</p>
+                <div className="mb-8">
+                  <h3 className="text-md font-semibold text-gray-700 dark:text-gray-200">Affiliates:</h3>
+                  <p className="text-gray-400 mt-2 pb-8 mb-4 border-b border-teal-500"><Affiliates displayMode="icons" affiliates={parseSocials(token.socials)?.filter(Boolean)} /></p>
+                </div>
                 <div className="mb-8">
                   <h3 className="text-md font-semibold text-gray-700 dark:text-gray-200">Deployed On:</h3>
                   <p className="text-gray-400 mt-2 pb-8 mb-4 border-b border-teal-500">{formatDate(token.mtsAdd)}</p>

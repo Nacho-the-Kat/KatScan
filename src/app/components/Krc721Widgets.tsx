@@ -54,7 +54,7 @@ const NFTStatistics = () => {
           <div className="text-center">
             <Widget
               value={`${stats.minorFeesPaid} KAS`}
-              legend="Minor Fees Paid"
+              legend="Miner Fees Paid"
               icon={<DocumentCurrencyDollarIcon className="size-12" />}
             />
           </div>
