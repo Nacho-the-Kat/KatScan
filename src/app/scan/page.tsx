@@ -121,26 +121,26 @@ export default function Home() {
       accessorKey: "max",
       header: "Max Supply",
       cell: ({ row }) =>
-        formatNumberWithWords(row.original.max, row.original.dec),
+        formatNumberWithWords(Number(row.original.max), row.original.dec),
     },
     {
       accessorKey: "pre",
       header: "Pre-Minted",
       cell: ({ row }) =>
-        formatPreMinted(row.original.pre, row.original.max, row.original.dec),
+        formatPreMinted(row.original.pre, Number(row.original.max), row.original.dec),
     },
     {
       accessorKey: "minted",
       header: "Total Minted",
       cell: ({ row }) =>
-        formatNumberWithWords(row.original.max, row.original.dec),
+        formatNumberWithWords(Number(row.original.max), row.original.dec),
     },
     {
       accessorKey: "mintingProgress",
       header: "Minting Progress",
       cell: ({ row }) => {
         
-        const percentage = ( calculateValue(row.original.minted, row.original.dec) / calculateValue(row.original.max, row.original.dec)) * 100;
+        const percentage = ( calculateValue(row.original.minted, row.original.dec) / calculateValue(Number(row.original.max), row.original.dec)) * 100;
         const formattedPercentage = percentage < 1 && percentage > 0 ? '<1' : Math.round(percentage);
 
         return (

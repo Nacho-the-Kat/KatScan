@@ -1,7 +1,7 @@
 .nft-card {
   perspective: 1000px;
   width: 250px;
-  height: 300px;
+  height: 275px;
 }
 
 .nft-card-inner {
@@ -27,11 +27,64 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nft-card-front {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Fixed aspect ratio for the image */
+.nft-image {
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
 }
 
 .nft-card-back {
   transform: rotateY(180deg);
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
   padding: 15px;
+  overflow-y: auto; /* Enable scrolling if content is too large */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #c1c1c1 transparent; /* For Firefox */
+}
+
+/* Custom scrollbar for Webkit browsers (Chrome, Safari) */
+.nft-card-back::-webkit-scrollbar {
+  width: 6px;
+}
+
+.nft-card-back::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.nft-card-back::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+  border-radius: 3px;
+}
+
+.nft-card h3 {
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+
+.nft-card ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.nft-card li {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }

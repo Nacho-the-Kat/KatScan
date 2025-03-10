@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { TokenList } from "../../../packages/kat-library/dist/index";
-import { RocketLaunchIcon } from "@heroicons/react/24/solid";
+import { ArrowTrendingUpIcon } from "@heroicons/react/24/solid";
 import { Token } from "@/app/types/token";
 
 const API_URL = "/api/nft/list"; // Adjust if necessary
@@ -16,6 +16,7 @@ interface FormattedToken {
   maxSupply?: number;
   minted?: number;
   royalty?: string;
+  max?: number;
 }
 
 const TrendingTokens = () => {
@@ -29,6 +30,7 @@ const TrendingTokens = () => {
         const response = await fetch(API_URL);
         const data = await response.json();
         if (response.ok && data.result) {
+          console.log("data recent collectiions", data);
           const formattedTokens = data.result.map((item: any) => ({
             id: item.id,
             tick: item.tick,
@@ -38,6 +40,7 @@ const TrendingTokens = () => {
             maxSupply: item.max,
             minted: item.minted,
             royalty: (item.royaltyFee / 1e18).toFixed(6), // Convert royalty fee to readable format
+            max: item.max,
           }));
 
           setTokens(formattedTokens);
@@ -64,17 +67,21 @@ const TrendingTokens = () => {
     
     return {
       tick: token.tick,
-      id
+      id,
+      image: `https://katapi.nachowyborski.xyz/static/krc721/thumbnails/${token.tick}/1.png`,
+      change: Number(token.maxSupply),
     };
   });
+
 
   return (
     <TokenList
       showPrice={false}
       maxItems={5}
       title="Recent Collections"
+      legend="Total Supply"
       tokens={tokenList}
-      icon={<RocketLaunchIcon className="size-5 text-teal-500" />}
+      icon={<ArrowTrendingUpIcon className="size-5 text-teal-500" />}
     />
   );
 };

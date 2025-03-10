@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { TokenList } from "../../../packages/kat-library/dist/index";
-import { RocketLaunchIcon } from "@heroicons/react/24/solid";
+import { ArrowTrendingUpIcon } from "@heroicons/react/24/solid";
 import { Token } from "@/app/types/token";
 
 // Define a type that matches the TokenList component's expected Token type
@@ -11,6 +11,9 @@ type TokenListToken = {
   price?: string;
   change?: number;
   id?: string;
+  pillLabel?: string;
+  pillStyle?: string;
+  
 };
 
 const TrendingTokens = () => {
@@ -42,6 +45,13 @@ const TrendingTokens = () => {
   if (loading) return <p>Loading Trending Tokens...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
+  const stateToPillStyle: Record<string, "primary" | "dark" | "gray" | "accent"> = {
+    deployed: "primary",
+    pending: "gray",
+    failed: "dark",
+    active: "accent",
+  };
+
   // Safely convert tokens for the TokenList component
   const tokenList = tokens.map((token, index) => {
     // Simple existence check before using toString()
@@ -49,7 +59,12 @@ const TrendingTokens = () => {
     
     return {
       tick: token.tick,
-      id
+      id,
+      image: `https://katapi.nachowyborski.xyz/static/krc20/thumbnails/${token.tick}.jpg`,
+      pillLabel: token.state
+      ? String(token.state).charAt(0).toUpperCase() + String(token.state).slice(1)
+      : "", 
+      pillStyle: stateToPillStyle[String(token.state)] || 'gray',
     };
   });
 
@@ -59,7 +74,7 @@ const TrendingTokens = () => {
       maxItems={5}
       title="Recent Tokens"
       tokens={tokenList}
-      icon={<RocketLaunchIcon className="size-5 text-teal-500" />}
+      icon={<ArrowTrendingUpIcon className="size-5 text-teal-500" />}
     />
   );
 };

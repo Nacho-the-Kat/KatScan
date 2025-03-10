@@ -1,16 +1,18 @@
 import React from "react";
 interface Token {
     tick: string;
+    id?: string | number;
     image?: string;
     price?: string;
     change?: number;
-    id?: string;
+    pillLabel?: string;
+    pillStyle?: "primary" | "dark" | "gray" | "accent";
+    tokenLink?: string;
 }
 interface ListProps {
     title: string;
     icon?: React.ReactNode;
     legend?: string;
-    legendRight?: boolean;
     tokens: Token[];
     maxItems?: number;
     showMoreUrl?: string;

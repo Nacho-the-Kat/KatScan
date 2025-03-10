@@ -284,25 +284,44 @@ export default function NFTCollectionPage() {
                 {filteredNFTs.map((nft) => (
                   <div
                     key={nft.id}
-                    className="nft-card bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 cursor-pointer"
+                    className="nft-card dark:bg-gray-800"
                     onClick={() => {
                       setSelectedNFT(nft);
                       router.push(`/nft/detail/${ticker}/${nft.id}`);
                     }}
                   >
-                    <Image
-                      src={formatImageUrl(nft.image)}
-                      alt={nft.name}
-                      width={250}
-                      height={250}
-                      className="rounded-md w-full h-auto object-cover"
-                    />
-                    <h2 className="text-center mt-2 text-lg font-semibold text-gray-800 dark:text-gray-200">
-                      {nft.name}
-                    </h2>
+                    <div className="nft-card-inner ">
+                      {/* Front of the Card */}
+                      <div className="nft-card-front">
+                        <div
+                          className="nft-image"
+                          style={{
+                            backgroundImage: `url(${formatImageUrl(nft.image)})`,
+                          }}
+                        />
+                        <h2 className="text-center mt-2 text-lg font-semibold text-gray-800 dark:text-gray-200">
+                          {nft.name}
+                        </h2>
+                      </div>
+
+                      {/* Back of the Card */}
+                      <div className="nft-card-back">
+                        <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Traits</h3>
+                        <ul className="text-gray-700 dark:text-gray-300 text-sm mt-2 space-y-1">
+                          {nft.attributes.map(({ trait_type, value }) => (
+                            <li key={`${trait_type}-${value}`} className="flex justify-between">
+                              <span className="font-semibold">{trait_type}:</span>
+                              <span>{value}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
+
+
               
               <div ref={loadMoreRef} className="mt-8 mb-8 flex justify-center">
                 {loadingMore && (

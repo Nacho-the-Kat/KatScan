@@ -801,13 +801,14 @@ const ForwardRef$5 = /*#__PURE__*/ React.forwardRef(UserCircleIcon);
 
 const Avatar = ({ imageUrl }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [imageError, setImageError] = useState(false);
     const handleOpenModal = () => {
         setIsModalOpen(true);
     };
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
-    return (jsxRuntimeExports.jsxs("span", { children: [jsxRuntimeExports.jsx("div", { className: "w-12 h-12 rounded-full overflow-hidden cursor-pointer border border-gray-300 dark:border-gray-700", onClick: handleOpenModal, children: imageUrl ? (jsxRuntimeExports.jsx("img", { src: imageUrl, alt: "Avatar", className: "w-full h-full object-cover" })) : (jsxRuntimeExports.jsx(ForwardRef$5, { className: "w-full h-full text-gray-400" })) }), isModalOpen && (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50", onClick: handleCloseModal, children: jsxRuntimeExports.jsx("div", { className: "p-2 bg-white rounded-lg shadow-lg", children: imageUrl ? (jsxRuntimeExports.jsx("img", { src: imageUrl, alt: "Avatar Large", className: "w-64 h-64 object-cover rounded-lg" })) : (jsxRuntimeExports.jsx(ForwardRef$5, { className: "w-64 h-64 text-gray-400" })) }) }))] }));
+    return (jsxRuntimeExports.jsxs("span", { children: [jsxRuntimeExports.jsx("div", { className: "w-12 h-12 rounded-full overflow-hidden cursor-pointer border border-gray-300 dark:border-gray-700", onClick: handleOpenModal, children: imageUrl && !imageError ? (jsxRuntimeExports.jsx("img", { src: imageUrl, alt: "Avatar", className: "w-full h-full object-cover", onError: () => setImageError(true) })) : (jsxRuntimeExports.jsx(ForwardRef$5, { className: "w-full h-full text-gray-400" })) }), isModalOpen && (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50", onClick: handleCloseModal, children: jsxRuntimeExports.jsx("div", { className: "p-2 bg-white rounded-lg shadow-lg", children: imageUrl && !imageError ? (jsxRuntimeExports.jsx("img", { src: imageUrl, alt: "Avatar Large", className: "w-64 h-64 object-cover rounded-lg", onError: () => setImageError(true) })) : (jsxRuntimeExports.jsx(ForwardRef$5, { className: "w-64 h-64 text-gray-400" })) }) }))] }));
 };
 
 const AffiliateComponent = ({ affiliates, displayMode = "iconsWithNames", layout = "horizontal", }) => {
@@ -2666,7 +2667,7 @@ const ProgressBar = ({ value, color = "bg-teal-400" }) => {
     return (jsxRuntimeExports.jsxs("div", { className: "relative w-full", children: [jsxRuntimeExports.jsxs("div", { className: "absolute left-1/2 -translate-x-1/2 -top-4 text-[10px] font-medium text-gray-900 dark:text-white", children: [value, "%"] }), jsxRuntimeExports.jsx("div", { className: "w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden", children: jsxRuntimeExports.jsx("div", { className: `h-full ${color} transition-all duration-300`, style: { width: `${value}%` } }) })] }));
 };
 
-const SearchComponent = ({ placeholder = "Search...", onSearch, suggestions = [], showHint = false, enableAutocomplete = false, }) => {
+const SearchComponent = ({ placeholder = "Search...", onSearch, onChange, onKeyDown, suggestions = [], showHint = false, enableAutocomplete = false, }) => {
     const [query, setQuery] = useState("");
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
     const [hintVisible, setHintVisible] = useState(showHint);
@@ -2675,6 +2676,10 @@ const SearchComponent = ({ placeholder = "Search...", onSearch, suggestions = []
         const newQuery = event.target.value;
         setQuery(newQuery);
         setHintVisible(true);
+        // ✅ Call onChange only if it's provided
+        if (onChange) {
+            onChange(newQuery);
+        }
         if (enableAutocomplete) {
             if (newQuery.trim() === "") {
                 setShowAutocomplete(false);
@@ -2688,6 +2693,10 @@ const SearchComponent = ({ placeholder = "Search...", onSearch, suggestions = []
         }
     };
     const handleKeyDown = (event) => {
+        // ✅ Call onKeyDown only if it's provided
+        if (onKeyDown) {
+            onKeyDown(event);
+        }
         if (event.key === "Enter" && onSearch) {
             onSearch(query);
             setHintVisible(false);
@@ -5734,7 +5743,11 @@ const Title = ({ text }) => {
 const TokenList = ({ title, icon, legend, tokens, maxItems = 10, showMoreUrl, showPrice = true, }) => {
     const [showAll, setShowAll] = useState(false);
     const displayedTokens = showAll ? tokens : tokens.slice(0, maxItems);
-    return (jsxRuntimeExports.jsxs("div", { className: "bg-white min-h-80 dark:bg-gray-900 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-700 max-w-md", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b pb-2", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center", children: [icon && jsxRuntimeExports.jsx("span", { className: "text-gray-500 dark:text-gray-300", children: icon }), jsxRuntimeExports.jsx("h3", { className: "ml-2 text-lg font-semibold text-gray-900 dark:text-white", children: title })] }), legend && (jsxRuntimeExports.jsx("span", { className: "ml-auto text-sm text-gray-600 dark:text-gray-400", children: legend }))] }), jsxRuntimeExports.jsx("div", { className: "mt-3 space-y-3", children: displayedTokens.map((token, index) => (jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-500 dark:text-gray-400 w-6", children: index + 1 }), jsxRuntimeExports.jsx("div", { className: "w-8 h-8 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center ml-4", children: token.image ? (jsxRuntimeExports.jsx("img", { src: token.image, alt: token.tick, className: "w-full h-full object-cover" })) : (jsxRuntimeExports.jsx(ForwardRef$6, { className: "w-6 h-6 text-gray-400" })) }), jsxRuntimeExports.jsxs("div", { className: "flex-1 ml-3", children: [jsxRuntimeExports.jsx("a", { href: `/token/${token.id}`, className: "text-gray-900 dark:text-white font-medium hover:text-teal-500", children: token.tick }), showPrice && (jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 dark:text-gray-400", children: token.price || "$0.000000" }))] }), token.change !== undefined && (jsxRuntimeExports.jsx("span", { className: `px-2 py-1 text-xs rounded-full ${token.change >= 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`, children: token.change >= 0 ? `+${token.change}%` : `${token.change}%` }))] }, index))) })] }));
+    return (jsxRuntimeExports.jsxs("div", { className: "bg-white min-h-80 dark:bg-gray-900 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-700 max-w-md", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b pb-2", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center", children: [icon && jsxRuntimeExports.jsx("span", { className: "text-gray-500 dark:text-gray-300", children: icon }), jsxRuntimeExports.jsx("h3", { className: "ml-2 text-lg font-semibold text-gray-900 dark:text-white", children: title })] }), legend && (jsxRuntimeExports.jsx("span", { className: "ml-auto text-sm text-gray-600 dark:text-gray-400", children: legend }))] }), jsxRuntimeExports.jsx("div", { className: "mt-3 space-y-3", children: displayedTokens.map((token, index) => {
+                    const [imageError, setImageError] = useState(false);
+                    const tokenLink = token.tokenLink || "#"; // Default to #
+                    return (jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-500 dark:text-gray-400 w-6", children: index + 1 }), jsxRuntimeExports.jsx("div", { className: "w-8 h-8 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center ml-4", children: token.image && !imageError ? (jsxRuntimeExports.jsx("img", { src: token.image, alt: token.tick, className: "w-full h-full object-cover", onError: () => setImageError(true) })) : (jsxRuntimeExports.jsx(ForwardRef$6, { className: "w-6 h-6 text-gray-400" })) }), jsxRuntimeExports.jsxs("div", { className: "flex-1 ml-3", children: [jsxRuntimeExports.jsx("a", { href: tokenLink, className: "text-gray-900 dark:text-white font-medium hover:text-teal-500", children: token.tick }), showPrice && (jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 dark:text-gray-400", children: token.price || "$0.000000" }))] }), token.change !== undefined && (jsxRuntimeExports.jsx("span", { className: `px-2 py-1 text-xs rounded-full ${token.change >= 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`, children: token.change >= 0 ? `${token.change}` : `${token.change}` })), token.pillLabel && jsxRuntimeExports.jsx(Pill, { label: token.pillLabel, color: token.pillStyle || "primary" })] }, index));
+                }) })] }));
 };
 
 const Widget = ({ value, icon, onClick, legend }) => {

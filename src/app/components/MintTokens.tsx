@@ -23,8 +23,7 @@ const MintTokens = () => {
       try {
         const response = await fetch(`/api/mint-totals`);
         const data = await response.json();
-        console.log('response1', data);
-        console.log('response type:', typeof data, Array.isArray(data)); 
+        console.log('mint totals', data);
         if (response.ok) {
           setTokens(data);
         } else {
@@ -50,15 +49,19 @@ const MintTokens = () => {
     
     return {
       tick: token.tick,
-      id
+      id,
+      image: `https://katapi.nachowyborski.xyz/static/krc20/thumbnails/${token.tick}.jpg`,
+      change: token.mintTotal,
     };
   });
 
+  
   return (
     <TokenList
       showPrice={false}
       maxItems={5}
       title="Mint Totals"
+      legend="Minted"
       tokens={tokenList}
       icon={<ChartPieIcon className="size-5 text-teal-500" />}
     />

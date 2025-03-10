@@ -68,6 +68,8 @@ declare const ProgressBar: React.FC<ProgressBarProps>;
 interface SearchProps {
     placeholder?: string;
     onSearch?: (query: string) => void;
+    onChange?: (query: string) => void;
+    onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
     suggestions?: {
         tick: string;
         image?: string;
@@ -101,16 +103,18 @@ declare const Title: React.FC<TitleProps>;
 
 interface Token {
     tick: string;
+    id?: string | number;
     image?: string;
     price?: string;
     change?: number;
-    id?: string;
+    pillLabel?: string;
+    pillStyle?: "primary" | "dark" | "gray" | "accent";
+    tokenLink?: string;
 }
 interface ListProps {
     title: string;
     icon?: React.ReactNode;
     legend?: string;
-    legendRight?: boolean;
     tokens: Token[];
     maxItems?: number;
     showMoreUrl?: string;

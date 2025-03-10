@@ -104,9 +104,9 @@ export default function NFTDetailPage() {
                     {collection.state.charAt(0).toUpperCase() + collection.state.slice(1)}
                   </span>
                 </div>
-                <p>
+                <span>
                   <span className="font-semibold">Deployer:</span> {collection.deployer}
-                </p>
+                </span>
               </div>
             )}
           </div>

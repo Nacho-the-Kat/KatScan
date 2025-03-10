@@ -70,7 +70,7 @@ export default function Home() {
       header: "",
       cell: ({ row }) => (
         <Avatar
-          imageUrl={`https://ipfs.io/ipfs/${row.original.buri}`} // Assuming 'buri' is IPFS CID
+          imageUrl={`https://katapi.nachowyborski.xyz/static/krc721/thumbnails/${row.original.tick}/1.png`}
         />
       ),
     },
@@ -79,7 +79,7 @@ export default function Home() {
       header: "Collection",
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
-          <Link href={`/nft/detail/${row.original.tick}`} className="text-blue-500 hover:underline">
+          <Link href={`/nft/detail/${row.original.tick}`} className="font-bold underline">
             {row.original.tick}
           </Link>
         </div>

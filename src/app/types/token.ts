@@ -1,7 +1,7 @@
 export interface Token {
     id: number;
     tick: string;
-    max: number;
+    max: number | string;
     lim: number;
     pre: number;
     mtsAdd: number;
@@ -10,7 +10,7 @@ export interface Token {
     mintTotal: number;
     transferTotal: number;
     dec: number;
-    state: number;
+    state: string | number;
     logo: string;
     socials: string | null; // JSON string, needs parsing
   }
