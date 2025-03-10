@@ -59,6 +59,7 @@ export default function NFTCollectionPage() {
   const [pagination, setPagination] = useState<PaginationInfo | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const currentFiltersRef = useRef(filters);
 
   const fetchNFTs = useCallback(async (page = 1, append = false) => {
     if (!ticker) return;
@@ -70,8 +71,8 @@ export default function NFTCollectionPage() {
       // Construct URL with filter parameters
       let url = `/api/nft/tick/${ticker}?page=${page}`;
       
-      // Add filter parameters to URL
-      Object.entries(filters).forEach(([trait, value]) => {
+      // Use currentFiltersRef.current instead of filters from closure
+      Object.entries(currentFiltersRef.current).forEach(([trait, value]) => {
         if (value) {
           url += `&${encodeURIComponent(trait)}=${encodeURIComponent(value)}`;
         }
@@ -99,39 +100,46 @@ export default function NFTCollectionPage() {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [ticker, filters, setCollectionInfo]);
+  }, [ticker, setCollectionInfo]);
+
+  // Update currentFiltersRef when filters change
+  useEffect(() => {
+    currentFiltersRef.current = filters;
+  }, [filters]);
 
   // Initial load
   useEffect(() => {
-    fetchNFTs(1, false);
-  }, [fetchNFTs]);
+    if (ticker) {
+      fetchNFTs(1, false);
+    }
+  }, [ticker, fetchNFTs]);
 
   // Set up intersection observer for infinite scroll
   useEffect(() => {
+    if (!loadMoreRef.current) return;
+
     const options = {
       root: null,
-      rootMargin: '0px',
+      rootMargin: '20px',
       threshold: 0.1,
     };
     
-    observer.current = new IntersectionObserver((entries) => {
+    const currentObserver = new IntersectionObserver((entries) => {
       const [entry] = entries;
       if (entry.isIntersecting && pagination?.hasMorePages && !loadingMore && !loading) {
         fetchNFTs(pagination.currentPage + 1, true);
       }
     }, options);
     
-    const currentRef = loadMoreRef.current;
-    if (currentRef) {
-      observer.current.observe(currentRef);
-    }
+    currentObserver.observe(loadMoreRef.current);
     
     return () => {
-      if (currentRef && observer.current) {
-        observer.current.unobserve(currentRef);
+      if (loadMoreRef.current) {
+        currentObserver.unobserve(loadMoreRef.current);
       }
+      currentObserver.disconnect();
     };
-  }, [loadMoreRef, pagination, loadingMore, loading, fetchNFTs]);
+  }, [pagination?.currentPage, pagination?.hasMorePages, loadingMore, loading, fetchNFTs]);
 
   const formatImageUrl = (imagePath: string): string => {
     const parts = imagePath.split("/");
@@ -167,6 +175,9 @@ export default function NFTCollectionPage() {
       if (!value) {
         delete newFilters[trait];
       }
+      
+      // Update currentFiltersRef immediately
+      currentFiltersRef.current = newFilters;
       
       // Reset and fetch with new filters
       setTimeout(() => fetchNFTs(1, false), 0);
