@@ -162,26 +162,9 @@ export default function NFTCollectionPage() {
   }, [pagination?.hasMorePages, pagination?.currentPage, loading, loadingMore]);
   
   const formatImageUrl = (imagePath: string): string => {
-    // Extract just the filename from the path
-    const filename = imagePath.split("/").pop();
-    
-    if (!filename) return "";
-    
-    // Try with "sized" directory first as that seems to be what's expected
-    return `https://katapi.nachowyborski.xyz/static/krc721/sized/${ticker}/${filename}`;
-    
-    // If the above doesn't work, you can uncomment this fallback approach
-    // that tries both URLs and uses the first one that loads
-    /*
-    const sizedUrl = `https://katapi.nachowyborski.xyz/static/krc721/sized/${ticker}/${filename}`;
-    const thumbnailUrl = `https://katapi.nachowyborski.xyz/static/krc721/thumbnails/${ticker}/${filename}`;
-    
-    // Create a hidden image to test if the sized URL works
-    const img = new Image();
-    img.src = sizedUrl;
-    
-    return sizedUrl;
-    */
+    const parts = imagePath.split("/");
+    const filename = parts.pop();
+    return filename ? `https://katapi.nachowyborski.xyz/static/krc721/thumbnails/${ticker}/${filename}` : "";
   };
   
   const getUniqueTraits = () => {

@@ -30,7 +30,27 @@ export default function NFTDetailPage() {
   }
 
   const formatImageUrl = (imagePath: string): string => {
-    return `https://katapi.nachowyborski.xyz/static/krc721/sized/${collection?.tick}/${imagePath.split("/").pop()}`;
+    if (!imagePath || !collection?.tick) return '';
+    
+    // Extract just the filename from the path
+    const filename = imagePath.split("/").pop();
+    if (!filename) return '';
+    
+    // Return the sized URL - this should match the expected path structure
+    return `https://katapi.nachowyborski.xyz/static/krc721/sized/${collection.tick}/${filename}`;
+  };
+
+  // Function to handle image loading errors
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const img = e.currentTarget;
+    
+    // If the sized image fails, try the thumbnail version
+    if (img.src.includes('/sized/')) {
+      const filename = img.src.split('/').pop();
+      if (filename && collection?.tick) {
+        img.src = `https://katapi.nachowyborski.xyz/static/krc721/thumbnails/${collection.tick}/${filename}`;
+      }
+    }
   };
 
   return (
@@ -40,13 +60,17 @@ export default function NFTDetailPage() {
 
         <div className="flex flex-col md:flex-row gap-6 mt-6">
           <div className="w-full md:w-1/2">
-            <Image
-              src={formatImageUrl(nft?.image || '')}
-              alt={nft?.name || ''}
-              width={600}
-              height={400}
-              className="rounded-md"
-            />
+            <div className="relative">
+              <Image
+                src={formatImageUrl(nft?.image || '')}
+                alt={nft?.name || ''}
+                width={600}
+                height={600}
+                className="rounded-md w-full h-auto"
+                onError={handleImageError}
+                unoptimized // Allow direct URL usage without Next.js image optimization
+              />
+            </div>
           </div>
 
           <div className="w-full md:w-1/2">
