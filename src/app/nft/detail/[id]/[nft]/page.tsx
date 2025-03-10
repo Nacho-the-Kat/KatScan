@@ -30,7 +30,7 @@ export default function NFTDetailPage() {
   }
 
   const formatImageUrl = (imagePath: string): string => {
-    return `https://katapi.nachowyborski.xyz/static/krc721/thumbnails/${collection?.tick}/${imagePath.split("/").pop()}`;
+    return `https://katapi.nachowyborski.xyz/static/krc721/sized/${collection?.tick}/${imagePath.split("/").pop()}`;
   };
 
   return (
