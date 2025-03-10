@@ -295,35 +295,32 @@ export default function NFTCollectionPage() {
                 )}
               </div>
               
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mt-6">
                 {filteredNFTs.map((nft) => (
                   <div
                     key={nft.id}
-                    className="nft-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 cursor-pointer transition-transform hover:shadow-lg hover:-translate-y-1 flex flex-col h-full"
+                    className="nft-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 cursor-pointer transition-transform hover:shadow-lg hover:-translate-y-1 mb-4"
                     onClick={() => {
                       setSelectedNFT(nft);
                       router.push(`/nft/detail/${ticker}/${nft.id}`);
                     }}
                   >
                     <div className="relative w-full overflow-hidden bg-gray-100 dark:bg-gray-900">
-                      <Image
-                        src={formatImageUrl(nft.image)}
-                        alt={nft.name}
-                        width={400}
-                        height={400}
-                        className="w-full h-auto object-contain"
-                        onError={handleImageError}
-                        unoptimized
-                        style={{ aspectRatio: 'auto' }}
-                      />
+                      <div className="w-full pt-[100%] relative">
+                        <Image
+                          src={formatImageUrl(nft.image)}
+                          alt={nft.name}
+                          fill
+                          className="absolute inset-0 w-full h-full object-contain"
+                          onError={handleImageError}
+                          unoptimized
+                        />
+                      </div>
                     </div>
-                    <div className="p-3 flex-grow flex flex-col justify-between">
+                    <div className="p-3">
                       <h2 className="text-center text-base font-semibold text-gray-800 dark:text-gray-200 truncate">
                         {nft.name}
                       </h2>
-                      <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        #{nft.id}
-                      </p>
                     </div>
                   </div>
                 ))}
