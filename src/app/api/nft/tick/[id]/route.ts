@@ -13,12 +13,14 @@ export async function GET(req: NextRequest) {
     const pathname = req.nextUrl.pathname;
     const id = pathname.split("/").pop(); // Get last part of URL
 
-    if (!id || isNaN(Number(id))) {
+    console.log('id', id);
+
+    if (!id ) {
       return NextResponse.json({ status: 400, message: "Invalid token ID" }, { status: 400 });
     }
 
-    const entriesApiUrl = `${API_BASE_URL}/nfts/entries?tick=${encodeURIComponent(id)}`;
-    const tickApiUrl = `${API_BASE_URL}/nfts/tick?tick=${encodeURIComponent(id)}`;
+    const entriesApiUrl = `${API_BASE_URL}/nfts/entries?tick=${id}`;
+    const tickApiUrl = `${API_BASE_URL}/nfts/tick?tick=${id}`;
 
     console.log(`Fetching data from: ${entriesApiUrl} and ${tickApiUrl}`);
 

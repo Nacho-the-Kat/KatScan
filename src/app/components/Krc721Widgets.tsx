@@ -25,8 +25,8 @@ const NFTStatistics = () => {
             console.log('data', data.result)
             setStats({
               nftVolume: formatInteger(data.result.tokenTransfersTotal),
-              minorFeesPaid: formatInteger(data.result.powFeesTotal), 
-              royaltyFeesPaid: formatInteger(data.result.royaltyFeesTotal),
+              minorFeesPaid: formatNumberWithWords(data.result.powFeesTotal, 8), 
+              royaltyFeesPaid: formatNumberWithWords(data.result.royaltyFeesTotal, 8),
               totalCollection: formatInteger(data.result.tokenDeploymentsTotal),
               totalNFTMints: formatInteger(data.result.tokenMintsTotal),
               totalTransfers: formatInteger(data.result.tokenTransfersTotal),
