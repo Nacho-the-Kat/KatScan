@@ -295,11 +295,14 @@ export default function NFTCollectionPage() {
                 )}
               </div>
               
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mt-6">
+              <div className="grid grid-flow-row auto-rows-auto gap-6 mt-6"
+                   style={{
+                      gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
+                   }}>
                 {filteredNFTs.map((nft) => (
                   <div
                     key={nft.id}
-                    className="nft-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 cursor-pointer transition-transform hover:shadow-lg hover:-translate-y-1 mb-4"
+                    className="nft-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 cursor-pointer transition-transform hover:shadow-lg hover:-translate-y-1"
                     onClick={() => {
                       setSelectedNFT(nft);
                       router.push(`/nft/detail/${ticker}/${nft.id}`);
