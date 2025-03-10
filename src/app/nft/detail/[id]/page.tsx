@@ -9,6 +9,7 @@ import NFTFilter from "@/app/components/NFTFilter";
 import Image from "next/image";
 import { useNFTContext } from "@/app/context/NFTContext"; // ✅ Added NFT context import
 import "./flip.css";
+import { formatNumberWithWords, formatInteger } from "../../../utils/utils";
 
 interface NFT {
   id: number;
@@ -75,9 +76,7 @@ export default function NFTCollectionPage() {
     return filename ? `https://katapi.nachowyborski.xyz/static/krc721/thumbnails/${ticker}/${filename}` : "";
   };
 
-  const formatNumber = (value: number): string => {
-    return value.toLocaleString("en-US") + " KASP";
-  };
+ 
 
   const getUniqueTraits = () => {
     const traitsMap: { [key: string]: Set<string> } = {};
@@ -159,7 +158,7 @@ export default function NFTCollectionPage() {
                         <span className="font-semibold">Minted:</span> {tickInfo.minted.toLocaleString("en-US")}
                       </li>
                       <li className="flex justify-between">
-                        <span className="font-semibold">Royalty Fee:</span> {formatNumber(tickInfo.royaltyFee)}
+                        <span className="font-semibold">Royalty Fee:</span> {formatNumberWithWords(tickInfo.royaltyFee, 8)}
                       </li>
                     </ul>
                   </div>
