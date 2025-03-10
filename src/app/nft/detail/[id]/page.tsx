@@ -57,21 +57,32 @@ export default function NFTCollectionPage() {
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<{ [key: string]: string }>({});
   const [pagination, setPagination] = useState<PaginationInfo | null>(null);
-  const observer = useRef<IntersectionObserver | null>(null);
+  
+  // Use refs for stable references
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const currentFiltersRef = useRef(filters);
-
-  const fetchNFTs = useCallback(async (page = 1, append = false) => {
-    if (!ticker) return;
+  const initialLoadCompletedRef = useRef(false);
+  const fetchingRef = useRef(false);
+  const tickerRef = useRef(ticker);
+  
+  // Store fetchNFTs in a ref to keep it stable across renders
+  const fetchNFTsRef = useRef(async (page = 1, append = false) => {
+    if (!tickerRef.current || fetchingRef.current) return;
+    
+    console.log(`Starting fetch for page ${page}, append: ${append}`);
+    fetchingRef.current = true;
     
     try {
-      setLoadingMore(append);
-      if (!append) setLoading(true);
+      if (append) {
+        setLoadingMore(true);
+      } else {
+        setLoading(true);
+      }
       
       // Construct URL with filter parameters
-      let url = `/api/nft/tick/${ticker}?page=${page}`;
+      let url = `/api/nft/tick/${tickerRef.current}?page=${page}`;
       
-      // Use currentFiltersRef.current instead of filters from closure
+      // Use currentFiltersRef.current to access the latest filters
       Object.entries(currentFiltersRef.current).forEach(([trait, value]) => {
         if (value) {
           url += `&${encodeURIComponent(trait)}=${encodeURIComponent(value)}`;
@@ -94,62 +105,71 @@ export default function NFTCollectionPage() {
       setTickInfo(jsonData.tickInfo);
       setPagination(jsonData.pagination);
       setCollectionInfo(jsonData.tickInfo);
+      
+      if (!append) {
+        initialLoadCompletedRef.current = true;
+      }
     } catch (error) {
       setError(error instanceof Error ? error.message : "An unknown error occurred");
     } finally {
       setLoading(false);
       setLoadingMore(false);
+      fetchingRef.current = false;
     }
-  }, [ticker, setCollectionInfo]);
-
-  // Update currentFiltersRef when filters change
+  });
+  
+  // Update refs when dependencies change
   useEffect(() => {
     currentFiltersRef.current = filters;
   }, [filters]);
-
+  
+  useEffect(() => {
+    tickerRef.current = ticker;
+  }, [ticker]);
+  
   // Initial load
   useEffect(() => {
-    if (ticker) {
-      fetchNFTs(1, false);
+    if (ticker && !initialLoadCompletedRef.current && !fetchingRef.current) {
+      console.log("Executing initial load");
+      fetchNFTsRef.current(1, false);
     }
-  }, [ticker, fetchNFTs]);
-
+  }, [ticker]);
+  
   // Set up intersection observer for infinite scroll
   useEffect(() => {
-    if (!loadMoreRef.current) return;
-
+    if (!loadMoreRef.current || !pagination?.hasMorePages || fetchingRef.current) return;
+    
     const options = {
       root: null,
-      rootMargin: '20px',
+      rootMargin: '100px',
       threshold: 0.1,
     };
     
-    const currentObserver = new IntersectionObserver((entries) => {
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       const [entry] = entries;
-      if (entry.isIntersecting && pagination?.hasMorePages && !loadingMore && !loading) {
-        fetchNFTs(pagination.currentPage + 1, true);
+      if (entry.isIntersecting && pagination?.hasMorePages && !loadingMore && !loading && !fetchingRef.current) {
+        console.log(`Intersection observed, loading page ${pagination.currentPage + 1}`);
+        fetchNFTsRef.current(pagination.currentPage + 1, true);
       }
-    }, options);
+    };
     
-    currentObserver.observe(loadMoreRef.current);
+    const observer = new IntersectionObserver(handleIntersection, options);
+    observer.observe(loadMoreRef.current);
     
     return () => {
-      if (loadMoreRef.current) {
-        currentObserver.unobserve(loadMoreRef.current);
-      }
-      currentObserver.disconnect();
+      observer.disconnect();
     };
-  }, [pagination?.currentPage, pagination?.hasMorePages, loadingMore, loading, fetchNFTs]);
-
+  }, [pagination?.hasMorePages, pagination?.currentPage, loading, loadingMore]);
+  
   const formatImageUrl = (imagePath: string): string => {
     const parts = imagePath.split("/");
     const filename = parts.pop();
     return filename ? `https://katapi.nachowyborski.xyz/static/krc721/thumbnails/${ticker}/${filename}` : "";
   };
-
+  
   const getUniqueTraits = () => {
     const traitsMap: { [key: string]: Set<string> } = {};
-
+    
     nfts.forEach((nft) => {
       nft.attributes.forEach(({ trait_type, value }) => {
         if (!traitsMap[trait_type]) {
@@ -158,46 +178,58 @@ export default function NFTCollectionPage() {
         traitsMap[trait_type].add(value);
       });
     });
-
+    
     return Object.fromEntries(Object.entries(traitsMap).map(([key, values]) => [key, Array.from(values)]));
   };
-
+  
   const uniqueTraits = getUniqueTraits();
-
+  
   const handleFilterChange = (trait: string, value: string) => {
+    if (fetchingRef.current) return;
+    
     setFilters((prevFilters) => {
-      const newFilters = {
-        ...prevFilters,
-        [trait]: value,
-      };
+      const newFilters = { ...prevFilters };
       
-      // If value is empty, remove the filter
-      if (!value) {
+      if (value) {
+        newFilters[trait] = value;
+      } else {
         delete newFilters[trait];
       }
       
-      // Update currentFiltersRef immediately
+      // Update ref immediately
       currentFiltersRef.current = newFilters;
       
-      // Reset and fetch with new filters
-      setTimeout(() => fetchNFTs(1, false), 0);
+      // Reset the initial load flag
+      initialLoadCompletedRef.current = false;
+      
+      // Schedule fetch after state update
+      requestAnimationFrame(() => {
+        fetchNFTsRef.current(1, false);
+      });
+      
       return newFilters;
     });
   };
-
+  
+  const handleLoadMoreClick = () => {
+    if (pagination && !fetchingRef.current && !loadingMore) {
+      fetchNFTsRef.current(pagination.currentPage + 1, true);
+    }
+  };
+  
   const filteredNFTs = nfts;
-
+  
   return (
     <Layout>
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-12 md:col-span-2 mt-8">
           <NFTFilter traits={uniqueTraits} onFilterChange={handleFilterChange} />
         </div>
-
+        
         <div className="col-span-12 md:col-span-10">
           {loading && !loadingMore && <p className="text-gray-500">Loading NFTs...</p>}
           {error && <p className="text-red-500">Error: {error}</p>}
-
+          
           {!loading && !error && filteredNFTs.length > 0 && (
             <>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 mt-8 flex flex-wrap justify-between items-start">
@@ -209,25 +241,25 @@ export default function NFTCollectionPage() {
                     {nfts[0]?.description || "No description available"}
                   </p>
                 </div>
-
+                
                 {tickInfo && (
                   <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md shadow-md text-sm w-full md:w-auto mt-4 md:mt-0 w-1/2">
                     <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
                       Collection Details
                     </h2>
-
+                    
                     <div className="mb-2">
                       <span className="font-semibold block">Deployer:</span>
                       <span className="text-gray-700 dark:text-gray-300">{tickInfo.deployer}</span>
                     </div>
-
+                    
                     <div className="flex justify-between items-center mb-2">
                       <span className="font-semibold">State:</span>
                       <span className="px-3 py-1 rounded-full bg-blue-500 text-white text-xs uppercase">
                         {tickInfo.state.charAt(0).toUpperCase() + tickInfo.state.slice(1)}
                       </span>
                     </div>
-
+                    
                     <ul className="text-gray-700 dark:text-gray-300">
                       <li className="flex justify-between">
                         <span className="font-semibold">Max Supply:</span> {tickInfo.max.toLocaleString("en-US")}
@@ -247,7 +279,7 @@ export default function NFTCollectionPage() {
                   </div>
                 )}
               </div>
-
+              
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mt-6">
                 {filteredNFTs.map((nft) => (
                   <div
@@ -271,8 +303,7 @@ export default function NFTCollectionPage() {
                   </div>
                 ))}
               </div>
-
-              {/* Load more indicator */}
+              
               <div ref={loadMoreRef} className="mt-8 mb-8 flex justify-center">
                 {loadingMore && (
                   <div className="flex flex-col items-center">
@@ -283,7 +314,8 @@ export default function NFTCollectionPage() {
                 {!loadingMore && pagination && pagination.hasMorePages && (
                   <button 
                     className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => fetchNFTs(pagination.currentPage + 1, true)}
+                    onClick={handleLoadMoreClick}
+                    disabled={fetchingRef.current}
                   >
                     Load More
                   </button>
@@ -294,7 +326,7 @@ export default function NFTCollectionPage() {
               </div>
             </>
           )}
-
+          
           {!loading && !error && filteredNFTs.length === 0 && (
             <div className="mt-8 text-center p-8 bg-white dark:bg-gray-800 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">No NFTs Found</h2>
@@ -303,7 +335,11 @@ export default function NFTCollectionPage() {
                 <button
                   onClick={() => {
                     setFilters({});
-                    fetchNFTs(1, false);
+                    currentFiltersRef.current = {};
+                    initialLoadCompletedRef.current = false;
+                    requestAnimationFrame(() => {
+                      fetchNFTsRef.current(1, false);
+                    });
                   }}
                   className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
                 >
