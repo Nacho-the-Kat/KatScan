@@ -13,13 +13,12 @@ type TokenListToken = {
   id?: string;
   pillLabel?: string;
   pillStyle?: string;
-  
 };
 
 const TrendingTokens = () => {
   const [tokens, setTokens] = useState<Token[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = "";
 
   useEffect(() => {
     const fetchTokens = async () => {
@@ -30,10 +29,10 @@ const TrendingTokens = () => {
         if (response.ok && data.result) {
           setTokens(data.result);
         } else {
-          setError(data.message || "Failed to load tokens.");
+          console.log('error trending tokens', data)
         }
       } catch (err) {
-        setError("Error fetching data.");
+        console.log('error trending tokens', err)
       } finally {
         setLoading(false);
       }
@@ -46,14 +45,35 @@ const TrendingTokens = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   const stateToPillStyle: Record<string, "primary" | "dark" | "gray" | "accent"> = {
-    deployed: "primary",
-    pending: "gray",
-    failed: "dark",
+    deployed: "accent",
+    pending: "accent",
+    failed: "accent",
     active: "accent",
   };
 
+  function convertUnixToDate(unixTimestamp: number) {
+    if (!unixTimestamp || isNaN(unixTimestamp)) {
+        return "Invalid Date";
+    }
+
+    const date = new Date(Number(unixTimestamp));
+
+    if (isNaN(date.getTime())) {
+        return "Invalid Date";
+    }
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = String(date.getFullYear()).slice(-2); // Get last two digits of year
+    
+    return `${day}/${month}/${year}`;
+  }
+
+  // Sort tokens by mtsAdd (newest first) before mapping
+  const sortedTokens = [...tokens].sort((a, b) => b.mtsAdd - a.mtsAdd);
+
   // Safely convert tokens for the TokenList component
-  const tokenList = tokens.map((token, index) => {
+  const tokenList = sortedTokens.map((token, index) => {
     // Simple existence check before using toString()
     const id = token.id !== undefined ? String(token.id) : `token-${index}`;
     
@@ -61,10 +81,8 @@ const TrendingTokens = () => {
       tick: token.tick,
       id,
       image: `https://katapi.nachowyborski.xyz/static/krc20/thumbnails/${token.tick}.jpg`,
-      pillLabel: token.state
-      ? String(token.state).charAt(0).toUpperCase() + String(token.state).slice(1)
-      : "", 
-      pillStyle: stateToPillStyle[String(token.state)] || 'gray',
+      pillLabel: convertUnixToDate(token.mtsAdd), 
+      pillStyle: 'accent',
     };
   });
 
@@ -73,7 +91,7 @@ const TrendingTokens = () => {
       showPrice={false}
       maxItems={5}
       title="Recent Tokens"
-      tokens={tokenList}
+      tokens={tokenList as unknown as Token[]} // Type assertion to fix type error
       icon={<ArrowTrendingUpIcon className="size-5 text-teal-500" />}
     />
   );

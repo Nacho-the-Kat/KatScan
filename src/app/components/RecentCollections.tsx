@@ -2,25 +2,25 @@
 import { useEffect, useState } from "react";
 import { TokenList } from "../../../packages/kat-library/dist/index";
 import { ArrowTrendingUpIcon } from "@heroicons/react/24/solid";
-import { Token } from "@/app/types/token";
+import { Token } from "../types/token";
 
-const API_URL = "/api/nft/list"; // Adjust if necessary
+const API_URL = "/api/kaspa-tradestats";
 
-// Define a more specific type for our formatted tokens
-interface FormattedToken {
-  id?: number;
+// Define a type that matches the TokenList component's expected Token type
+type TokenListToken = {
+  ticker: any;
+  totalVolumeKAS?: number; // Added missing property
   tick: string;
-  name?: string;
-  owner?: string;
-  uri?: string;
-  maxSupply?: number;
-  minted?: number;
-  royalty?: string;
-  max?: number;
-}
+  image?: string;
+  price?: string;
+  change?: number;
+  id?: string;
+  pillLabel?: string;
+  pillStyle?: string;
+};
 
 const TrendingTokens = () => {
-  const [tokens, setTokens] = useState<FormattedToken[]>([]);
+  const [tokens, setTokens] = useState<TokenListToken[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -29,26 +29,17 @@ const TrendingTokens = () => {
       try {
         const response = await fetch(API_URL);
         const data = await response.json();
+        console.log('data trending tokens', data);
         if (response.ok && data.result) {
-          console.log("data recent collectiions", data);
-          const formattedTokens = data.result.map((item: any) => ({
-            id: item.id,
-            tick: item.tick,
-            name: item.tick, // Store original tick as name too
-            owner: item.deployer,
-            uri: `https://ipfs.io/ipfs/${item.buri}`, // Assuming 'buri' is an IPFS CID
-            maxSupply: item.max,
-            minted: item.minted,
-            royalty: (item.royaltyFee / 1e18).toFixed(6), // Convert royalty fee to readable format
-            max: item.max,
-          }));
-
-          setTokens(formattedTokens);
+          // Sort tokens by totalVolumeKAS (highest to lowest)
+          const sortedTokens = data.result.sort((a: any, b: any) => b.totalVolumeKAS - a.totalVolumeKAS);
+          console.log('sorted tokens', sortedTokens);
+          setTokens(sortedTokens);
         } else {
-          setError("Failed to load tokens.");
+          console.log('error trending tokens', data);
         }
-      } catch (err: unknown) {
-        setError("Error fetching data.");
+      } catch (err) {
+        console.log('error trending tokens', err);
       } finally {
         setLoading(false);
       }
@@ -57,31 +48,48 @@ const TrendingTokens = () => {
     fetchTokens();
   }, []);
 
-  if (loading) return <p>Loading Recent Collections...</p>;
+  if (loading) return <p>Loading Trending Tokens...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
-  // Safely map tokens to the format expected by TokenList
+  function convertUnixToDate(unixTimestamp: number) {
+    if (!unixTimestamp || isNaN(unixTimestamp)) {
+        return "Invalid Date";
+    }
+
+    const date = new Date(Number(unixTimestamp));
+
+    if (isNaN(date.getTime())) {
+        return "Invalid Date";
+    }
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = String(date.getFullYear()).slice(-2); // Get last two digits of year
+    
+    return `${day}/${month}/${year}`;
+  }
+
+  // Safely convert tokens for the TokenList component
   const tokenList = tokens.map((token, index) => {
-    // Simple existence check before using toString()
-    const id = token.id !== undefined ? String(token.id) : `recent-${index}`;
+    const id = token.id !== undefined ? String(token.id) : `token-${index}`;
     
     return {
-      tick: token.tick,
+      tick: token.ticker,
       id,
-      image: `https://katapi.nachowyborski.xyz/static/krc721/thumbnails/${token.tick}/1.png`,
-      change: Number(token.maxSupply),
+      image: `https://katapi.nachowyborski.xyz/static/krc20/thumbnails/${token.ticker}.jpg`,
+      pillLabel: token.totalVolumeKAS ? `${ String(token.totalVolumeKAS)} KAS` : 'N/A',
+      pillStyle: 'accent',
     };
   });
-
 
   return (
     <TokenList
       showPrice={false}
       maxItems={5}
-      title="Recent Collections"
-      legend="Total Supply"
-      tokens={tokenList}
+      title="Recent Tokens" 
+      tokens={tokenList as unknown as Token[]}
       icon={<ArrowTrendingUpIcon className="size-5 text-teal-500" />}
+      legend="Volume"
     />
   );
 };

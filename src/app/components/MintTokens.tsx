@@ -23,9 +23,11 @@ const MintTokens = () => {
       try {
         const response = await fetch(`/api/mint-totals`);
         const data = await response.json();
-        console.log('mint totals', data);
+        
+        console.log('Trending Tokens', data);
         if (response.ok) {
-          setTokens(data);
+          const sortedTokens = data.sort((a: Token, b: Token) => b.mintTotal - a.mintTotal);
+          setTokens(sortedTokens);
         } else {
           setError("Failed to load tokens.");
         }
@@ -39,7 +41,7 @@ const MintTokens = () => {
     fetchTokens();
   }, []);
 
-  if (loading) return <p>Loading Mint Totals...</p>;
+  if (loading) return <p>Loading Trending Tokens...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
   // Safely convert tokens for the TokenList component
@@ -60,7 +62,7 @@ const MintTokens = () => {
     <TokenList
       showPrice={false}
       maxItems={5}
-      title="Mint Totals"
+      title="Trending Tokens"
       legend="Minted"
       tokens={tokenList}
       icon={<ChartPieIcon className="size-5 text-teal-500" />}

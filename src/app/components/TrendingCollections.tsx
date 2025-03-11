@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { TokenList } from "../../../packages/kat-library/dist/index";
 import { RocketLaunchIcon } from "@heroicons/react/24/solid";
-import { Token, TokenApiResponse } from "@/app/types/token";
 import { formatInteger } from "../utils/utils";
 
 // Define a type that matches the TokenList component's expected Token type
@@ -14,19 +13,28 @@ type TokenListToken = {
   id?: string;
 };
 
+type HotMintToken = {
+  ticker: string;
+  changeTotalMints: number;
+  totalMintPercentage: number;
+  totalHolders: number;
+};
+
 const TrendingTokens = () => {
-  const [tokens, setTokens] = useState<Token[]>([]);
+  const [tokens, setTokens] = useState<HotMintToken[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchTokens = async () => {
       try {
-        const response = await fetch(`/api/tokens?limit=5&sortBy=holderTotal&sortOrder=desc`);
+        const response = await fetch("/api/kaspa-hotmints");
         const data = await response.json();
         console.log('trending collections', data);
         if (response.ok) {
-          setTokens(data);
+          // Sort tokens by totalHolders (descending order)
+          const sortedTokens = data.sort((a: HotMintToken, b: HotMintToken) => b.totalMintPercentage - a.totalMintPercentage);
+          setTokens(sortedTokens);
         } else {
           setError("Failed to load tokens.");
         }
@@ -46,13 +54,13 @@ const TrendingTokens = () => {
   // Safely convert tokens for the TokenList component
   const tokenList = tokens.map((token, index) => {
     // Simple existence check before using toString()
-    const id = token.id !== undefined ? String(token.id) : `collection-${index}`;
+    const id = `collection-${index}`;
     
     return {
-      tick: token.tick,
+      tick: token.ticker,
       id,
-      image: `https://katapi.nachowyborski.xyz/static/krc20/thumbnails/${token.logo}`,
-      pillLabel: String(formatInteger(token.holderTotal)),
+      image: `https://katapi.nachowyborski.xyz/static/krc20/thumbnails/${token.ticker}.jpg`,
+      pillLabel: `${String(token.totalMintPercentage)}%`,
     };
   });
 
@@ -60,7 +68,7 @@ const TrendingTokens = () => {
     <TokenList
       showPrice={false}
       maxItems={5}
-      legend="Holders"
+      legend="Mint Percentage"
       title="Trending Collections"
       tokens={tokenList}
       icon={<RocketLaunchIcon className="size-5 text-teal-500" />}
