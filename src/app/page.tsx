@@ -28,9 +28,9 @@ export default function Home() {
   return (
     <Layout>
       <div className="space-y-8">
-        {/* Primera fila: 4 columnas */}
-        <div className="grid grid-cols-4 gap-4">
-          <div className="py-4 ">
+        {/* Responsive grid for token and collection widgets */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="py-4">
             <TrendingTokens />
           </div>
           <div className="py-4">
@@ -40,15 +40,13 @@ export default function Home() {
             <RecentCollections />
           </div>
           <div className="py-4">        
-              <TrendingCollections />
+            <TrendingCollections />
           </div>
         </div>
 
         <TokenStatistics />
 
         <NFTStatistics />
-
-       
       </div>
     </Layout>
   );

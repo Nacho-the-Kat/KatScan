@@ -4,19 +4,15 @@ import { useEffect, useState } from "react";
 import Layout from "@/app/components/Layout";
 import { Table, Avatar, Pill, ProgressBar } from "../../../packages/kat-library/dist/index";
 import { ColumnDef } from "@tanstack/table-core";
-import { formatNumberWithWords, formatPercentage, calculateValue } from "../utils/utils";
+import { formatNumberWithWords, formatInteger, formatPercentage, calculateValue } from "../utils/utils";
 import Link from "next/link";
-
+import { format } from "date-fns";
 // Function to format timestamp to "DD/MM/YYYY"
 const formatDate = (timestamp: number): string => {
   if (!timestamp) return "N/A";
 
   const date = new Date(timestamp);
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = date.getFullYear();
-
-  return `${day}/${month}/${year}`;
+  return format(date, "MMM d, yyyy");
 };
 
 export default function Home() {
@@ -98,12 +94,12 @@ export default function Home() {
     {
       accessorKey: "max", 
       header: "Max Supply",
-      cell: ({ row }) => formatNumberWithWords(row.original.max, 2),
+      cell: ({ row }) => formatInteger(row.original.max),
     },
     {
       accessorKey: "minted",
       header: "Total Minted",
-      cell: ({ row }) => formatNumberWithWords(row.original.minted, 2),
+      cell: ({ row }) => formatInteger(row.original.minted),
     },
     {
       accessorKey: "mintingProgress", 
@@ -128,12 +124,17 @@ export default function Home() {
     {
       accessorKey: "completed",
       header: "Action",
-      cell: ({ row }) => (
-        <Pill
-          label={row.original.completed ? "Trade" : "Mint"}
-          color={row.original.completed ? "primary" : "accent"}
-        />
-      ),
+      cell: ({ row }) => {
+        return (
+          <Link href={`https://www.kaspa.com/nft/collections/${row.original.tick}/?ref=LYl1whR1`}>
+            
+            <Pill
+              label={row.original.completed ? "Trade" : "Mint"}
+              color={row.original.completed ? "primary" : "accent"}
+            />
+          </Link>
+        );
+      },
     },
   ];
 

@@ -236,76 +236,82 @@ export default function NFTCollectionPage() {
   
   return (
     <Layout>
-      <div className="grid grid-cols-12 gap-6">
-        <div className="col-span-12 md:col-span-2 mt-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        {/* Sidebar filters - full width on mobile, sidebar on desktop */}
+        <div className="col-span-1 lg:col-span-2 mt-4 lg:mt-8">
           <NFTFilter traits={uniqueTraits} onFilterChange={handleFilterChange} />
         </div>
         
-        <div className="col-span-12 md:col-span-10">
+        {/* Main content area */}
+        <div className="col-span-1 lg:col-span-10">
           {loading && !loadingMore && <p className="text-gray-500">Loading NFTs...</p>}
           {error && <p className="text-red-500">Error: {error}</p>}
           
           {!loading && !error && filteredNFTs.length > 0 && (
             <>
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 mt-8 flex flex-wrap justify-between items-start">
-                <div className="w-full md:w-1/2 mb-4 md:mb-0">
-                  <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                    {ticker} NFT Collection
-                  </h1>
-                  <p className="text-gray-600 dark:text-gray-400 mt-2">
-                    {nfts[0]?.description || "No description available"}
-                  </p>
-                </div>
-                
-                {tickInfo && (
-                  <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md shadow-md text-sm w-full md:w-auto">
-                    <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
-                      Collection Details
-                    </h2>
-                    
-                    <div className="mb-2">
-                      <span className="font-semibold block">Deployer:</span>
-                      <span className="text-gray-700 dark:text-gray-300 text-xs break-all">{tickInfo.deployer}</span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-semibold">State:</span>
-                      <span className="px-3 py-1 rounded-full bg-blue-500 text-white text-xs uppercase">
-                        {tickInfo.state.charAt(0).toUpperCase() + tickInfo.state.slice(1)}
-                      </span>
-                    </div>
-                    
-                    <ul className="text-gray-700 dark:text-gray-300">
-                      <li className="flex justify-between">
-                        <span className="font-semibold">Max Supply:</span> {tickInfo.max.toLocaleString("en-US")}
-                      </li>
-                      <li className="flex justify-between">
-                        <span className="font-semibold">Minted:</span> {tickInfo.minted.toLocaleString("en-US")}
-                      </li>
-                      <li className="flex justify-between">
-                        <span className="font-semibold">Royalty Fee:</span> {formatNumberWithWords(tickInfo.royaltyFee, 8)}
-                      </li>
-                      {pagination && (
-                        <li className="flex justify-between mt-2">
-                          <span className="font-semibold">Showing:</span> {nfts.length} of {pagination.totalItems} NFTs
-                        </li>
-                      )}
-                    </ul>
+              {/* Collection header - stack on mobile, side by side on desktop */}
+              <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 mt-4 lg:mt-8">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+                  <div className="w-full md:w-1/2">
+                    <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-200">
+                      {ticker} NFT Collection
+                    </h1>
+                    <p className="text-gray-600 dark:text-gray-400 mt-2 text-sm sm:text-base">
+                      {nfts[0]?.description || "No description available"}
+                    </p>
                   </div>
-                )}
+                  
+                  {tickInfo && (
+                    <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md shadow-md text-sm w-full md:w-auto">
+                      <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                        Collection Details
+                      </h2>
+                      
+                      <div className="mb-2">
+                        <span className="font-semibold block">Deployer:</span>
+                        <span className="text-gray-700 dark:text-gray-300 text-xs break-all">{tickInfo.deployer}</span>
+                      </div>
+                      
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="font-semibold">State:</span>
+                        <span className="px-3 py-1 rounded-full bg-blue-500 text-white text-xs uppercase">
+                          {tickInfo.state.charAt(0).toUpperCase() + tickInfo.state.slice(1)}
+                        </span>
+                      </div>
+                      
+                      <ul className="text-gray-700 dark:text-gray-300">
+                        <li className="flex justify-between">
+                          <span className="font-semibold">Max Supply:</span> {tickInfo.max.toLocaleString("en-US")}
+                        </li>
+                        <li className="flex justify-between">
+                          <span className="font-semibold">Minted:</span> {tickInfo.minted.toLocaleString("en-US")}
+                        </li>
+                        <li className="flex justify-between">
+                          <span className="font-semibold">Royalty Fee:</span> {formatNumberWithWords(tickInfo.royaltyFee, 8)}
+                        </li>
+                        {pagination && (
+                          <li className="flex justify-between mt-2">
+                            <span className="font-semibold">Showing:</span> {nfts.length} of {pagination.totalItems} NFTs
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </div>
               
-              <div className="grid grid-cols-5 gap-6 mt-6">
+              {/* Responsive grid for NFT cards */}
+              <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6 mt-4 sm:mt-6">
                 {filteredNFTs.map((nft) => (
                   <div
                     key={nft.id}
-                    className="nft-card dark:bg-gray-800"
+                    className="nft-card mx-auto"
                     onClick={() => {
                       setSelectedNFT(nft);
                       router.push(`/nft/detail/${ticker}/${nft.id}`);
                     }}
                   >
-                    <div className="nft-card-inner ">
+                    <div className="nft-card-inner">
                       {/* Front of the Card */}
                       <div className="nft-card-front">
                         <div
@@ -314,7 +320,7 @@ export default function NFTCollectionPage() {
                             backgroundImage: `url(${formatImageUrl(nft.image)})`,
                           }}
                         />
-                        <h2 className="text-center mt-2 text-lg font-semibold text-gray-800 dark:text-gray-200">
+                        <h2 className="text-center mt-2 text-sm sm:text-base font-semibold text-gray-800 dark:text-gray-200 truncate w-full">
                           {nft.name}
                         </h2>
                       </div>
@@ -336,9 +342,8 @@ export default function NFTCollectionPage() {
                 ))}
               </div>
 
-
-              
-              <div ref={loadMoreRef} className="mt-8 mb-8 flex justify-center">
+              {/* Load more section */}
+              <div ref={loadMoreRef} className="mt-6 sm:mt-8 mb-6 sm:mb-8 flex justify-center">
                 {loadingMore && (
                   <div className="flex flex-col items-center">
                     <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
@@ -355,14 +360,14 @@ export default function NFTCollectionPage() {
                   </button>
                 )}
                 {!loadingMore && pagination && !pagination.hasMorePages && nfts.length > 0 && (
-                  <p className="text-gray-500">End of collection - Showing {nfts.length} of {pagination.totalItems} NFTs</p>
+                  <p className="text-gray-500 text-center text-sm sm:text-base">End of collection - Showing {nfts.length} of {pagination.totalItems} NFTs</p>
                 )}
               </div>
             </>
           )}
           
           {!loading && !error && filteredNFTs.length === 0 && (
-            <div className="mt-8 text-center p-8 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+            <div className="mt-4 lg:mt-8 text-center p-4 sm:p-8 bg-white dark:bg-gray-800 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">No NFTs Found</h2>
               <p className="text-gray-600 dark:text-gray-400 mt-2">Try adjusting your filters to see more results.</p>
               {Object.keys(filters).length > 0 && (

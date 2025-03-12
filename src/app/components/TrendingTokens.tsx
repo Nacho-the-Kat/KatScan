@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { TokenList } from "../../../packages/kat-library/dist/index";
 import { ArrowTrendingUpIcon } from "@heroicons/react/24/solid";
 import { Token } from "@/app/types/token";
+import { format } from "date-fns";
 
 // Define a type that matches the TokenList component's expected Token type
 type TokenListToken = {
@@ -61,6 +62,8 @@ const TrendingTokens = () => {
     if (isNaN(date.getTime())) {
         return "Invalid Date";
     }
+
+    return format(date, "MMM d, yyyy"); 
 
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based

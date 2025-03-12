@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     try {
       const pathname = req.nextUrl.pathname;
       const id = pathname.split("/").pop(); // Get last part of URL
-      const { searchParams } = new URL(req.url);
+      console.log('addrress id', id);
   
     if (!id) {
       return NextResponse.json({ error: "Missing id parameter" }, { status: 400 });
@@ -16,11 +16,12 @@ export async function GET(req: NextRequest) {
 
     // Construct API URLs
     const urls = {
-      balance: `${KASPA_API_BASE_URL}/${encodeURIComponent(id)}/balance`,
-      name: `${KASPA_API_BASE_URL}/${encodeURIComponent(id)}/name`,
-      transactions: `${KASPA_API_BASE_URL}/${encodeURIComponent(id)}/full-transactions?limit=20&offset=0`,
-      transactionCount: `${KASPA_API_BASE_URL}/${encodeURIComponent(id)}/transactions-count`,
+      balance: `${KASPA_API_BASE_URL}/${id}/balance`,
+      name: `${KASPA_API_BASE_URL}/${id}/name`,
+      transactions: `${KASPA_API_BASE_URL}/${id}/full-transactions?limit=20&offset=0`,
+      transactionCount: `${KASPA_API_BASE_URL}/${id}/transactions-count`,
     };
+    console.log('urls', urls);
 
     // Fetch data from all APIs in parallel
     const [balanceRes, nameRes, transactionsRes, countRes] = await Promise.all([
@@ -29,6 +30,11 @@ export async function GET(req: NextRequest) {
       fetch(urls.transactions, { headers: { Accept: "application/json" } }),
       fetch(urls.transactionCount, { headers: { Accept: "application/json" } }),
     ]);
+
+    // console.log('balanceRes', balanceRes);
+    // console.log('nameRes', nameRes);
+    // console.log('transactionsRes', transactionsRes);
+    // console.log('countRes', countRes);
 
     // Check if any request failed
     if (!balanceRes.ok || !nameRes.ok || !transactionsRes.ok || !countRes.ok) {

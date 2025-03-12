@@ -22,13 +22,12 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       children: [
         { label: "All Tokens", href: "/scan" },
         { label: "Heatmap", href: "/heatmap" },
+        { label: "Compare Tokens", href: "/compare" },
       ],
     },
     {
       label: "NFTs",
-      children: [
-        { label: "All Collections", href: "/nft" },
-      ],
+      href: "/nft"
     },
   ];
 
@@ -92,9 +91,9 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       {/* Header */}
       <header className="flex bg-white dark:bg-gray-800 shadow-md">
         <div className="flex-grow flex justify-center items-center">
-          <div className="w-11/12">
-            <div className="flex-grow flex justify-between items-center">
-              <div className="px-4">
+          <div className="w-full px-4 sm:w-11/12">
+            <div className="flex flex-row justify-between items-center py-4">
+              <div className="flex items-center">
                 <Link href={"/"}>
                   <Image src="/katscan_new_logo.png" alt="KatScan Logo" width={180} height={45} />
                 </Link>
@@ -108,8 +107,8 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow flex justify-center items-start py-8">
-        <div className="w-11/12">
+      <main className="flex-grow flex justify-center items-start py-4 sm:py-8">
+        <div className="w-full px-4 sm:w-11/12">
           <div className="block w-full">
             <Search
               showHint={true}

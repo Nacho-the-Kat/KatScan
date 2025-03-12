@@ -5,8 +5,6 @@ import { formatNumberWithWords, formatInteger } from "../utils/utils";
 
 const API_URL = "/api/kasplex/info";
 
-
-
 const TokenStatistics = () => {
   const [stats, setStats] = useState({
     opTotal: '',
@@ -36,8 +34,8 @@ const TokenStatistics = () => {
 
   return (
     <div>
-      <h1 className="text-2xl text-teal-500">Token Statistics</h1>
-      <div className="grid grid-cols-3 gap-4">
+      <h1 className="text-2xl text-teal-500 mb-4">Token Statistics</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <div className="py-4 text-center">
           <Widget
             value={`Total KRC20 Transactions`}

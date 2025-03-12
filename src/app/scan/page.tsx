@@ -22,18 +22,20 @@ import TrendingTokens from "../components/TrendingTokens";
 import MintTokens from "../components/MintTokens";
 import { ArrowTrendingUpIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { format } from "date-fns";
 
 // Function to convert timestamp to "DD/MM/YYYY :SS" format
 const formatDate = (timestamp: number): string => {
   if (!timestamp) return "N/A";
 
   const date = new Date(timestamp);
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
-  const year = date.getFullYear();
-  const seconds = String(date.getSeconds()).padStart(2, "0");
+  return format(date, "MMM d, yyyy");
+  // const day = String(date.getDate()).padStart(2, "0");
+  // const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+  // const year = date.getFullYear();
+  // const seconds = String(date.getSeconds()).padStart(2, "0");
 
-  return `${day}/${month}/${year}`;
+  // return `${day}/${month}/${year}`;
 };
 
 export default function Home() {
