@@ -28,10 +28,6 @@ export async function GET(req: NextRequest) {
       }
     });
 
-    console.log('id', id);
-    console.log('page', page);
-    console.log('pageSize', pageSize);
-    console.log('fetchAll', fetchAll);
 
     if (!id) {
       return NextResponse.json({ status: 400, message: "Invalid token ID" }, { status: 400 });

@@ -1,12 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = 'edge';
 
 const KASPA_API_BASE_URL = "https://api.kaspa.org/blocks";
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest) {
   try {
-    const { id } = params;
+    const pathname = req.nextUrl.pathname;
+    const id = pathname.split("/").pop(); // Get last part of URL
+    const { searchParams } = new URL(req.url);
+    
     if (!id) {
       return NextResponse.json({ error: "Missing block ID" }, { status: 400 });
     }
