@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+export const runtime = 'edge';
 export async function GET() {
     try {
         console.log('Fetching trade stats from API...');
