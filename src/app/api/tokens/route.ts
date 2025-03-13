@@ -6,14 +6,14 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://katapi.nac
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const limit = searchParams.get("limit") || "10";
+  const limit = searchParams.get("limit") || "5";
   const sortBy = searchParams.get("sortBy") || "holderTotal";
   const sortOrder = searchParams.get("sortOrder") || "desc";
 
   console.log('API_BASE_URL', API_BASE_URL);
 
   try {
-    const url = `${API_BASE_URL}/token/tokenlist?sortBy=${sortBy}&sortOrder=${sortOrder}&limit=5`;
+    const url = `${API_BASE_URL}/token/tokenlist?sortBy=${sortBy}&sortOrder=${sortOrder}&limit=${limit}`;
     console.log('url', url);
     const response = await fetch(
       url
