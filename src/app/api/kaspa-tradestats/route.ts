@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
+import { staticConfig } from '../config';
 
-export const runtime = 'edge';
+export const { dynamic, revalidate } = staticConfig;
+
 export async function GET() {
     try {
         console.log('Fetching trade stats from API...');

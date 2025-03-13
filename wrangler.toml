@@ -1,9 +1,12 @@
 [build]
-command = "npm run build"
-output_directory = "out"
+command = "npx @cloudflare/next-on-pages@1"
+output_directory = ".vercel/output/static"
 
 [build.environment]
 NODE_VERSION = "20"
 
 [site]
-bucket = "./out" 
+bucket = ".vercel/output/static"
+
+[env.production]
+name = "production" 

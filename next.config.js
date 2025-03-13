@@ -6,9 +6,11 @@ const nextConfig = {
   },
   // Ensure static assets are handled correctly
   assetPrefix: process.env.NODE_ENV === 'production' ? '/' : '',
-  // Disable server components since we're using edge runtime
+  // Configure static generation
+  trailingSlash: true,
+  // Disable server components for static export
   experimental: {
-    appDir: true,
+    serverActions: false
   }
 }
 
