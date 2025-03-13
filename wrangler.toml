@@ -1,6 +1,9 @@
 [build]
 command = "npm run build"
-output_directory = ".next"
+output_directory = "out"
 
 [build.environment]
-NODE_VERSION = "20" 
+NODE_VERSION = "20"
+
+[site]
+bucket = "./out" 
