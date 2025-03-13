@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
-import { staticConfig } from '../config';
 
-export const { dynamic, revalidate } = staticConfig;
+// Configure static generation for the API route
+export const dynamic = 'force-static';
+export const revalidate = false;
 
 export async function GET() {
     try {

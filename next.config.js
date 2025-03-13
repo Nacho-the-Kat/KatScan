@@ -7,11 +7,7 @@ const nextConfig = {
   // Ensure static assets are handled correctly
   assetPrefix: process.env.NODE_ENV === 'production' ? '/' : '',
   // Configure static generation
-  trailingSlash: true,
-  // Disable server components for static export
-  experimental: {
-    serverActions: false
-  }
+  trailingSlash: true
 }
 
 module.exports = nextConfig 
