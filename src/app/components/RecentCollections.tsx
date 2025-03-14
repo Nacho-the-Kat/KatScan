@@ -69,7 +69,7 @@ const TrendingTokens = () => {
       showPrice={false}
       maxItems={5}
       legend="Mint Percentage"
-      title="Trending Collections"
+      title="Recent Collections"
       tokens={tokenList}
       icon={<RocketLaunchIcon className="size-5 text-teal-500" />}
     />

@@ -21,7 +21,7 @@ const TokenStatistics = () => {
           setStats({
             opTotal: formatInteger(data.result.opTotal),
             tokenTotal: formatInteger(data.result.tokenTotal),
-            feeTotal: formatNumberWithWords(data.result.feeTotal, 8),
+            feeTotal: formatInteger(data.result.feeTotal),
           });
         }
       } catch (error) {

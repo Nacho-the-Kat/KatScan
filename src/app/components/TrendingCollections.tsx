@@ -87,7 +87,7 @@ function convertUnixToDate(unixTimestamp: number) {
     <TokenList
       showPrice={false}
       maxItems={5}
-      title="Recent Collections" 
+      title="Trending Collections" 
       tokens={tokenList as unknown as Token[]}
       icon={<ArrowTrendingUpIcon className="size-5 text-teal-500" />}
       legend="Volume"

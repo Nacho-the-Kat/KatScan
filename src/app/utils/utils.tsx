@@ -131,3 +131,11 @@ export const sortComparison = <T extends number | string>(a: T, b: T, sortDirect
     return String(a).localeCompare(String(b))
 }
 
+export const formatDecimalNumber = (value: number, decimals: number): string => {
+    const number = value / Math.pow(10, decimals);
+    return number.toLocaleString('en-US', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+    });
+}
+

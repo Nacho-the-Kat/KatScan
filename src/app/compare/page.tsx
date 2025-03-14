@@ -6,7 +6,7 @@ import TokenAutocomplete from "@/app/components/TokenAutocomplete";
 import TokenComparisonCard from "@/app/components/TokenComparisonCard";
 import { ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
 import { Table, Tabs } from "../../../packages/kat-library/dist/index";
-import { formatNumberWithWords, formatInteger } from "../utils/utils";
+import { formatNumberWithWords, formatInteger, formatKRC20Amount, formatDecimalNumber } from "../utils/utils";
 import dynamic from 'next/dynamic';
 
 // Dynamically import ApexCharts to avoid SSR issues
@@ -37,6 +37,12 @@ interface TokenDetails {
   to?: string;
   logo?: string;
   socials?: string;
+}
+
+interface HolderGroup {
+  group: string;
+  balance: string;
+  percentage: number;
 }
 
 export default function CompareToken() {
@@ -120,18 +126,18 @@ export default function CompareToken() {
     return [
       {
         metric: "Max Supply",
-        [token1Details.tick]: formatInteger(token1Details.max),
-        [token2Details.tick]: formatInteger(token2Details.max)
+        [token1Details.tick]: `${formatDecimalNumber(token1Details.max, token1Details.dec)} ${token1Details.tick}`,
+        [token2Details.tick]: `${formatDecimalNumber(token2Details.max, token2Details.dec)} ${token2Details.tick}`
       },
       {
         metric: "Minted",
-        [token1Details.tick]: formatInteger(token1Details.minted),
-        [token2Details.tick]: formatInteger(token2Details.minted)
+        [token1Details.tick]: `${formatDecimalNumber(token1Details.minted, token1Details.dec)} ${token1Details.tick}`,
+        [token2Details.tick]: `${formatDecimalNumber(token2Details.minted, token2Details.dec)} ${token2Details.tick}`
       },
       {
         metric: "Pre-Minted",
-        [token1Details.tick]: formatInteger(token1Details.pre),
-        [token2Details.tick]: formatInteger(token2Details.pre)
+        [token1Details.tick]: `${formatDecimalNumber(token1Details.pre, token1Details.dec)} ${token1Details.tick}`,
+        [token2Details.tick]: `${formatDecimalNumber(token2Details.pre, token2Details.dec)} ${token2Details.tick}`
       },
       {
         metric: "Total Holders",
@@ -249,7 +255,7 @@ export default function CompareToken() {
       yaxis: {
         labels: {
           formatter: function(value: number) {
-            return formatNumberWithWords(value, 0);
+            return formatDecimalNumber(value, token1Details.dec);
           }
         }
       },
@@ -258,8 +264,9 @@ export default function CompareToken() {
       },
       tooltip: {
         y: {
-          formatter: function(value: number) {
-            return formatInteger(value);
+          formatter: function(value: number, { dataPointIndex }: { seriesIndex: number; dataPointIndex: number; w: any }) {
+            const tokenDetails = dataPointIndex === 0 ? token1Details : token2Details;
+            return `${formatDecimalNumber(value, tokenDetails.dec)} ${tokenDetails.tick}`;
           }
         }
       },
@@ -304,11 +311,11 @@ export default function CompareToken() {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span>Max Supply:</span>
-                <span className="font-semibold">{formatInteger(token1Details.max)}</span>
+                <span className="font-semibold">{formatDecimalNumber(token1Details.max, token1Details.dec)} {token1Details.tick}</span>
               </div>
               <div className="flex justify-between">
                 <span>Minted:</span>
-                <span className="font-semibold">{formatInteger(token1Details.minted)}</span>
+                <span className="font-semibold">{formatDecimalNumber(token1Details.minted, token1Details.dec)} {token1Details.tick}</span>
               </div>
               <div className="flex justify-between">
                 <span>Minting Progress:</span>
@@ -324,11 +331,11 @@ export default function CompareToken() {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span>Max Supply:</span>
-                <span className="font-semibold">{formatInteger(token2Details.max)}</span>
+                <span className="font-semibold">{formatDecimalNumber(token2Details.max, token2Details.dec)} {token2Details.tick}</span>
               </div>
               <div className="flex justify-between">
                 <span>Minted:</span>
-                <span className="font-semibold">{formatInteger(token2Details.minted)}</span>
+                <span className="font-semibold">{formatDecimalNumber(token2Details.minted, token2Details.dec)} {token2Details.tick}</span>
               </div>
               <div className="flex justify-between">
                 <span>Minting Progress:</span>
@@ -367,22 +374,185 @@ export default function CompareToken() {
   const HoldersTab = () => {
     if (!token1Details || !token2Details) return null;
     
-    return (
-      <div className="p-4">
-        <h3 className="text-xl font-semibold mb-4">Holder Distribution</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
-            <h4 className="font-medium mb-2">{token1Details.tick} Holders</h4>
-            <div className="text-center text-2xl font-bold">
-              {formatInteger(token1Details.holderTotal)}
+    const [token1Distribution, setToken1Distribution] = useState<HolderGroup[]>([]);
+    const [token2Distribution, setToken2Distribution] = useState<HolderGroup[]>([]);
+    const [loading1, setLoading1] = useState(true);
+    const [loading2, setLoading2] = useState(true);
+    const [error1, setError1] = useState<string | null>(null);
+    const [error2, setError2] = useState<string | null>(null);
+
+    useEffect(() => {
+      const fetchDistribution = async (ticker: string, setDistribution: any, setLoading: any, setError: any) => {
+        try {
+          const API_KASPLEX_URL = "https://api.kasplex.org/v1";
+          const response = await fetch(`${API_KASPLEX_URL}/krc20/token/${ticker}`);
+          const jsonData = await response.json();
+
+          if (!response.ok) {
+            throw new Error(`Failed to fetch token info: ${jsonData.error || response.statusText}`);
+          }
+
+          if (!jsonData.result?.[0]) {
+            throw new Error("No token data available");
+          }
+
+          const tokenData = jsonData.result[0];
+
+          if (!Array.isArray(tokenData.holder) || tokenData.holder.length === 0) {
+            throw new Error("No holder data available");
+          }
+
+          const sortedHolders = [...tokenData.holder].sort((a, b) => 
+            Number(b.amount) - Number(a.amount)
+          );
+
+          const maxSupply = Number(tokenData.max);
+          const distributions = [];
+          const ranges = [
+            { start: 0, end: 10, label: "Top 10" },
+            { start: 10, end: 20, label: "11-20" },
+            { start: 20, end: 30, label: "21-30" },
+            { start: 30, end: 40, label: "31-40" },
+            { start: 40, end: 50, label: "41-50" }
+          ];
+
+          let totalCalculatedBalance = 0;
+
+          ranges.forEach(({ start, end, label }) => {
+            const holders = sortedHolders.slice(start, end);
+            const balance = holders.reduce((sum, holder) => sum + Number(holder.amount), 0);
+            totalCalculatedBalance += balance;
+            
+            distributions.push({
+              group: label,
+              balance: balance.toString(),
+              percentage: (balance / maxSupply) * 100
+            });
+          });
+
+          const remainingBalance = maxSupply - totalCalculatedBalance;
+          distributions.push({
+            group: "Remaining",
+            balance: remainingBalance.toString(),
+            percentage: (remainingBalance / maxSupply) * 100
+          });
+
+          setDistribution(distributions);
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            setError(error.message);
+          } else {
+            setError('An unknown error occurred');
+          }
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchDistribution(token1Details.tick, setToken1Distribution, setLoading1, setError1);
+      fetchDistribution(token2Details.tick, setToken2Distribution, setLoading2, setError2);
+    }, [token1Details.tick, token2Details.tick]);
+
+    const getChartOptions = (tokenTick: string) => ({
+      chart: {
+        type: 'pie' as const,
+        height: 350,
+        toolbar: {
+          show: false
+        }
+      },
+      labels: ['Top 10', '11-20', '21-30', '31-40', '41-50', 'Remaining'],
+      responsive: [{
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200
+          },
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }],
+      colors: ['#14b8a6', '#0ea5e9', '#8b5cf6', '#f59e0b', '#ef4444', '#6b7280'],
+      title: {
+        text: `${tokenTick} Holder Distribution`,
+        align: 'center' as const,
+        style: {
+          fontSize: '16px',
+          fontWeight: 600
+        }
+      }
+    });
+
+    const renderDistributionChart = (
+      distribution: HolderGroup[],
+      tokenTick: string,
+      loading: boolean,
+      error: string | null,
+      totalHolders: number
+    ) => {
+      if (loading) {
+        return (
+          <div className="flex justify-center items-center h-80">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-teal-500"></div>
+          </div>
+        );
+      }
+
+      if (error) {
+        return (
+          <div className="flex justify-center items-center h-80">
+            <p className="text-red-500">Error: {error}</p>
+          </div>
+        );
+      }
+
+      const series = distribution.map(item => item.percentage);
+      
+      return (
+        <div>
+          <div className="text-center mb-4">
+            <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{tokenTick}</h4>
+            <div className="flex items-center justify-center gap-2 mt-2">
+              <span className="text-3xl font-bold text-teal-500">{formatInteger(totalHolders)}</span>
+              <span className="text-gray-600 dark:text-gray-400">Total Holders</span>
             </div>
           </div>
-          
-          <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
-            <h4 className="font-medium mb-2">{token2Details.tick} Holders</h4>
-            <div className="text-center text-2xl font-bold">
-              {formatInteger(token2Details.holderTotal)}
-            </div>
+          <div className="h-80">
+            {typeof window !== 'undefined' && (
+              <Chart 
+                options={getChartOptions(tokenTick)}
+                series={series}
+                type="pie"
+                height="100%"
+              />
+            )}
+          </div>
+        </div>
+      );
+    };
+
+    return (
+      <div className="p-4">
+        <h3 className="text-xl font-semibold mb-6">Holder Distribution Comparison</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            {renderDistributionChart(
+              token1Distribution,
+              token1Details.tick,
+              loading1,
+              error1,
+              token1Details.holderTotal
+            )}
+          </div>
+          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            {renderDistributionChart(
+              token2Distribution,
+              token2Details.tick,
+              loading2,
+              error2,
+              token2Details.holderTotal
+            )}
           </div>
         </div>
       </div>

@@ -228,9 +228,9 @@ export default function Home() {
 
         {!loading && !error && token && (
           <>
-            <div className="grid grid-cols-2 gap-4 mt-8">
-              <div className="w-full flex h-full px-4 items-center justify-center col-span-1 bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out  ">
-                <div className="w-4/12 flex items-center gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-8">
+              <div className="w-full flex flex-col sm:flex-row h-full px-4 py-4 sm:py-0 items-center justify-between lg:justify-center col-span-1 bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out">
+                <div className="w-full sm:w-4/12 flex items-center gap-4 mb-4 sm:mb-0 justify-center sm:justify-start">
                   {/* Avatar aligned to the left */}
                   <Avatar
                     imageUrl={`https://katapi.nachowyborski.xyz/static/krc20/thumbnails/${token.logo}`}
@@ -240,9 +240,9 @@ export default function Home() {
                   </h1>
                 </div>
 
-                {/* Table container centered and taking 80% height */}
-                <div className="flex justify-center items-center w-full h-full">
-                  <table className="w-4/5 border-collapse text-left">
+                {/* Table container */}
+                <div className="flex justify-center items-center w-full sm:w-8/12">
+                  <table className="w-full sm:w-4/5 border-collapse text-left">
                     <tbody>
                       <tr className="">
                         <td className="px-4 py-3 font-semibold text-gray-600 dark:text-gray-300">
@@ -262,37 +262,36 @@ export default function Home() {
                         </td>
                         <td className="px-4 py-3 text-gray-500">$X</td>
                       </tr>
-                     
                     </tbody>
                   </table>
                 </div>
               </div>
 
-              {/* Second child: Existing Stats Grid */}
-              <div className="grid grid-cols-3 gap-4 col-span-1">
-                <div className="py-4 flex items-center flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out">
-                  <h1 className="text-teal-400 text-xl">Max Supply</h1>
-                  <p>{ formatNumberWithWords(token.max, token.dec)}</p>
+              {/* Stats Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-4 col-span-1">
+                <div className="py-3 sm:py-4 flex items-center flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out">
+                  <h1 className="text-teal-400 text-lg sm:text-xl text-center px-2">Max Supply</h1>
+                  <p className="text-sm sm:text-base mt-1">{ formatNumberWithWords(token.max, token.dec)}</p>
                 </div>
-                <div className="py-4 flex items-center flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out">
-                  <h1 className="text-teal-400 text-xl">Total Minted</h1>
-                  <p>{ formatNumberWithWords(token.max, token.dec)}</p>
+                <div className="py-3 sm:py-4 flex items-center flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out">
+                  <h1 className="text-teal-400 text-lg sm:text-xl text-center px-2">Total Minted</h1>
+                  <p className="text-sm sm:text-base mt-1">{ formatNumberWithWords(token.max, token.dec)}</p>
                 </div>
-                <div className="py-4 flex items-center flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out text-center">
-                  <h1 className="text-teal-400 text-xl">Limit per Mint</h1>
-                  <p>{formatNumberWithWords(token.lim, token.dec)}</p>
+                <div className="py-3 sm:py-4 flex items-center flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out">
+                  <h1 className="text-teal-400 text-lg sm:text-xl text-center px-2">Limit per Mint</h1>
+                  <p className="text-sm sm:text-base mt-1">{formatNumberWithWords(token.lim, token.dec)}</p>
                 </div>
-                <div className="py-4 flex items-center flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out text-right">
-                  <h1 className="text-teal-400 text-xl">Total Mints</h1>
-                  <p>{formatInteger(token.mintTotal)}</p>
+                <div className="py-3 sm:py-4 flex items-center flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out">
+                  <h1 className="text-teal-400 text-lg sm:text-xl text-center px-2">Total Mints</h1>
+                  <p className="text-sm sm:text-base mt-1">{formatInteger(token.mintTotal)}</p>
                 </div>
-                <div className="py-4 flex items-center flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out text-right">
-                  <h1 className="text-teal-400 text-xl">Total Holders</h1>
-                  <p>{formatInteger(token.holderTotal)}</p>
+                <div className="py-3 sm:py-4 flex items-center flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out">
+                  <h1 className="text-teal-400 text-lg sm:text-xl text-center px-2">Total Holders</h1>
+                  <p className="text-sm sm:text-base mt-1">{formatInteger(token.holderTotal)}</p>
                 </div>
-                <div className="py-4 flex items-center flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out text-right">
-                  <h1 className="text-teal-400 text-xl">Total Transfers</h1>
-                  <p>{formatInteger(token.transferTotal)}</p>
+                <div className="py-3 sm:py-4 flex items-center flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/60 transition-colors duration-300 ease-in-out">
+                  <h1 className="text-teal-400 text-lg sm:text-xl text-center px-2">Total Transfers</h1>
+                  <p className="text-sm sm:text-base mt-1">{formatInteger(token.transferTotal)}</p>
                 </div>
               </div>
             </div>
@@ -387,13 +386,13 @@ export default function Home() {
                               Markets
                             </Tab.Panel>
                             <Tab.Panel className="pt-4 pl-4">
-                              <TopHoldersTable />
+                              <TopHoldersTable ticker={token.tick} />
                             </Tab.Panel>
                             <Tab.Panel className="pt-4 pl-4">
                               <RecentOperationsTable />
                             </Tab.Panel>
                             <Tab.Panel className="pt-4 pl-4">
-                              <HolderDistributionTable />
+                              <HolderDistributionTable ticker={token.tick}  />
                             </Tab.Panel>
                         </Tab.Panels>
                       </Tab.Group>

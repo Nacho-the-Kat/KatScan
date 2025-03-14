@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ArrowTrendingUpIcon, CircleStackIcon, UsersIcon } from '@heroicons/react/24/outline';
-import { formatNumberWithWords, formatInteger } from '../utils/utils';
+import { formatNumberWithWords, formatInteger, formatDecimalNumber } from '../utils/utils';
 
 interface TokenDetails {
   id: number;
@@ -13,6 +13,7 @@ interface TokenDetails {
   holderTotal: number;
   mintTotal: number;
   transferTotal: number;
+  dec: number;
   logo?: string;
 }
 
@@ -57,11 +58,11 @@ const TokenComparisonCard: React.FC<TokenComparisonCardProps> = ({ token, isLoad
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
             <p className="text-sm text-gray-500 dark:text-gray-400">Max Supply</p>
-            <p className="text-xl font-semibold text-gray-800 dark:text-gray-200">{formatInteger(token.max)}</p>
+            <p className="text-xl font-semibold text-gray-800 dark:text-gray-200">{formatDecimalNumber(token.max, token.dec)} {token.tick}</p>
           </div>
           <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
             <p className="text-sm text-gray-500 dark:text-gray-400">Minted</p>
-            <p className="text-xl font-semibold text-gray-800 dark:text-gray-200">{formatInteger(token.minted)}</p>
+            <p className="text-xl font-semibold text-gray-800 dark:text-gray-200">{formatDecimalNumber(token.minted, token.dec)} {token.tick}</p>
           </div>
         </div>
 

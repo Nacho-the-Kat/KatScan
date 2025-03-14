@@ -106,16 +106,32 @@ export async function GET(req: NextRequest) {
       }
       
       const entriesData = await entriesResponse.json();
+      
+      // Validate the response data structure
+      if (!entriesData || !entriesData.result) {
+        console.error("Invalid entries data structure:", entriesData);
+        return NextResponse.json(
+          { error: "Invalid response data structure from entries API" },
+          { status: 500 }
+        );
+      }
+      
       allEntries = entriesData.result;
     }
 
     // Apply filters if any
-    if (Object.keys(filterParams).length > 0) {
+    if (Object.keys(filterParams).length > 0 && Array.isArray(allEntries)) {
       allEntries = allEntries.filter(entry => {
+        if (!entry || !Array.isArray(entry.attributes)) return false;
         return entry.attributes.every(({ trait_type, value }: { trait_type: string, value: string }) => {
           return !filterParams[trait_type] || filterParams[trait_type] === value;
         });
       });
+    }
+
+    // Ensure allEntries is an array before returning
+    if (!Array.isArray(allEntries)) {
+      allEntries = [];
     }
 
     return NextResponse.json({
