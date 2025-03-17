@@ -22,8 +22,8 @@
   /* UI colors */
   --card-bg: #ffffff;
   --card-border: var(--neutral-200);
-  --input-bg: #ffffff;
   --input-border: var(--neutral-300);
+  --input-bg: #ffffff;
   --input-focus-ring: rgba(20, 184, 166, 0.2); /* teal-500 with opacity */
   
   /* Element shadows */
@@ -126,7 +126,7 @@
   
   /* Input styles */
   .input {
-    @apply flex h-10 w-full rounded-md border border-input-border bg-input-bg px-3 py-2 text-sm ring-offset-background placeholder:text-neutral-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply flex h-10 w-full rounded-md border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 px-3 py-2 text-sm ring-offset-background placeholder:text-neutral-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
   }
 }
 
