@@ -4,6 +4,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import dynamic from 'next/dynamic';
 import { ApexOptions } from "apexcharts";
 import Layout from "@/app/components/Layout";
+import { getTreemapChartTheme } from "../utils/chartTheme";
 
 const Chart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -21,98 +22,96 @@ interface FormattedMintData {
   color: string;
 }
 
-const timeframes = [
-  { value: 'day', label: 'Last 24 Hours' },
-  { value: 'week', label: 'This Week' },
-  { value: 'month', label: 'This Month' },
-  { value: 'year', label: 'This Year' },
-  { value: 'all', label: 'All Time' },
+// Define timeframe options
+interface TimeframeOption {
+  label: string;
+  value: string;
+}
+
+const timeframes: TimeframeOption[] = [
+  { label: "All Time", value: "all" },
+  { label: "Last 7 Days", value: "7days" },
+  { label: "Last 30 Days", value: "30days" },
+  { label: "Last 90 Days", value: "90days" },
 ];
 
 export default function MintHeatmap() {
   const [mintData, setMintData] = useState<FormattedMintData[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [timeframe, setTimeframe] = useState<string>('week');
-  const [totalMints, setTotalMints] = useState<number>(0);
+  const [timeframe, setTimeframe] = useState<string>("30days");
+  const [totalMints, setTotalMints] = useState(0);
 
+  // Get start date based on timeframe
   const getStartDate = (timeframe: string): Date => {
     const now = new Date();
     switch (timeframe) {
-      case 'day':
-        const today = new Date(now);
-        today.setHours(0, 0, 0, 0);
-        return today;
-      case 'week':
-        const weekAgo = new Date(now);
-        weekAgo.setDate(now.getDate() - 7);
-        return weekAgo;
-      case 'month':
-        const monthAgo = new Date(now);
-        monthAgo.setMonth(now.getMonth() - 1);
-        return monthAgo;
-      case 'year':
-        const yearAgo = new Date(now);
-        yearAgo.setFullYear(now.getFullYear() - 1);
-        return yearAgo;
-      case 'all':
-        return new Date('2024-01-01T00:00:00Z');
+      case "7days":
+        now.setDate(now.getDate() - 7);
+        return now;
+      case "30days":
+        now.setDate(now.getDate() - 30);
+        return now;
+      case "90days":
+        now.setDate(now.getDate() - 90);
+        return now;
       default:
-        const defaultDate = new Date(now);
-        defaultDate.setDate(now.getDate() - 7);
-        return defaultDate;
+        // "all" - set to distant past
+        now.setFullYear(now.getFullYear() - 10);
+        return now;
     }
   };
 
   const fetchMintData = useCallback(async () => {
-    if (!timeframe) return;
-    setLoading(true);
-    const startDate = getStartDate(timeframe);
-    const endDate = new Date();
-
     try {
-      console.log('Fetching data with dates:', {
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString()
+      setLoading(true);
+      setError(null);
+
+      const startDate = getStartDate(timeframe);
+      const startTimestamp = Math.floor(startDate.getTime() / 1000);
+
+      const apiUrl = `/api/kasplex/mints?since=${startTimestamp}`;
+      const response = await fetch(apiUrl);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (!data.result || !Array.isArray(data.result)) {
+        throw new Error("Invalid response format");
+      }
+
+      const result: MintItem[] = data.result;
+
+      // Sort by mint count (descending) and take top 100
+      const sortedData = result.sort((a, b) => b.mintTotal - a.mintTotal).slice(0, 100);
+
+      // Calculate total mints for percentage
+      const total = sortedData.reduce((sum, item) => sum + item.mintTotal, 0);
+      setTotalMints(total);
+
+      // Transform data for treemap
+      const formattedData: FormattedMintData[] = sortedData.map((item, index) => {
+        // Apply logarithmic scale to make visualization more balanced
+        // Add 1 to avoid log(0) and use natural log for better scaling
+        const logValue = Math.log(item.mintTotal + 1);
+
+        return {
+          x: item.tick,
+          y: logValue, // Logarithmic value for better visualization
+          color: getColorGradient(index, sortedData.length),
+        };
       });
 
-      const response = await fetch(`/api/mint-totals?startDate=${encodeURIComponent(startDate.toISOString())}&endDate=${encodeURIComponent(endDate.toISOString())}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
-      }
-      const jsonData = await response.json();
-      
-      if (!Array.isArray(jsonData)) {
-        throw new Error('Invalid data format received');
-      }
-
-      if (jsonData.length > 0) {
-        // Sort data by mintTotal in descending order and take top 100
-        const sortedData = [...jsonData]
-          .sort((a, b) => b.mintTotal - a.mintTotal)
-          .slice(0, 100)
-          .map((item: MintItem, index: number) => ({
-            x: item.tick,
-            y: Math.log(item.mintTotal + 1), // Use log scale like original
-            color: getColor(index),
-          }));
-
-        setMintData(sortedData);
-        setTotalMints(jsonData.reduce((sum: number, item: MintItem) => sum + item.mintTotal, 0));
-        setError(null);
-      } else {
-        setMintData([{ x: 'No data', y: 0, color: getColor(0) }]);
-        setTotalMints(0);
-      }
-    } catch (error: unknown) {
-      console.error('Error in fetchMintData:', error);
-      if (error instanceof Error) {
-        setError(error.message);
+      setMintData(formattedData);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
       } else {
         setError("An unknown error occurred");
       }
-      setMintData([{ x: 'Error', y: 0, color: getColor(0) }]);
-      setTotalMints(0);
+      console.error("Error fetching mint data:", err);
     } finally {
       setLoading(false);
     }
@@ -124,45 +123,54 @@ export default function MintHeatmap() {
     }
   }, [timeframe, fetchMintData]);
 
-  const getColor = (index: number): string => {
-    // Use HSL colors like the original
-    const hue = (1 - index / 100) * 120; // 120 for green to red gradient
-    return `hsl(${hue}, 70%, 50%)`;
+  // Enhanced color gradient function for better visualization
+  const getColorGradient = (index: number, total: number): string => {
+    // Calculate percentage position in the dataset (0 to 1)
+    const position = index / (total - 1);
+    
+    // Define colors from teal (primary) to amber (warning) to red (error)
+    if (position < 0.4) {
+      // Top 40% - Primary color range (teal shades)
+      const intensity = Math.floor((position / 0.4) * 500);
+      return `var(--primary-${intensity || 500})`;
+    } else if (position < 0.7) {
+      // Next 30% - Warning color range (amber shades)
+      const normalizedPos = (position - 0.4) / 0.3;
+      const intensity = Math.floor(normalizedPos * 500);
+      return `var(--warning-${intensity || 500})`;
+    } else {
+      // Bottom 30% - Error color range (red shades)
+      const normalizedPos = (position - 0.7) / 0.3;
+      const intensity = Math.floor(normalizedPos * 500);
+      return `var(--error-${intensity || 500})`;
+    }
   };
 
+  // Get chart theme based on dark mode
+  const isDarkMode = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const baseChartTheme = getTreemapChartTheme(isDarkMode);
+  
+  // Merge base theme with specific options for this chart
   const chartOptions: ApexOptions = {
-    chart: {
-      type: "treemap",
-    },
+    ...baseChartTheme,
     title: {
       text: "Token Mint Heatmap",
+      align: 'center',
       style: {
-        color: "#ffffff",
-      },
-    },
-    legend: {
-      show: true,
-      labels: {
-        colors: "#000000",
+        fontSize: '20px',
+        fontWeight: 600,
+        fontFamily: 'var(--font-geist-sans)',
+        color: isDarkMode ? '#e5e7eb' : '#1f2937', // neutral-200 or neutral-800
       },
     },
     tooltip: {
-      theme: "dark",
-      style: {
-        fontSize: "14px",
-      },
+      ...baseChartTheme.tooltip,
       y: {
         formatter: (value: number): string => {
           const actualValue = Math.exp(value) - 1;
           const percentage = ((actualValue / totalMints) * 100).toFixed(2);
           return `Mints: ${Math.round(actualValue).toLocaleString()}\nPercentage: ${percentage}%`;
         },
-      },
-    },
-    plotOptions: {
-      treemap: {
-        distributed: true,
-        enableShades: false,
       },
     },
   };
@@ -176,16 +184,16 @@ export default function MintHeatmap() {
   return (
     <Layout>
       <div className="space-y-8">
-        <div className="w-full bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mt-8">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
-            <div className="w-full md:w-1/3">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1 ml-2">
+        <div className="card mt-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center p-6 border-b border-neutral-200 dark:border-neutral-700">
+            <div className="w-full md:w-1/3 mb-4 md:mb-0">
+              <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
                 Timeframe
               </label>
               <select
                 value={timeframe}
                 onChange={(e) => setTimeframe(e.target.value)}
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-4 py-2 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-500 ml-2"
+                className="input w-full"
               >
                 {timeframes.map((tf) => (
                   <option key={tf.value} value={tf.value}>
@@ -195,20 +203,33 @@ export default function MintHeatmap() {
               </select>
             </div>
             {totalMints > 0 && (
-              <div className="text-lg font-semibold text-gray-700 dark:text-gray-200 mr-2">
-                Total Mints: {totalMints.toLocaleString()}
+              <div className="bg-neutral-100 dark:bg-neutral-800 rounded-lg px-4 py-2">
+                <span className="text-sm text-neutral-500 dark:text-neutral-400">Total Mints:</span>
+                <span className="ml-2 text-lg font-semibold text-neutral-800 dark:text-neutral-200">{totalMints.toLocaleString()}</span>
               </div>
             )}
           </div>
-          {loading ? (
-            <p className="text-gray-500 dark:text-gray-300">Loading mint data...</p>
-          ) : error ? (
-            <p className="text-red-500 dark:text-red-400">Error: {error}</p>
-          ) : (
-            <div className="dark:bg-gray-900 p-4 rounded-md">
-              <Chart options={chartOptions} series={chartSeries} type="treemap" height={650} />
-            </div>
-          )}
+          
+          <div className="p-6">
+            {loading ? (
+              <div className="h-[650px] w-full flex flex-col items-center justify-center bg-neutral-50 dark:bg-neutral-900/50 rounded-md">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500 mb-4"></div>
+                <p className="text-neutral-500 dark:text-neutral-400">Loading mint data...</p>
+              </div>
+            ) : error ? (
+              <div className="h-[200px] flex items-center justify-center bg-error-50 dark:bg-error-900/10 rounded-md p-6">
+                <p className="text-error-500 dark:text-error-400">{error}</p>
+              </div>
+            ) : mintData.length === 0 ? (
+              <div className="h-[200px] flex items-center justify-center bg-neutral-50 dark:bg-neutral-900/50 rounded-md p-6">
+                <p className="text-neutral-500 dark:text-neutral-400">No mint data available for the selected timeframe.</p>
+              </div>
+            ) : (
+              <div className="bg-white dark:bg-neutral-800 rounded-md">
+                <Chart options={chartOptions} series={chartSeries} type="treemap" height={650} />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </Layout>

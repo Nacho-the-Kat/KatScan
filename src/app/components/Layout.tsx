@@ -87,46 +87,74 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-slate-900">
+    <div className="flex flex-col min-h-screen bg-neutral-50 dark:bg-neutral-900">
       {/* Header */}
-      <header className="flex bg-white dark:bg-gray-800 shadow-md">
-        <div className="flex-grow flex justify-center items-center">
-          <div className="w-full px-4 sm:w-11/12">
-            <div className="flex flex-row justify-between items-center py-4">
-              <div className="flex items-center">
-                <Link href={"/"}>
-                  <Image src="/katscan_new_logo.png" alt="KatScan Logo" width={180} height={45} />
-                </Link>
-              </div>
-              <div className="z-9">
-                <Menu items={menuOptions} />
-              </div>
+      <header className="sticky top-0 z-30 w-full bg-white dark:bg-neutral-800 shadow-sm border-b border-neutral-200 dark:border-neutral-700">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
+            <div className="flex items-center">
+              <Link href="/" className="transition-opacity hover:opacity-80">
+                <Image 
+                  src="/katscan_new_logo.png" 
+                  alt="KatScan Logo" 
+                  width={150} 
+                  height={38} 
+                  className="h-8 w-auto"
+                  priority
+                />
+              </Link>
+            </div>
+            <div className="z-20">
+              <Menu items={menuOptions} />
             </div>
           </div>
         </div>
       </header>
 
+      {/* Search Section - Separated from main content for visual distinction */}
+      <div className="w-full bg-white dark:bg-neutral-800 shadow-sm border-b border-neutral-200 dark:border-neutral-700 py-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <Search
+            showHint={true}
+            placeholder="Address / Transaction ID / Block ID / Token"
+            onSearch={handleSearch}
+            onChange={(value: string) => setSearchQuery(value)}
+            onKeyDown={handleKeyDown}
+          />
+        </div>
+      </div>
+
       {/* Main Content */}
-      <main className="flex-grow flex justify-center items-start py-4 sm:py-8">
-        <div className="w-full px-4 sm:w-11/12">
-          <div className="block w-full">
-            <Search
-              showHint={true}
-              placeholder="Address / Transaction ID / Block ID / Token"
-              onSearch={handleSearch}
-              onChange={(value: string) => setSearchQuery(value)} // Capture input changes
-              onKeyDown={handleKeyDown} // Trigger search on Enter key
-            />
+      <main className="flex-grow py-6 sm:py-8 lg:py-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="animate-fade-in">
+            {children}
           </div>
-          {children}
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="w-full p-4 bg-white dark:bg-slate-800">
-        <p className="text-center text-gray-400 dark:text-white">
-          Made with ❤️ by Nacho & the 𐤊at Community
-        </p>
+      <footer className="w-full py-6 bg-white dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center justify-center space-y-2">
+            <p className="text-sm text-neutral-500 dark:text-neutral-400">
+              Made with <span className="text-primary-500">❤️</span> by Nacho & the 𐤊at Community
+            </p>
+            <div className="flex items-center space-x-4 text-sm text-neutral-400 dark:text-neutral-500">
+              <Link href="/" className="hover:text-primary-500 transition-colors">
+                Home
+              </Link>
+              <span className="text-neutral-300 dark:text-neutral-700">•</span>
+              <Link href="/scan" className="hover:text-primary-500 transition-colors">
+                Explorer
+              </Link>
+              <span className="text-neutral-300 dark:text-neutral-700">•</span>
+              <Link href="/nft" className="hover:text-primary-500 transition-colors">
+                NFTs
+              </Link>
+            </div>
+          </div>
+        </div>
       </footer>
     </div>
   );
