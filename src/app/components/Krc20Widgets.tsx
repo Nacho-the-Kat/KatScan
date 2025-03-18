@@ -1,6 +1,6 @@
 import { JSX, useEffect, useState } from "react";
 import { CircleStackIcon, ArrowsRightLeftIcon, DocumentCurrencyDollarIcon } from "@heroicons/react/24/outline";
-import { Widget } from "../../../packages/kat-library/dist/index";
+import { Widget } from "./index";
 import { formatNumberWithWords, formatInteger } from "../utils/utils";
 
 const API_URL = "/api/kasplex/info";

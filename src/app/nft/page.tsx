@@ -1,8 +1,9 @@
 "use client";
 
+import React from "react";
 import { useEffect, useState } from "react";
 import Layout from "@/app/components/Layout";
-import { Table, Avatar, Pill, ProgressBar } from "../../../packages/kat-library/dist/index";
+import { Table, Avatar, Pill, ProgressBar } from "../components/index";
 import { ColumnDef } from "@tanstack/table-core";
 import { formatNumberWithWords, formatInteger, formatPercentage, calculateValue } from "../utils/utils";
 import Link from "next/link";

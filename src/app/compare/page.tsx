@@ -5,7 +5,7 @@ import Layout from "@/app/components/Layout";
 import TokenAutocomplete from "@/app/components/TokenAutocomplete";
 import TokenComparisonCard from "@/app/components/TokenComparisonCard";
 import { ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
-import { Table, Tabs } from "../../../packages/kat-library/dist/index";
+import { Table, Tabs } from "../components/index";
 import { formatNumberWithWords, formatInteger, formatKRC20Amount, formatDecimalNumber } from "../utils/utils";
 import dynamic from 'next/dynamic';
 

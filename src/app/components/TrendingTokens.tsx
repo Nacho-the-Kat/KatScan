@@ -1,6 +1,7 @@
 "use client";
+import React from "react";
 import { useEffect, useState } from "react";
-import { TokenList } from "../../../packages/kat-library/dist/index";
+import { TokenList } from "./index";
 import { ArrowTrendingUpIcon } from "@heroicons/react/24/solid";
 import { Token } from "@/app/types/token";
 import { format } from "date-fns";

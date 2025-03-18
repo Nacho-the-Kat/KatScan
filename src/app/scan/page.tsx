@@ -1,16 +1,16 @@
 "use client";
 
+import React from "react";
 import { useEffect, useState } from "react";
 import Layout from "@/app/components/Layout";
 import { Token } from "../types/token";
 import {
-  Table,
   Avatar,
   Pill,
   ProgressBar,
   Search,
   TokenList,
-} from "../../../packages/kat-library/dist/index";
+} from "@/app/components/index";
 import { ColumnDef } from "@tanstack/table-core";
 import {
   formatNumberWithWords,
@@ -23,6 +23,7 @@ import MintTokens from "../components/MintTokens";
 import { ArrowTrendingUpIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { format } from "date-fns";
+import { Table } from "../components/index";
 
 // Function to convert timestamp to "DD/MM/YYYY :SS" format
 const formatDate = (timestamp: number): string => {

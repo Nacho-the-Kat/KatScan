@@ -1,10 +1,9 @@
 "use client";
 
 import React, { FC, useState } from "react";
-import { Menu } from "../../../packages/kat-library/dist/index";
+import { Menu, Search } from "./index";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search } from "../../../packages/kat-library/dist/index";
 import Image from "next/image";
 
 interface LayoutProps {

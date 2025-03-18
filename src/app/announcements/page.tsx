@@ -2,7 +2,7 @@
 
 import Layout from "@/app/components/Layout";
 import TrendingTokens from "@/app/components/TrendingTokens";
-import { TokenList, Widget } from "../../../packages/kat-library/dist/index";
+import { TokenList, Widget } from "../components/index";
 import {
   CircleStackIcon,
   ArrowsRightLeftIcon,

@@ -1,7 +1,8 @@
 "use client";
 
+import React from "react";
 import { useEffect, useState } from "react";
-import { Table } from "../../../packages/kat-library/dist/index";
+import { Table } from "./index";
 import { ColumnDef } from "@tanstack/table-core";
 
 interface Transaction {

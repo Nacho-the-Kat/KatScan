@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Layout from "@/app/components/Layout";
 import TrendingTokens from "@/app/components/TrendingTokens";
 import {

@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useEffect, useState } from "react";
 import Layout from "@/app/components/Layout";
 import { Tab } from "@headlessui/react";
@@ -7,8 +8,8 @@ import {
   Affiliates,
   Avatar,
   Pill,
-  ProgressBar,
-} from "../../../../packages/kat-library/dist/index";
+  ProgressBar
+} from "@/app/components/index";
 
 import {
   calculateValue,
