@@ -17,8 +17,6 @@ import {
   formatPreMinted,
   formatInteger
 } from "../../utils/utils";
-// AffiliateComponent is not available in the distributed package
-// import AffiliateComponent from "../../../packages/kat-library/dist/index"; 
 import { useParams } from "next/navigation";
 import TopHoldersTable from "@/app/components/TopHoldersTable";
 import RecentOperationsTable from "@/app/components/RecentOperationsTable";

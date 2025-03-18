@@ -10,7 +10,7 @@ import {
   Avatar,
   Pill,
   ProgressBar,
-} from "../../../packages/kat-library/dist/index";
+} from "@/app/components/index";
 import {
   CircleStackIcon,
   ArrowsRightLeftIcon,
