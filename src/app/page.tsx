@@ -2,24 +2,7 @@
 
 import Layout from "@/app/components/Layout";
 import TrendingTokens from "@/app/components/TrendingTokens";
-import { TokenList, Widget } from "../../packages/kat-library/dist/index";
-import {
-  CircleStackIcon,
-  ArrowsRightLeftIcon,
-  DocumentCurrencyDollarIcon,
-  ChartPieIcon,
-  ArrowTrendingUpIcon,
-  GlobeAltIcon,
-  WalletIcon,
-  ArrowPathRoundedSquareIcon,
-  UsersIcon,
-  FireIcon,
-  CalculatorIcon
-} from "@heroicons/react/24/outline";
 import MintTokens from "./components/MintTokens";
-import { useEffect, useState } from "react";
-import { Fav } from "../../packages/kat-library/dist/index";
-import Image from "next/image";
 import RecentCollections from "./components/RecentCollections";
 import TrendingCollections from "./components/TrendingCollections";
 import TokenStatistics from "./components/Krc20Widgets";
