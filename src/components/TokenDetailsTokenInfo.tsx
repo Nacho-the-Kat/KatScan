@@ -6,7 +6,7 @@ import {formatNumber, parseRawNumber} from "../services/Helper";
 import {Link} from "react-router-dom";
 import {TokenData} from "../interfaces/TokenData";
 import {Socials} from "../pages/TokenDetail";
-import {FaImages} from "react-icons/fa6";
+// Removed problematic icon import
 
 interface Props {
     tokenData: TokenData
@@ -30,7 +30,7 @@ export const TokenDetailsTokenInfo: FC<Props> = (
                 return <SmallThumbnail src={`${katscanStaticUrl}/telegram.svg`} alt={'telegram'}/>
             default:
                 if (tokenData.logo === null) {
-                    return <FaImages className={'small-thumbnail-image'}/>
+                    return <div className={'small-thumbnail-image'} style={{display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem'}}>🖼️</div>
                 }
                 return <SmallThumbnail
                     src={`${katscanStaticUrl}/krc20/thumbnails${tokenData.logo}`}
@@ -44,7 +44,7 @@ export const TokenDetailsTokenInfo: FC<Props> = (
                 <div className="token-info-item-image">
                     {tokenData.logo ?
                         <Thumbnail src={`${katscanStaticUrl}/krc20/logos${tokenData.logo}`} alt={`${tokenData.tick}.jpg`}/>
-                        : <FaImages className={'thumbnail-image'} style={{height:'fit-content', borderRadius: 'unset'}}/>
+                        : <div className={'thumbnail-image'} style={{height:'fit-content', borderRadius: 'unset', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem'}}>🖼️</div>
                     }
                 </div>
                 <div className="token-info-item">

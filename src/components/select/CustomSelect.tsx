@@ -1,7 +1,7 @@
 import React, {FC, FormEvent, MouseEvent, ReactElement, useCallback, useMemo, useRef, useState} from "react";
 import {debounce} from "lodash";
 import './CustomSelect.css'
-import {FaChevronDown, FaX} from "react-icons/fa6";
+// Removed problematic icon imports
 import {CustomDropdown, CustomDropdownItem, DropdownRef} from "nacho-component-library";
 
 export type Selection = { value: string | number, label: string } & Record<string, unknown>
@@ -45,12 +45,12 @@ export const CustomSelect: FC<Props> = (
                 {search !== '' &&
                     <div className={'search-reset-wrapper'}
                          onClick={() => setSearch('')}>
-                        <FaX size={15}/>
+                        <span style={{fontSize: '12px', cursor: 'pointer'}}>✕</span>
                     </div>
                 }
                 <div className={'search-arrow-wrapper'}
                      onClick={canClose ? clickCloseIcon : undefined}>
-                    <FaChevronDown className={'search-arrow'} size={15}/>
+                    <span className={'search-arrow'} style={{fontSize: '12px', cursor: 'pointer'}}>▼</span>
                 </div>
             </div>
         </>
