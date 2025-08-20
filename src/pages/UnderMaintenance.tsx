@@ -77,8 +77,8 @@ export const UnderMaintenance: FC = () => {
                 position: 'absolute',
                 top: 0,
                 left: 0,
-                width: '100%',
-                height: '100%',
+        width: '100%',
+        height: '100%',
                 background: `
                     linear-gradient(rgba(112, 199, 186, 0.03) 1px, transparent 1px),
                     linear-gradient(90deg, rgba(2, 2, 2, 0.03) 1px, transparent 1px)
@@ -89,32 +89,35 @@ export const UnderMaintenance: FC = () => {
 
             {/* Main Content Container */}
             <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh',
-                padding: '2rem',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+                minHeight: '100vh',
+                padding: '1rem',
                 position: 'relative',
                 zIndex: 10
             }}>
                 <div style={{
                     textAlign: 'center',
-                    maxWidth: '900px',
-                    background: 'rgba(0, 0, 0, 0.4)',
-                    backdropFilter: 'blur(20px)',
-                    border: '1px solid rgba(112, 199, 186, 0.2)',
+                    maxWidth: '1000px',
+                    width: '100%',
+                    background: 'rgba(0, 0, 0, 0.6)',
+                    backdropFilter: 'blur(25px)',
+                    border: '2px solid rgba(112, 199, 186, 0.4)',
+                    borderTop: '4px solid rgba(112, 199, 186, 0.8)',
+                    borderBottom: '4px solid rgba(112, 199, 186, 0.8)',
                     borderRadius: '24px',
-                    padding: '3rem',
-                    boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)',
+                    padding: '2rem',
+                    boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
                     animation: 'containerGlow 3s ease-in-out infinite alternate'
                 }}>
                     {/* Logo */}
-                    <div style={{ marginBottom: '2rem' }}>
+                    <div style={{ marginBottom: '1rem' }}>
                         <img 
                             src={logo as string} 
                             alt="KatScan" 
                             style={{
-                                width: '120px',
+                                width: '80px',
                                 height: 'auto',
                                 filter: 'drop-shadow(0 0 20px rgba(112, 199, 186, 0.6))',
                                 animation: 'logoFloat 4s ease-in-out infinite'
@@ -124,9 +127,9 @@ export const UnderMaintenance: FC = () => {
 
                     {/* Main Title */}
                     <h1 style={{
-                        fontSize: 'clamp(2rem, 5vw, 4rem)',
+                        fontSize: 'clamp(1.8rem, 4vw, 3rem)',
                         fontWeight: '800',
-                        marginBottom: '1rem',
+                        marginBottom: '0.5rem',
                         background: 'linear-gradient(135deg, #70c7ba 0%, #49eacb 50%, #70c7ba 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
@@ -139,10 +142,10 @@ export const UnderMaintenance: FC = () => {
 
                     {/* Subtitle */}
                     <h2 style={{
-                        fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
+                        fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
                         fontWeight: '300',
                         color: 'rgba(255, 255, 255, 0.85)',
-                        marginBottom: '3rem',
+                        marginBottom: '1.5rem',
                         letterSpacing: '0.05em'
                     }}>
                         Upgrading to Next-Generation Infrastructure
@@ -151,26 +154,26 @@ export const UnderMaintenance: FC = () => {
                     {/* Technical Status */}
                     <div style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                        gap: '1.5rem',
-                        marginBottom: '3rem'
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                        gap: '1rem',
+                        marginBottom: '1.5rem'
                     }}>
                         <div style={{
                             background: 'rgba(112, 199, 186, 0.1)',
                             border: '1px solid rgba(112, 199, 186, 0.3)',
                             borderRadius: '12px',
-                            padding: '1.5rem',
+                            padding: '1rem',
                             backdropFilter: 'blur(10px)'
                         }}>
                             <div style={{
                                 color: '#70c7ba',
-                                fontSize: '2rem',
-                                marginBottom: '0.5rem'
+                                fontSize: '1.5rem',
+                                marginBottom: '0.3rem'
                             }}>⚡</div>
                             <div style={{
                                 color: 'white',
                                 fontWeight: '600',
-                                fontSize: '0.9rem'
+                                fontSize: '0.85rem'
                             }}>Performance Optimization</div>
                         </div>
                         
@@ -178,18 +181,18 @@ export const UnderMaintenance: FC = () => {
                             background: 'rgba(112, 199, 186, 0.1)',
                             border: '1px solid rgba(112, 199, 186, 0.3)',
                             borderRadius: '12px',
-                            padding: '1.5rem',
+                            padding: '1rem',
                             backdropFilter: 'blur(10px)'
                         }}>
                             <div style={{
                                 color: '#70c7ba',
-                                fontSize: '2rem',
-                                marginBottom: '0.5rem'
+                                fontSize: '1.5rem',
+                                marginBottom: '0.3rem'
                             }}>🔐</div>
                             <div style={{
                                 color: 'white',
                                 fontWeight: '600',
-                                fontSize: '0.9rem'
+                                fontSize: '0.85rem'
                             }}>Security Enhancement</div>
                         </div>
                         
@@ -197,18 +200,18 @@ export const UnderMaintenance: FC = () => {
                             background: 'rgba(112, 199, 186, 0.1)',
                             border: '1px solid rgba(112, 199, 186, 0.3)',
                             borderRadius: '12px',
-                            padding: '1.5rem',
+                            padding: '1rem',
                             backdropFilter: 'blur(10px)'
                         }}>
                             <div style={{
                                 color: '#70c7ba',
-                                fontSize: '2rem',
-                                marginBottom: '0.5rem'
+                                fontSize: '1.5rem',
+                                marginBottom: '0.3rem'
                             }}>🚀</div>
                             <div style={{
                                 color: 'white',
                                 fontWeight: '600',
-                                fontSize: '0.9rem'
+                                fontSize: '0.85rem'
                             }}>New Features</div>
                         </div>
                     </div>
@@ -218,24 +221,24 @@ export const UnderMaintenance: FC = () => {
                         background: 'linear-gradient(135deg, rgba(112, 199, 186, 0.1) 0%, rgba(73, 234, 203, 0.1) 100%)',
                         border: '1px solid rgba(112, 199, 186, 0.3)',
                         borderRadius: '16px',
-                        padding: '2rem',
-                        marginBottom: '3rem',
+                        padding: '1.5rem',
+                        marginBottom: '1.5rem',
                         backdropFilter: 'blur(15px)'
                     }}>
                         <p style={{
-                            fontSize: '1.2rem',
+                            fontSize: '1.1rem',
                             color: 'rgba(255, 255, 255, 0.9)',
-                            lineHeight: '1.6',
-                            marginBottom: '1.5rem',
+                            lineHeight: '1.5',
+                            marginBottom: '1rem',
                             fontWeight: '400'
                         }}>
                             Our advanced KRC-20 explorer is undergoing critical infrastructure upgrades to deliver 
                             unparalleled performance and cutting-edge features.
                         </p>
                         <p style={{
-                            fontSize: '1.1rem',
+                            fontSize: '1rem',
                             color: 'rgba(255, 255, 255, 0.8)',
-                            lineHeight: '1.6',
+                            lineHeight: '1.5',
                             marginBottom: 0
                         }}>
                             Continue your KRC-20 exploration at{' '}
@@ -256,31 +259,31 @@ export const UnderMaintenance: FC = () => {
                         background: 'rgba(0, 0, 0, 0.4)',
                         border: '2px solid rgba(112, 199, 186, 0.4)',
                         borderRadius: '20px',
-                        padding: '2rem',
-                        marginBottom: '2rem',
+                        padding: '1.5rem',
+                        marginBottom: '1.5rem',
                         backdropFilter: 'blur(15px)'
                     }}>
                         <p style={{
-                            fontSize: '1.1rem',
+                            fontSize: '1rem',
                             color: 'rgba(255, 255, 255, 0.8)',
-                            marginBottom: '1.5rem',
+                            marginBottom: '1rem',
                             fontWeight: '500'
                         }}>
                             Automatic redirect to Kas.fyi in:
                         </p>
                         <div style={{
-                            fontSize: 'clamp(3rem, 8vw, 6rem)',
+                            fontSize: 'clamp(2.5rem, 6vw, 4rem)',
                             fontWeight: '900',
                             color: '#70c7ba',
                             textShadow: '0 0 30px rgba(112, 199, 186, 0.7)',
-                            marginBottom: '0.5rem',
+                            marginBottom: '0.3rem',
                             animation: `countdownPulse 1s ease-in-out infinite, ${countdown <= 5 ? 'urgentGlow 0.5s ease-in-out infinite alternate' : 'none'}`,
                             fontFamily: '"JetBrains Mono", monospace'
                         }}>
                             {countdown.toString().padStart(2, '0')}
                         </div>
                         <p style={{
-                            fontSize: '0.9rem',
+                            fontSize: '0.8rem',
                             color: 'rgba(255, 255, 255, 0.6)',
                             fontWeight: '400',
                             letterSpacing: '0.1em'
@@ -296,11 +299,11 @@ export const UnderMaintenance: FC = () => {
                             display: 'inline-block',
                             background: 'linear-gradient(135deg, #70c7ba 0%, #49eacb 100%)',
                             color: '#0f3460',
-                            padding: '1rem 3rem',
+                            padding: '0.8rem 2.5rem',
                             borderRadius: '50px',
                             textDecoration: 'none',
                             fontWeight: '700',
-                            fontSize: '1.1rem',
+                            fontSize: '1rem',
                             letterSpacing: '0.05em',
                             boxShadow: '0 10px 30px rgba(112, 199, 186, 0.4)',
                             transition: 'all 0.3s ease',
@@ -319,7 +322,7 @@ export const UnderMaintenance: FC = () => {
                         CONTINUE TO KAS.FYI
                     </a>
                 </div>
-            </div>
+    </div>
 
             {/* Advanced CSS Animations */}
             <style>{`
@@ -331,8 +334,21 @@ export const UnderMaintenance: FC = () => {
                 }
                 
                 @keyframes containerGlow {
-                    0% { box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(112, 199, 186, 0.2); }
-                    100% { box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(112, 199, 186, 0.4), 0 0 50px rgba(112, 199, 186, 0.1); }
+                    0% { 
+                        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 
+                                   inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                                   0 0 0 2px rgba(112, 199, 186, 0.4),
+                                   0 -4px 0 0 rgba(112, 199, 186, 0.8),
+                                   0 4px 0 0 rgba(112, 199, 186, 0.8); 
+                    }
+                    100% { 
+                        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 
+                                   inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                                   0 0 0 2px rgba(112, 199, 186, 0.6),
+                                   0 -4px 0 0 rgba(112, 199, 186, 1),
+                                   0 4px 0 0 rgba(112, 199, 186, 1),
+                                   0 0 50px rgba(112, 199, 186, 0.2); 
+                    }
                 }
                 
                 @keyframes logoFloat {
